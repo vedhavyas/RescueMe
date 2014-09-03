@@ -2,6 +2,7 @@ package org.rescueme;
 
 
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,7 +26,7 @@ public class RescueMeLogin extends Fragment {
     private EditText email;
     private EditText password;
     private Button logIn;
-    private ProgressBar progressBar;
+    private Button register;
 
     public RescueMeLogin() {
         // Required empty public constructor
@@ -39,8 +40,14 @@ public class RescueMeLogin extends Fragment {
         email = (EditText) rootView.findViewById(R.id.email);
         password = (EditText) rootView.findViewById(R.id.password);
         logIn = (Button) rootView.findViewById(R.id.logInBtn);
-        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.GONE);
+        ((RescueMe)getActivity()).setTitle(RescueMeConstants.LOGIN);
+        register = (Button)rootView.findViewById(R.id.loginRegisterBtn);
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registrationFragment();
+            }
+        });
 
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +62,6 @@ public class RescueMeLogin extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -72,11 +78,12 @@ public class RescueMeLogin extends Fragment {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            progressBar.setVisibility(View.GONE);
             Intent intent = new Intent(getActivity().getBaseContext(),RescueMeMainView.class);
             startActivity(intent);
         }
     }
 
-
+    private void registrationFragment(){
+        ((RescueMe)getActivity()).loadFragment(RescueMeConstants.REGISTER);
+    }
 }

@@ -33,6 +33,7 @@ public class RescueMeMainView extends Activity implements ActionBar.TabListener 
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         actionBar = getActionBar();
+        actionBar.setTitle(RescueMeConstants.RESCUE_ME_MAIN);
         sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
 
         viewPager.setAdapter(sectionsPagerAdapter);

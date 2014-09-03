@@ -3,6 +3,7 @@ package org.rescueme;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ public class RescueMe extends Activity {
 
     SharedPreferences pref;
     boolean isLoggedIn;
+    private String fragmentTag = RescueMeConstants.RESCUE_ME;
 
 
     @Override
@@ -32,10 +34,7 @@ public class RescueMe extends Activity {
             Intent intent = new Intent(this,RescueMeMainView.class);
             startActivity(intent);
         }else {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new RescueMeLogin())
-                    .commit();
-
+            loadFragment(RescueMeConstants.LOGIN);
         }
     }
 
@@ -49,13 +48,36 @@ public class RescueMe extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setTitle(String title){
+        getActionBar().setTitle(title);
+    }
+
+    public void loadFragment(String tag){
+        if(tag.equalsIgnoreCase(RescueMeConstants.LOGIN)){
+            fragmentTag = tag;
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container, new RescueMeLogin())
+                    .commit();
+        }else if(tag.equalsIgnoreCase(RescueMeConstants.REGISTER)){
+            fragmentTag = tag;
+            getFragmentManager().beginTransaction().replace(R.id.container, new RescueMeRegister())
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(fragmentTag.equalsIgnoreCase(RescueMeConstants.REGISTER)){
+            loadFragment(RescueMeConstants.LOGIN);
+        }else{
+            super.onBackPressed();
+        }
     }
 }

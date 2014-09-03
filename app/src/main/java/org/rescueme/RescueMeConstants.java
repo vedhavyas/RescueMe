@@ -6,8 +6,10 @@ package org.rescueme;
 public class RescueMeConstants {
 
     public static final String PREFERENCE_NAME = "RescueMe";
-    public static final String LOGIN = "login";
-    public static final String REGISTER = "register";
+    public static final String LOGIN = "Rescue Me LogIn";
+    public static final String REGISTER = "Registration";
     public static final String[] TABS = {"Rescue Me", "Profile", "Settings"};
+    public static final String RESCUE_ME_MAIN = "Rescue Me";
+    public static final String RESCUE_ME = "Rescue Me";
 
 }

@@ -115,7 +115,7 @@ public class RescueMeMainView extends Activity implements ActionBar.TabListener 
             //return PlaceholderFragment.newInstance(position + 1);
             switch(position){
                 case 0:
-                    return new RescumeMain();
+                    return new RescueMeMain();
                 case 1:
                     return new RescueMeProfile();
                 case 2:

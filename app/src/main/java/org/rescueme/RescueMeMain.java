@@ -9,10 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class RescumeMain extends Fragment {
+public class RescueMeMain extends Fragment {
 
 
-    public RescumeMain() {
+    public RescueMeMain() {
         // Required empty public constructor
     }
 

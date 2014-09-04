@@ -4,11 +4,12 @@
     <string name="app_name">RescueMe</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_rescue_me_main_view">RescueMeMainView</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
     <string name="email">Email</string>
-
+    <string name="name_hint">Name</string>
+    <string name="password">Password</string>
+    <string name="number">Phone Number</string>
+    <string name="register">Register</string>
+    <string name="login">LogIn</string>
+    <string name="notYet">Not Registered yet ?</string>
 </resources>

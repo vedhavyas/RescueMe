@@ -5,6 +5,5 @@ package org.rescueme;
  */
 public class RescueMeDBFactory {
     public RescueMeDBFactory(){
-
     }
 }

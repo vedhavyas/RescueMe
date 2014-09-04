@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-/**
- * A simple {@link Fragment} subclass.
- *
- */
 public class RescueMeLogin extends Fragment {
 
     private EditText email;
@@ -58,32 +54,45 @@ public class RescueMeLogin extends Fragment {
         return rootView;
     }
 
-    private class LogIn extends AsyncTask<View,Void,Void>{
+    private class LogIn extends AsyncTask<View,Void,Boolean>{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
 
         @Override
-        protected Void doInBackground(View... params) {
+        protected Boolean doInBackground(View... params) {
 
             try {
-                Thread.sleep(100);
+                if(isDataValid()){
+                    Thread.sleep(100);
+                    return true;
+                }else{
+                    return false;
+                }
             } catch (InterruptedException e) {
-                Toast.makeText(params[0].getContext(),"thread interrupted",Toast.LENGTH_SHORT);
+                //just for a testing
             }
 
-            return null;
+            return false;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            Intent intent = new Intent(getActivity().getBaseContext(),RescueMeMainView.class);
-            startActivity(intent);
+        protected void onPostExecute(Boolean success) {
+            if(success){
+                Intent intent = new Intent(getActivity().getBaseContext(),RescueMeMainView.class);
+                startActivity(intent);
+            }else{
+                Toast.makeText(getActivity().getBaseContext(),RescueMeConstants.EMAIL_FAIL,Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     private void registrationFragment(){
         ((RescueMe)getActivity()).loadFragment(RescueMeConstants.REGISTER);
+    }
+
+    private boolean isDataValid(){
+        return email.getText().toString().contains("@");
     }
 }

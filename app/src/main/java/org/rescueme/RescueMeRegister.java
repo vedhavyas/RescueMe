@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 
 public class RescueMeRegister extends Fragment {
@@ -40,7 +40,7 @@ public class RescueMeRegister extends Fragment {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                new RegisterTask().execute();
             }
         });
         ((RescueMe)getActivity()).setTitle(RescueMeConstants.REGISTER);
@@ -48,24 +48,57 @@ public class RescueMeRegister extends Fragment {
         return rootView;
     }
 
-    public class RegisterTask extends AsyncTask<Void, Void, Void>{
+    public class RegisterTask extends AsyncTask<Void, Void, String>{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
-            return null;
+        protected String doInBackground(Void... params) {
+            return isDataValid();
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected void onPostExecute(String result) {
+            if(result.equalsIgnoreCase(RescueMeConstants.SUCCESS)){
+                ((RescueMe)getActivity()).loadFragment(RescueMeConstants.LOGIN);
+            }else{
+                Toast.makeText(getActivity().getBaseContext(),result,Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+
+    private String isDataValid(){
+        if(validEmail()){
+            if(validPassword()){
+                if(validNumber()){
+                    return RescueMeConstants.SUCCESS;
+                }else {
+                    return RescueMeConstants.PHONE_FAIL;
+                }
+            }else {
+                return RescueMeConstants.PASSWORD_FAIL;
+            }
+        }else{
+            return RescueMeConstants.EMAIL_FAIL;
         }
     }
 
+    private boolean validEmail(){
+        return email.getText().toString().contains("@");
 
+    }
 
+    private boolean validPassword(){
+        return password.getText().toString().length() >= RescueMeConstants.PASSWORD_MIN_LENGTH;
+
+    }
+
+    private boolean validNumber(){
+        return phoneNumber.getText().toString().length() == RescueMeConstants.PHONE_NUMBER_LENGTH && phoneNumber.getText().toString().matches("[0-9]+");
+
+    }
 
 }

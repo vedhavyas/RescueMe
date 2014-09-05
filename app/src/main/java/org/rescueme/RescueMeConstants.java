@@ -1,7 +1,7 @@
 package org.rescueme;
 
 /**
- * Created by Vedavyas Singareddy on 02-09-2014.
+ * Created by Vedavyas Singareddi on 02-09-2014.
  */
 public class RescueMeConstants {
 
@@ -36,6 +36,6 @@ public class RescueMeConstants {
     public static final String COLUMN_PASSWORD = "Password";
     public static final String COLUMN_EMAIL = "Email";
     public static final String COLUMN_NUMBER = "Number";
-    public static final String SQL_LOGIN_QUERY = "SELECT "+COLUMN_PASSWORD+" FROM TABLE = "+USER_TABLE+" WHERE "+COLUMN_EMAIL+" = ";
+    public static final String SQL_LOGIN_QUERY = "SELECT "+COLUMN_PASSWORD+" FROM "+USER_TABLE+" WHERE "+COLUMN_EMAIL+" = ";
     public static final String LOGIN_FAIL = "Login failed!!";
 }

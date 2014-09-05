@@ -14,7 +14,6 @@ import android.view.MenuItem;
 
 public class RescueMeMainView extends Activity implements ActionBar.TabListener {
 
-    private SectionsPagerAdapter sectionsPagerAdapter;
     private ActionBar actionBar;
     private ViewPager viewPager;
 
@@ -27,7 +26,7 @@ public class RescueMeMainView extends Activity implements ActionBar.TabListener 
         viewPager = (ViewPager) findViewById(R.id.pager);
         actionBar = getActionBar();
         actionBar.setTitle(RescueMeConstants.RESCUE_ME_MAIN);
-        sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
 
         viewPager.setAdapter(sectionsPagerAdapter);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);

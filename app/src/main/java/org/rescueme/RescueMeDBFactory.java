@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 
 /**
- * Created by Vedavyas Singareddy on 03-09-2014.
+ * Created by Vedavyas Singareddi on 03-09-2014.
  */
 public class RescueMeDBFactory  extends SQLiteOpenHelper{
 
@@ -54,7 +54,7 @@ public class RescueMeDBFactory  extends SQLiteOpenHelper{
     public boolean loginUser(RescueMeUserModel user){
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String sqlQuery  = RescueMeConstants.SQL_LOGIN_QUERY + user.getEmail();
+        String sqlQuery  = RescueMeConstants.SQL_LOGIN_QUERY +"\""+ user.getEmail()+"\"";
         Cursor cursor = db.rawQuery(sqlQuery,null);
 
         if(cursor.moveToFirst()){

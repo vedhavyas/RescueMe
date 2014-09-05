@@ -2,6 +2,7 @@ package org.rescueme;
 
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -20,8 +21,6 @@ public class RescueMeLogin extends Fragment {
 
     private EditText email;
     private EditText password;
-    private Button logIn;
-    private Button register;
     private SharedPreferences prefs;
 
     public RescueMeLogin() {
@@ -35,9 +34,9 @@ public class RescueMeLogin extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_rescue_me_login, container, false);
         email = (EditText) rootView.findViewById(R.id.email);
         password = (EditText) rootView.findViewById(R.id.password);
-        logIn = (Button) rootView.findViewById(R.id.logInBtn);
+        Button logIn = (Button) rootView.findViewById(R.id.logInBtn);
         ((RescueMe)getActivity()).setTitle(RescueMeConstants.LOGIN);
-        register = (Button)rootView.findViewById(R.id.loginRegisterBtn);
+        Button register = (Button) rootView.findViewById(R.id.loginRegisterBtn);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,7 +50,7 @@ public class RescueMeLogin extends Fragment {
                 new LogIn().execute(v);
             }
         });
-        prefs = getActivity().getSharedPreferences(RescueMeConstants.PREFERENCE_NAME,((RescueMe) getActivity()).MODE_PRIVATE);
+        prefs = getActivity().getSharedPreferences(RescueMeConstants.PREFERENCE_NAME, Context.MODE_PRIVATE);
         return rootView;
     }
 

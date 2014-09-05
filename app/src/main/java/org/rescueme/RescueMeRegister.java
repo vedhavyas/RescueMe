@@ -21,7 +21,6 @@ public class RescueMeRegister extends Fragment {
     private EditText email;
     private EditText password;
     private EditText phoneNumber;
-    private Button registerBtn;
 
     public RescueMeRegister() {
         // Required empty public constructor
@@ -36,7 +35,7 @@ public class RescueMeRegister extends Fragment {
         email = (EditText)rootView.findViewById(R.id.email);
         password = (EditText)rootView.findViewById(R.id.password);
         phoneNumber = (EditText)rootView.findViewById(R.id.phoneNumber);
-        registerBtn = (Button)rootView.findViewById(R.id.registerBtn);
+        Button registerBtn = (Button) rootView.findViewById(R.id.registerBtn);
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,13 +57,12 @@ public class RescueMeRegister extends Fragment {
         @Override
         protected String doInBackground(Void... params) {
             String result = isDataValid();
-            Log.i("RescueMe", "result = "+result);
             if(result.equalsIgnoreCase(RescueMeConstants.SUCCESS)){
-                Log.i("RescueMe", "after check");
+
                 RescueMeUserModel user = new RescueMeUserModel(name.getText().toString(),
                         password.getText().toString(),email.getText().toString(),
                         phoneNumber.getText().toString());
-                Log.i("RescueMe", "after user load");
+
                 RescueMeDBFactory dbFactory = new RescueMeDBFactory(getActivity().getBaseContext(),RescueMeConstants.USER_TABLE);
                 if(dbFactory.RegisterUser(user) > 0){
                     return RescueMeConstants.SUCCESS;

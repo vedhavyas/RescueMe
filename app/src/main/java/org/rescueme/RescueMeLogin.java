@@ -57,6 +57,7 @@ public class RescueMeLogin extends Fragment {
     private class LogIn extends AsyncTask<View,Void,Boolean>{
         @Override
         protected void onPreExecute() {
+            getActivity().setProgressBarIndeterminateVisibility(true);
             super.onPreExecute();
         }
 
@@ -79,6 +80,7 @@ public class RescueMeLogin extends Fragment {
 
         @Override
         protected void onPostExecute(Boolean success) {
+            getActivity().setProgressBarIndeterminateVisibility(false);
             if(success){
                 Intent intent = new Intent(getActivity().getBaseContext(),RescueMeMainView.class);
                 startActivity(intent);

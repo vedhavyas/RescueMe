@@ -51,6 +51,7 @@ public class RescueMeRegister extends Fragment {
     public class RegisterTask extends AsyncTask<Void, Void, String>{
         @Override
         protected void onPreExecute() {
+            getActivity().setProgressBarIndeterminateVisibility(true);
             super.onPreExecute();
         }
 
@@ -61,6 +62,7 @@ public class RescueMeRegister extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
+            getActivity().setProgressBarIndeterminateVisibility(false);
             if(result.equalsIgnoreCase(RescueMeConstants.SUCCESS)){
                 ((RescueMe)getActivity()).loadFragment(RescueMeConstants.LOGIN);
             }else{
@@ -71,19 +73,24 @@ public class RescueMeRegister extends Fragment {
     }
 
     private String isDataValid(){
-        if(validEmail()){
-            if(validPassword()){
-                if(validNumber()){
-                    return RescueMeConstants.SUCCESS;
+        if(!isNameEmpty()){
+            if(validEmail()){
+                if(validPassword()){
+                    if(validNumber()){
+                        return RescueMeConstants.SUCCESS;
+                    }else {
+                        return RescueMeConstants.PHONE_FAIL;
+                    }
                 }else {
-                    return RescueMeConstants.PHONE_FAIL;
+                    return RescueMeConstants.PASSWORD_FAIL;
                 }
-            }else {
-                return RescueMeConstants.PASSWORD_FAIL;
+            }else{
+                return RescueMeConstants.EMAIL_FAIL;
             }
         }else{
-            return RescueMeConstants.EMAIL_FAIL;
+            return RescueMeConstants.NAME_EMPTY;
         }
+
     }
 
     private boolean validEmail(){
@@ -99,6 +106,10 @@ public class RescueMeRegister extends Fragment {
     private boolean validNumber(){
         return phoneNumber.getText().toString().length() == RescueMeConstants.PHONE_NUMBER_LENGTH && phoneNumber.getText().toString().matches("[0-9]+");
 
+    }
+
+    private boolean isNameEmpty(){
+        return name.getText().toString().isEmpty();
     }
 
 }

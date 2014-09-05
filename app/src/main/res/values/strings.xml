@@ -12,4 +12,5 @@
     <string name="register">Register</string>
     <string name="login">LogIn</string>
     <string name="notYet">Not Registered yet ?</string>
+    <string name="refresh">Refresh</string>
 </resources>

@@ -2,20 +2,19 @@ package org.rescueme;
 
 
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
+
+
 
 public class RescueMeLogin extends Fragment {
 
@@ -23,6 +22,7 @@ public class RescueMeLogin extends Fragment {
     private EditText password;
     private Button logIn;
     private Button register;
+    private SharedPreferences prefs;
 
     public RescueMeLogin() {
         // Required empty public constructor
@@ -51,10 +51,11 @@ public class RescueMeLogin extends Fragment {
                 new LogIn().execute(v);
             }
         });
+        prefs = getActivity().getSharedPreferences(RescueMeConstants.PREFERENCE_NAME,((RescueMe) getActivity()).MODE_PRIVATE);
         return rootView;
     }
 
-    private class LogIn extends AsyncTask<View,Void,Boolean>{
+    private class LogIn extends AsyncTask<View,Void,String>{
         @Override
         protected void onPreExecute() {
             getActivity().setProgressBarIndeterminateVisibility(true);
@@ -62,30 +63,33 @@ public class RescueMeLogin extends Fragment {
         }
 
         @Override
-        protected Boolean doInBackground(View... params) {
-
-            try {
-                if(isDataValid()){
-                    Thread.sleep(100);
-                    return true;
+        protected String doInBackground(View... params) {
+            if(isEmailValid()){
+                if(!isPasswordEmpty()){
+                    RescueMeUserModel user = new RescueMeUserModel(email.getText().toString(),password.getText().toString());
+                    RescueMeDBFactory dbFactory = new RescueMeDBFactory(getActivity().getBaseContext(),RescueMeConstants.USER_TABLE);
+                    if(dbFactory.loginUser(user)){
+                        return RescueMeConstants.SUCCESS;
+                    }else{
+                        return RescueMeConstants.LOGIN_FAIL;
+                    }
                 }else{
-                    return false;
+                    return RescueMeConstants.PASSWORD_FAIL;
                 }
-            } catch (InterruptedException e) {
-                //just for a testing
+            }else{
+                return RescueMeConstants.EMAIL_FAIL;
             }
-
-            return false;
         }
 
         @Override
-        protected void onPostExecute(Boolean success) {
+        protected void onPostExecute(String result) {
             getActivity().setProgressBarIndeterminateVisibility(false);
-            if(success){
+            if(result.equalsIgnoreCase(RescueMeConstants.SUCCESS)){
+                prefs.edit().putBoolean(RescueMeConstants.LOGIN,true).apply();
                 Intent intent = new Intent(getActivity().getBaseContext(),RescueMeMainView.class);
                 startActivity(intent);
             }else{
-                Toast.makeText(getActivity().getBaseContext(),RescueMeConstants.EMAIL_FAIL,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getBaseContext(),result,Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -94,7 +98,10 @@ public class RescueMeLogin extends Fragment {
         ((RescueMe)getActivity()).loadFragment(RescueMeConstants.REGISTER);
     }
 
-    private boolean isDataValid(){
+    private boolean isEmailValid(){
         return email.getText().toString().contains("@");
     }
+
+    private boolean isPasswordEmpty() { return password.getText().toString().isEmpty(); }
+
 }

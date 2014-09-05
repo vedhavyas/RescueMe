@@ -5,12 +5,12 @@ package org.rescueme;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -57,7 +57,23 @@ public class RescueMeRegister extends Fragment {
 
         @Override
         protected String doInBackground(Void... params) {
-            return isDataValid();
+            String result = isDataValid();
+            Log.i("RescueMe", "result = "+result);
+            if(result.equalsIgnoreCase(RescueMeConstants.SUCCESS)){
+                Log.i("RescueMe", "after check");
+                RescueMeUserModel user = new RescueMeUserModel(name.getText().toString(),
+                        password.getText().toString(),email.getText().toString(),
+                        phoneNumber.getText().toString());
+                Log.i("RescueMe", "after user load");
+                RescueMeDBFactory dbFactory = new RescueMeDBFactory(getActivity().getBaseContext(),RescueMeConstants.USER_TABLE);
+                if(dbFactory.RegisterUser(user) > 0){
+                    return RescueMeConstants.SUCCESS;
+                }else{
+                    return RescueMeConstants.FAILED;
+                }
+            }else{
+                return result;
+            }
         }
 
         @Override

@@ -27,6 +27,9 @@ public class RescueMe extends Activity {
         isLoggedIn = pref.getBoolean(RescueMeConstants.LOGIN,false);
         if(isLoggedIn){
             Intent intent = new Intent(this,RescueMeMainView.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
         }else {
             loadFragment(RescueMeConstants.LOGIN);

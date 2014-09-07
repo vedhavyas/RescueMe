@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">RescueMe</string>
+    <string name="app_name">Rescue Me</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_rescue_me_main_view">RescueMeMainView</string>
@@ -13,4 +13,9 @@
     <string name="login">LogIn</string>
     <string name="notYet">Not Registered yet ?</string>
     <string name="refresh">Refresh</string>
+    <string name="logout">Logout</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
 </resources>

@@ -10,21 +10,28 @@
         <activity
             android:name=".RescueMe"
             android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".RescueMeMainView"
+            android:label="@string/title_activity_rescue_me_main_view"
+            android:parentActivityName=".RescueMe"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.rescueme.RescueMe" />
+        </activity>
+        <activity
+            android:name=".SplashScreen"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:theme="@style/FullscreenTheme"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".RescueMeMainView"
-            android:label="@string/title_activity_rescue_me_main_view"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".RescueMe" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.rescueme.RescueMe" />
         </activity>
     </application>
 

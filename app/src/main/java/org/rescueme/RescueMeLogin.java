@@ -86,6 +86,9 @@ public class RescueMeLogin extends Fragment {
             if(result.equalsIgnoreCase(RescueMeConstants.SUCCESS)){
                 prefs.edit().putBoolean(RescueMeConstants.LOGIN,true).apply();
                 Intent intent = new Intent(getActivity().getBaseContext(),RescueMeMainView.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
             }else{
                 Toast.makeText(getActivity().getBaseContext(),result,Toast.LENGTH_SHORT).show();

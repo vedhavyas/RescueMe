@@ -11,6 +11,8 @@ public class RescueMeConstants {
     public static final String[] TABS = {"Rescue Me", "Profile", "Settings"};
     public static final String RESCUE_ME_MAIN = "Rescue Me";
     public static final String RESCUE_ME = "Rescue Me";
+    public static final String LOGOUT_SUCCESS = "Logout Successful";
+    public static final int SPLASH_SCREEN_TIMEOUT = 2000;
 
 
     //Registration constants

@@ -5,17 +5,23 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 public class RescueMeMainView extends Activity implements ActionBar.TabListener {
 
     private ActionBar actionBar;
     private ViewPager viewPager;
+    private SharedPreferences prefs;
+    private Context context;
 
 
     @Override
@@ -23,9 +29,11 @@ public class RescueMeMainView extends Activity implements ActionBar.TabListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rescue_me_main_view);
 
+        prefs = getSharedPreferences(RescueMeConstants.PREFERENCE_NAME, Context.MODE_PRIVATE);
         viewPager = (ViewPager) findViewById(R.id.pager);
         actionBar = getActionBar();
         actionBar.setTitle(RescueMeConstants.RESCUE_ME_MAIN);
+        context = getBaseContext();
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
 
         viewPager.setAdapter(sectionsPagerAdapter);
@@ -61,7 +69,7 @@ public class RescueMeMainView extends Activity implements ActionBar.TabListener 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.rescue_me, menu);
+        getMenuInflater().inflate(R.menu.rescue_me_main_view, menu);
         return true;
     }
 
@@ -73,8 +81,20 @@ public class RescueMeMainView extends Activity implements ActionBar.TabListener 
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
+        }else if(id == R.id.action_logout){
+           logoutUser();
+            Toast.makeText(context,RescueMeConstants.LOGOUT_SUCCESS,Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logoutUser() {
+        prefs.edit().putBoolean(RescueMeConstants.LOGIN,false).apply();
+        Intent intent = new Intent(this,RescueMe.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
     }
 
     @Override

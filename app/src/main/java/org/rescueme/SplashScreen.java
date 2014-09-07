@@ -1,11 +1,11 @@
 package org.rescueme;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-
-
+import android.view.View;
 
 
 public class SplashScreen extends Activity {
@@ -15,6 +15,14 @@ public class SplashScreen extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //hide notifications bar
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+
+        //hide action bar
+        ActionBar actionBar = getActionBar();
+        actionBar.hide();
         setContentView(R.layout.activity_splash_screen);
 
         new Handler().postDelayed(new Runnable() {

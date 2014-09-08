@@ -79,9 +79,7 @@ public class RescueMeMainView extends Activity implements ActionBar.TabListener 
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }else if(id == R.id.action_logout){
+        if(id == R.id.action_logout){
            logoutUser();
             Toast.makeText(context,RescueMeConstants.LOGOUT_SUCCESS,Toast.LENGTH_SHORT).show();
         }
@@ -131,6 +129,8 @@ public class RescueMeMainView extends Activity implements ActionBar.TabListener 
                 case 1:
                     return new RescueMeProfile();
                 case 2:
+                    return new RescueMeCircles();
+                case 3:
                     return new RescueMeSettings();
             }
 
@@ -140,7 +140,7 @@ public class RescueMeMainView extends Activity implements ActionBar.TabListener 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return RescueMeConstants.NO_OF_TABS;
         }
     }
 

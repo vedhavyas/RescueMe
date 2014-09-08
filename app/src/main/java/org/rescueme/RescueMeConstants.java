@@ -8,7 +8,8 @@ public class RescueMeConstants {
     public static final String PREFERENCE_NAME = "RescueMe";
     public static final String LOGIN = "Log In";
     public static final String REGISTER = "Registration";
-    public static final String[] TABS = {"Rescue Me", "Profile", "Settings"};
+    public static final String[] TABS = {"Rescue Me", "Profile", "Circles", "Settings"};
+    public static final int NO_OF_TABS = TABS.length;
     public static final String RESCUE_ME_MAIN = "Rescue Me";
     public static final String RESCUE_ME = "Rescue Me";
     public static final String LOGOUT_SUCCESS = "Logout Successful";

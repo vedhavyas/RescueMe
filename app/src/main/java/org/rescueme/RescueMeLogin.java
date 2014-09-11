@@ -13,8 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.sromku.simple.fb.Permission;
+import com.sromku.simple.fb.SimpleFacebook;
+import com.sromku.simple.fb.listeners.OnLoginListener;
 
 
 public class RescueMeLogin extends Fragment {
@@ -22,6 +26,12 @@ public class RescueMeLogin extends Fragment {
     private EditText email;
     private EditText password;
     private SharedPreferences prefs;
+    private Button logInBtn;
+    private Button register;
+    private ImageButton fbLogInBtn;
+    private SimpleFacebook simpleFacebook;
+    private OnLoginListener fbLoginListener;
+    private Context context;
 
     public RescueMeLogin() {
         // Required empty public constructor
@@ -29,29 +39,64 @@ public class RescueMeLogin extends Fragment {
 
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        simpleFacebook = SimpleFacebook.getInstance(getActivity());
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_rescue_me_login, container, false);
+
+        //initialize variables
         email = (EditText) rootView.findViewById(R.id.email);
         password = (EditText) rootView.findViewById(R.id.password);
-        Button logIn = (Button) rootView.findViewById(R.id.logInBtn);
+        logInBtn = (Button) rootView.findViewById(R.id.logInBtn);
+        fbLogInBtn = (ImageButton)rootView.findViewById(R.id.fbLoginBtn);
+        register = (Button) rootView.findViewById(R.id.loginRegisterBtn);
+        context = rootView.getContext();
+
+        //initialize functions
         ((RescueMe)getActivity()).setTitle(RescueMeConstants.LOGIN);
-        Button register = (Button) rootView.findViewById(R.id.loginRegisterBtn);
+        setFbLoginListener();
+
+        //set onClickListners
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registrationFragment();
+                loadRegistrationFragment();
             }
         });
-
-        logIn.setOnClickListener(new View.OnClickListener() {
+        logInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new LogIn().execute(v);
             }
         });
-        prefs = getActivity().getSharedPreferences(RescueMeConstants.PREFERENCE_NAME, Context.MODE_PRIVATE);
+        fbLogInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                simpleFacebook.login(fbLoginListener);
+            }
+        });
+
+        prefs = getActivity().getSharedPreferences(RescueMeConstants.PREFERENCE_NAME
+                , Context.MODE_PRIVATE);
+
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        simpleFacebook = SimpleFacebook.getInstance(getActivity());
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        simpleFacebook.onActivityResult(getActivity(), requestCode, resultCode, data);
     }
 
     private class LogIn extends AsyncTask<View,Void,String>{
@@ -65,8 +110,10 @@ public class RescueMeLogin extends Fragment {
         protected String doInBackground(View... params) {
             if(isEmailValid()){
                 if(!isPasswordEmpty()){
-                    RescueMeUserModel user = new RescueMeUserModel(email.getText().toString(),password.getText().toString());
-                    RescueMeDBFactory dbFactory = new RescueMeDBFactory(getActivity().getBaseContext(),RescueMeConstants.USER_TABLE);
+                    RescueMeUserModel user = new RescueMeUserModel(email.getText().toString()
+                            ,password.getText().toString());
+                    RescueMeDBFactory dbFactory = new RescueMeDBFactory(getActivity().getBaseContext()
+                            ,RescueMeConstants.USER_TABLE);
                     if(dbFactory.loginUser(user)){
                         return RescueMeConstants.SUCCESS;
                     }else{
@@ -84,20 +131,26 @@ public class RescueMeLogin extends Fragment {
         protected void onPostExecute(String result) {
             getActivity().setProgressBarIndeterminateVisibility(false);
             if(result.equalsIgnoreCase(RescueMeConstants.SUCCESS)){
+                Toast.makeText(context,RescueMeConstants.LOGIN_SUCCESS,Toast
+                        .LENGTH_SHORT).show();
                 prefs.edit().putBoolean(RescueMeConstants.LOGIN,true).apply();
-                Intent intent = new Intent(getActivity().getBaseContext(),RescueMeMainView.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
+                loadAuthenticatedActivity();
             }else{
-                Toast.makeText(getActivity().getBaseContext(),result,Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private void registrationFragment(){
+    private void loadRegistrationFragment(){
         ((RescueMe)getActivity()).loadFragment(RescueMeConstants.REGISTER);
+    }
+
+    private void loadAuthenticatedActivity(){
+        Intent intent = new Intent(context,RescueMeTabViewer.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
     }
 
     private boolean isEmailValid(){
@@ -105,5 +158,38 @@ public class RescueMeLogin extends Fragment {
     }
 
     private boolean isPasswordEmpty() { return password.getText().toString().isEmpty(); }
+
+    private void setFbLoginListener(){
+        fbLoginListener = new OnLoginListener() {
+            @Override
+            public void onLogin() {
+                Toast.makeText(context,RescueMeConstants.FB_LOGIN_SUCCESS,Toast.LENGTH_SHORT)
+                        .show();
+                loadAuthenticatedActivity();
+            }
+
+            @Override
+            public void onNotAcceptingPermissions(Permission.Type type) {
+                Toast.makeText(context,RescueMeConstants.FB_NOT_ACCEPT_PERMISSIONS,Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+            @Override
+            public void onThinking() {
+
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                Toast.makeText(context,RescueMeConstants.FB_EXCEPTION_LOGIN,Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+            @Override
+            public void onFail(String s) {
+                Toast.makeText(context,s,Toast.LENGTH_SHORT).show();
+            }
+        };
+    }
 
 }

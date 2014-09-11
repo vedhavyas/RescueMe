@@ -15,26 +15,33 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.sromku.simple.fb.SimpleFacebook;
+import com.sromku.simple.fb.listeners.OnLogoutListener;
 
-public class RescueMeMainView extends Activity implements ActionBar.TabListener {
+
+public class RescueMeTabViewer extends Activity implements ActionBar.TabListener {
 
     private ActionBar actionBar;
     private ViewPager viewPager;
     private SharedPreferences prefs;
     private Context context;
+    private SimpleFacebook simpleFacebook;
+    private OnLogoutListener fbLogoutListener;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rescue_me_main_view);
+        simpleFacebook = SimpleFacebook.getInstance(this);
+        setContentView(R.layout.activity_rescue_me_tab_viewer);
 
         prefs = getSharedPreferences(RescueMeConstants.PREFERENCE_NAME, Context.MODE_PRIVATE);
         viewPager = (ViewPager) findViewById(R.id.pager);
         actionBar = getActionBar();
         actionBar.setTitle(RescueMeConstants.RESCUE_ME_MAIN);
         context = getBaseContext();
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+        RescueMeTabAdapter sectionsPagerAdapter = new RescueMeTabAdapter(getFragmentManager());
+        setFbLogoutListener();
 
         viewPager.setAdapter(sectionsPagerAdapter);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -86,8 +93,23 @@ public class RescueMeMainView extends Activity implements ActionBar.TabListener 
         return super.onOptionsItemSelected(item);
     }
 
-    private void logoutUser() {
-        prefs.edit().putBoolean(RescueMeConstants.LOGIN,false).apply();
+
+    private void logoutUser(){
+        if(prefs.getBoolean(RescueMeConstants.LOGIN,false) && !simpleFacebook.isLogin()){
+            prefs.edit().putBoolean(RescueMeConstants.LOGIN,false).apply();
+        }else if(prefs.getBoolean(RescueMeConstants.LOGIN,false) && simpleFacebook.isLogin()){
+            prefs.edit().putBoolean(RescueMeConstants.LOGIN,false).apply();
+            simpleFacebook.logout(fbLogoutListener);
+        }else if(!prefs.getBoolean(RescueMeConstants.LOGIN,false) && simpleFacebook.isLogin()){
+            simpleFacebook.logout(fbLogoutListener);
+        }
+        Toast.makeText(context,RescueMeConstants.LOGOUT_SUCCESS,Toast.LENGTH_SHORT).show();
+        startMainActivity();
+    }
+
+
+
+    private void startMainActivity(){
         Intent intent = new Intent(this,RescueMe.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -111,37 +133,39 @@ public class RescueMeMainView extends Activity implements ActionBar.TabListener 
     }
 
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            //return PlaceholderFragment.newInstance(position + 1);
-            switch(position){
-                case 0:
-                    return new RescueMeMain();
-                case 1:
-                    return new RescueMeProfile();
-                case 2:
-                    return new RescueMeCircles();
-                case 3:
-                    return new RescueMeSettings();
-            }
-
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return RescueMeConstants.NO_OF_TABS;
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        simpleFacebook = SimpleFacebook.getInstance(this);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        simpleFacebook.onActivityResult(this,requestCode,resultCode,data);
+    }
+
+    private void setFbLogoutListener(){
+        fbLogoutListener = new OnLogoutListener() {
+            @Override
+            public void onLogout() {
+
+            }
+
+            @Override
+            public void onThinking() {
+
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onFail(String s) {
+
+            }
+        };
+    }
 }

@@ -8,7 +8,7 @@ import android.os.Handler;
 import android.view.View;
 
 
-public class SplashScreen extends Activity {
+public class RescueMeSplashScreen extends Activity {
     // Splash screen timer
     private static int SPLASH_TIME_OUT = RescueMeConstants.SPLASH_SCREEN_TIMEOUT;
 
@@ -23,7 +23,7 @@ public class SplashScreen extends Activity {
         //hide action bar
         ActionBar actionBar = getActionBar();
         actionBar.hide();
-        setContentView(R.layout.activity_splash_screen);
+        setContentView(R.layout.activity_rescue_me_splash_screen);
 
         new Handler().postDelayed(new Runnable() {
 
@@ -31,7 +31,7 @@ public class SplashScreen extends Activity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent intent = new Intent(SplashScreen.this, RescueMe.class);
+                Intent intent = new Intent(RescueMeSplashScreen.this, RescueMe.class);
                 startActivity(intent);
 
                 // close this activity

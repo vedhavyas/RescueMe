@@ -8,10 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class RescueMeMain extends Fragment {
+public class RescueMePanic extends Fragment {
 
 
-    public RescueMeMain() {
+    public RescueMePanic() {
         // Required empty public constructor
     }
 
@@ -19,7 +19,7 @@ public class RescueMeMain extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_rescue_me_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_rescue_me_panic, container, false);
         return rootView;
     }
 

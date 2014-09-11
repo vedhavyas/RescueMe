@@ -15,6 +15,8 @@ public class RescueMeConstants {
     public static final String LOGOUT_SUCCESS = "Logout Successful";
     public static final int SPLASH_SCREEN_TIMEOUT = 2000;
 
+    //Login constants
+    public static final String LOGIN_SUCCESS = "Login Successful";
 
     //Registration constants
     public static final String SUCCESS = "success";
@@ -29,16 +31,26 @@ public class RescueMeConstants {
     //Database related constants
     public static final String DB_NAME = "rescueme.db";
     public static final String USER_TABLE = "user_details";
-    public static final String SQL_USER_TABLE_CREATE_QUERY = "CREATE TABLE "+USER_TABLE+" ( ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                                       "Name TEXT," +
-                                                                       "Password TEXT," +
-                                                                       "Email TEXT," +
-                                                                       "Number INTEGER)";
+    public static final String SQL_USER_TABLE_CREATE_QUERY = "CREATE TABLE "+USER_TABLE
+                                                    +" ( ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+                                                    +"Name TEXT,"
+                                                    +"Password TEXT,"
+                                                    +"Email TEXT,"
+                                                    +"Number INTEGER)";
     public static final String DROP_TABLE = "DROP TABLE IF EXISTS ? ";
     public static final String COLUMN_NAME = "Name";
     public static final String COLUMN_PASSWORD = "Password";
     public static final String COLUMN_EMAIL = "Email";
     public static final String COLUMN_NUMBER = "Number";
-    public static final String SQL_LOGIN_QUERY = "SELECT "+COLUMN_PASSWORD+" FROM "+USER_TABLE+" WHERE "+COLUMN_EMAIL+" = ";
+    public static final String SQL_LOGIN_QUERY = "SELECT "+COLUMN_PASSWORD+" FROM "
+                                                    +USER_TABLE+" WHERE "
+                                                    +COLUMN_EMAIL+" = ";
     public static final String LOGIN_FAIL = "Login failed!!";
+
+    //Facebook related constants
+    public static final String FB_APP_ID = "710855998982153";
+    public static final String FB_APP_NAME_SPACE = "test_login_ved";
+    public static final String FB_LOGIN_SUCCESS = "Connected to Facebook";
+    public static final String FB_NOT_ACCEPT_PERMISSIONS = "You did not Accept Permissions";
+    public static final String FB_EXCEPTION_LOGIN = "Exception occurred during LogIn";
 }

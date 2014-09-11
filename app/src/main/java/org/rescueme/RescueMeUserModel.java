@@ -27,6 +27,12 @@ public class RescueMeUserModel {
         this.hashPassword = getHash(password);
     }
 
+    public RescueMeUserModel(String name, String email, String number){
+        this.name = name;
+        this.email = email;
+        this.number = number;
+    }
+
     public String getId() {
         return id;
     }
@@ -74,12 +80,13 @@ public class RescueMeUserModel {
 
     private static String convertToHex(byte[] data){
         StringBuilder sb = new StringBuilder();
-        String hex;
-
-        hex= Base64.encodeToString(data, 0, data.length, Base64.DEFAULT);
-
+        String hex= Base64.encodeToString(data, 0, data.length, Base64.DEFAULT);
         sb.append(hex);
-
         return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }

@@ -6,4 +6,11 @@
         android:title="@string/logout"
         android:orderInCategory="100"
         android:showAsAction="never" />
+
+    <item android:id="@+id/add_circle_contact"
+        android:title="@string/action_add_circle_contact"
+        android:icon="@drawable/ic_action_new"
+        android:showAsAction="always"
+        android:visible="false"/>
+
 </menu>

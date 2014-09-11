@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Vedavyas Singareddi on 03-09-2014.
  */
@@ -21,22 +24,18 @@ public class RescueMeDBFactory  extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = null;
-        if(table_name.equalsIgnoreCase(RescueMeConstants.USER_TABLE)) {
-            sql = RescueMeConstants.SQL_USER_TABLE_CREATE_QUERY;
-        }
-        db.execSQL(sql);
+        db.execSQL(RescueMeConstants.SQL_USER_TABLE_CREATE_QUERY);
+        db.execSQL(RescueMeConstants.SQL_CIRCLE_TABLE_QUERY);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        SQLiteStatement stmt = db.compileStatement(RescueMeConstants.DROP_TABLE);
-        stmt.bindString(1, table_name);
-        stmt.execute();
+        db.execSQL(RescueMeConstants.DROP_TABLE+RescueMeConstants.CONTACTS_TABLE);
+        db.execSQL(RescueMeConstants.DROP_TABLE+RescueMeConstants.USER_TABLE);
         onCreate(db);
     }
 
-    public long RegisterUser(RescueMeUserModel user){
+    public long registerUser(RescueMeUserModel user){
         long result;
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -65,6 +64,81 @@ public class RescueMeDBFactory  extends SQLiteOpenHelper{
         }
         db.close();
         return false;
+    }
+
+    public long addCircleContact(RescueMeUserModel contact){
+
+        SQLiteDatabase db =this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(RescueMeConstants.COLUMN_NAME, contact.getName());
+        contentValues.put(RescueMeConstants.COLUMN_EMAIL, contact.getEmail());
+        contentValues.put(RescueMeConstants.COLUMN_NUMBER, contact.getNumber());
+
+        long result = db.insert(table_name,null,contentValues);
+
+        db.close();
+        return result;
+    }
+
+    public long updateCircleContact(RescueMeUserModel contact){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(RescueMeConstants.COLUMN_NAME, contact.getName());
+        contentValues.put(RescueMeConstants.COLUMN_EMAIL, contact.getEmail());
+        contentValues.put(RescueMeConstants.COLUMN_NUMBER, contact.getNumber());
+
+        long result = db.update(table_name,contentValues,RescueMeConstants.COLUMN_ID+" = ?", new String[]{contact.getId()});
+
+        db.close();
+        return result;
+    }
+
+    public RescueMeUserModel getContact(String id){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sqlQuery = "SELECT * FROM "+table_name+" WHERE "+RescueMeConstants.COLUMN_ID
+                            +" = "+id;
+        Cursor cursor = db.rawQuery(sqlQuery,null);
+
+        if(cursor.moveToFirst()){
+            RescueMeUserModel contact = new RescueMeUserModel();
+            do{
+                contact.setId(String.valueOf(cursor.getInt(cursor.getColumnIndex(RescueMeConstants.COLUMN_ID))));
+                contact.setName(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_NAME)));
+                contact.setEmail(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_EMAIL)));
+                contact.setNumber(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_NUMBER)));
+            }while(cursor.moveToNext());
+
+            db.close();
+            return contact;
+        }
+
+        return null;
+    }
+
+    public List<RescueMeUserModel> getAllContacts(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<RescueMeUserModel> contacts = new ArrayList<RescueMeUserModel>();
+
+        String sqlQuery = RescueMeConstants.SQL_SELECT_ALL_QUERY+table_name;
+        Cursor cursor = db.rawQuery(sqlQuery,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                RescueMeUserModel contact = new RescueMeUserModel();
+                contact.setId(String.valueOf(cursor.getInt(cursor.getColumnIndex(RescueMeConstants.COLUMN_ID))));
+                contact.setName(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_NAME)));
+                contact.setEmail(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_EMAIL)));
+                contact.setNumber(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_NUMBER)));
+                contacts.add(contact);
+            }while(cursor.moveToNext());
+
+            return contacts;
+        }
+
+        return null;
     }
 }
 

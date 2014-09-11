@@ -4,6 +4,7 @@
     <string name="app_name">Rescue Me</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_add_circle_contact">Add Contact</string>
     <string name="title_activity_rescue_me_main_view">RescueMeMainView</string>
     <string name="email">Email</string>
     <string name="name_hint">Name</string>

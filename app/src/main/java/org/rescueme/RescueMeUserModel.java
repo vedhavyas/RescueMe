@@ -15,6 +15,10 @@ public class RescueMeUserModel {
     private String email;
     private String number;
 
+    public RescueMeUserModel(){
+       //empty constructor
+    }
+
     public RescueMeUserModel(String name, String password,String email, String number){
         this.name = name;
         this.hashPassword = getHash(password);
@@ -35,6 +39,10 @@ public class RescueMeUserModel {
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

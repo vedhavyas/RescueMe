@@ -31,13 +31,20 @@ public class RescueMeConstants {
     //Database related constants
     public static final String DB_NAME = "rescueme.db";
     public static final String USER_TABLE = "user_details";
+    public static final String CONTACTS_TABLE = "contacts_details";
+    public static final String SQL_CIRCLE_TABLE_QUERY = "CREATE TABLE "+CONTACTS_TABLE
+                                                    +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+                                                    +"Name TEXT,"
+                                                    +"Email TEXT,"
+                                                    +"Number TEXT)";
     public static final String SQL_USER_TABLE_CREATE_QUERY = "CREATE TABLE "+USER_TABLE
                                                     +" ( ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                                                     +"Name TEXT,"
                                                     +"Password TEXT,"
                                                     +"Email TEXT,"
-                                                    +"Number INTEGER)";
-    public static final String DROP_TABLE = "DROP TABLE IF EXISTS ? ";
+                                                    +"Number TEXT)";
+    public static final String DROP_TABLE = "DROP TABLE IF EXISTS  ";
+    public static final String COLUMN_ID = "ID";
     public static final String COLUMN_NAME = "Name";
     public static final String COLUMN_PASSWORD = "Password";
     public static final String COLUMN_EMAIL = "Email";
@@ -45,6 +52,7 @@ public class RescueMeConstants {
     public static final String SQL_LOGIN_QUERY = "SELECT "+COLUMN_PASSWORD+" FROM "
                                                     +USER_TABLE+" WHERE "
                                                     +COLUMN_EMAIL+" = ";
+    public static final String SQL_SELECT_ALL_QUERY = "SELECT * FROM ";
     public static final String LOGIN_FAIL = "Login failed!!";
 
     //Facebook related constants

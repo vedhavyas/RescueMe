@@ -25,7 +25,7 @@ public class RescueMeTabAdapter extends FragmentPagerAdapter {
             case 1:
                 return new RescueMeProfile();
             case 2:
-                return new RescueMeCircles();
+                return new RescueMeContacts();
             case 3:
                 return new RescueMeSettings();
         }

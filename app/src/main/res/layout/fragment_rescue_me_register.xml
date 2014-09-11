@@ -60,7 +60,7 @@
 
         android:layout_width="108dp"
         android:layout_height="49dp"
-        android:background="@drawable/buttonshape_login"
+        android:background="@drawable/button_large_selector"
         android:shadowColor="#A8A8A8"
         android:shadowDx="0"
         android:shadowDy="0"

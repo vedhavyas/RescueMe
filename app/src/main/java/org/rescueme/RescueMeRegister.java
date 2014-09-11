@@ -64,7 +64,7 @@ public class RescueMeRegister extends Fragment {
                         phoneNumber.getText().toString());
 
                 RescueMeDBFactory dbFactory = new RescueMeDBFactory(getActivity().getBaseContext(),RescueMeConstants.USER_TABLE);
-                if(dbFactory.RegisterUser(user) > 0){
+                if(dbFactory.registerUser(user) > 0){
                     return RescueMeConstants.SUCCESS;
                 }else{
                     return RescueMeConstants.FAILED;

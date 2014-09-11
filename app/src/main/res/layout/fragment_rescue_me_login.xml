@@ -27,7 +27,7 @@
 
         android:layout_width="108dp"
         android:layout_height="49dp"
-        android:background="@drawable/buttonshape_login"
+        android:background="@drawable/button_large_selector"
         android:shadowColor="#A8A8A8"
         android:shadowDx="0"
         android:shadowDy="0"
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/notYet"
-        android:id="@+id/textView"
+        android:id="@+id/nameView"
         android:layout_marginTop="64dp"
         android:layout_below="@+id/logInBtn"
         android:layout_alignParentLeft="true"
@@ -73,14 +73,14 @@
 
         android:layout_width="100dp"
         android:layout_height="37dp"
-        android:background="@drawable/buttonshape_register"
+        android:background="@drawable/button_small_selector"
         android:shadowColor="#A8A8A8"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:layout_toEndOf="@+id/textView"
-        android:layout_alignBottom="@+id/textView"
-        android:layout_toRightOf="@+id/textView"
+        android:layout_toEndOf="@+id/nameView"
+        android:layout_alignBottom="@+id/nameView"
+        android:layout_toRightOf="@+id/nameView"
         android:layout_marginLeft="34dp" />
 
     <ImageButton
@@ -89,7 +89,7 @@
         android:id="@+id/fbLoginBtn"
         android:src="@drawable/fb_login_btn_selector"
         android:background="@null"
-        android:layout_toEndOf="@+id/textView"
+        android:layout_toEndOf="@+id/nameView"
         android:layout_marginTop="26dp"
         android:layout_below="@+id/loginRegisterBtn"
         android:layout_alignLeft="@+id/loginRegisterBtn"
@@ -105,7 +105,7 @@
         android:id="@+id/textView2"
         android:layout_toStartOf="@+id/loginRegisterBtn"
         android:layout_alignBottom="@+id/fbLoginBtn"
-        android:layout_alignRight="@+id/textView"
-        android:layout_alignEnd="@+id/textView" />
+        android:layout_alignRight="@+id/nameView"
+        android:layout_alignEnd="@+id/nameView" />
 
 </RelativeLayout>

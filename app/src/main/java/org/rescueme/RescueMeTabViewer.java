@@ -1,14 +1,11 @@
 package org.rescueme;
 
-import android.app.Activity;
 import android.app.ActionBar;
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
@@ -39,12 +36,15 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
         viewPager = (ViewPager) findViewById(R.id.pager);
         actionBar = getActionBar();
         actionBar.setTitle(RescueMeConstants.RESCUE_ME_MAIN);
+
         context = getBaseContext();
         RescueMeTabAdapter sectionsPagerAdapter = new RescueMeTabAdapter(getFragmentManager());
         setFbLogoutListener();
+        int selectTab = getIntent().getIntExtra(RescueMeConstants.SELECT_TAG, 0);
 
         viewPager.setAdapter(sectionsPagerAdapter);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
 
         for(String tab_name : RescueMeConstants.TABS){
             actionBar.addTab(actionBar.newTab().setText(tab_name).setTabListener(this));
@@ -60,8 +60,6 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
 
             @Override
             public void onPageSelected(int position) {
-                // on changing the page
-                // make respected tab selected
                 actionBar.setSelectedNavigationItem(position);
             }
 
@@ -70,6 +68,8 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
 
             }
         });
+
+        viewPager.setCurrentItem(selectTab);
     }
 
 

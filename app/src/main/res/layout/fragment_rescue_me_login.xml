@@ -2,110 +2,108 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.rescueme.RescueMeLogin"
-    android:background="#ff9ecb5d">
-
-    <!-- TODO: Update blank fragment layout -->
+    android:background="#ff9ecb5d"
+    tools:context="org.rescueme.RescueMeLogin">
 
     <EditText
+        android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/email"
-        android:layout_marginTop="68dp"
-        android:hint="@string/email"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="68dp"
+        android:ems="10"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress" />
 
     <Button
         android:id="@+id/logInBtn"
 
-        android:text="@string/login"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-
         android:layout_width="108dp"
         android:layout_height="49dp"
+        android:layout_alignEnd="@+id/password"
+
+        android:layout_alignLeft="@+id/password"
+        android:layout_alignRight="@+id/password"
+        android:layout_alignStart="@+id/password"
+        android:layout_below="@+id/password"
+        android:layout_marginTop="67dp"
+        android:layout_toStartOf="@+id/loginRegisterBtn"
         android:background="@drawable/button_large_selector"
         android:shadowColor="#A8A8A8"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:layout_toStartOf="@+id/loginRegisterBtn"
-        android:layout_marginTop="67dp"
-        android:layout_below="@+id/password"
-        android:layout_alignLeft="@+id/password"
-        android:layout_alignStart="@+id/password"
-        android:layout_alignRight="@+id/password"
-        android:layout_alignEnd="@+id/password" />
+        android:text="@string/login"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp" />
 
     <EditText
+        android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/password"
-        android:hint="@string/password"
-        android:layout_marginTop="54dp"
-        android:layout_below="@+id/email"
         android:layout_alignLeft="@+id/email"
-        android:layout_alignStart="@+id/email" />
+        android:layout_alignStart="@+id/email"
+        android:layout_below="@+id/email"
+        android:layout_marginTop="54dp"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword" />
 
     <TextView
+        android:id="@+id/nameView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/notYet"
-        android:id="@+id/nameView"
-        android:layout_marginTop="64dp"
-        android:layout_below="@+id/logInBtn"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="27dp" />
+        android:layout_below="@+id/logInBtn"
+        android:layout_marginLeft="27dp"
+        android:layout_marginTop="64dp"
+        android:text="@string/notYet"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
         android:id="@+id/loginRegisterBtn"
 
-        android:text="@string/register"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-
         android:layout_width="100dp"
         android:layout_height="37dp"
+        android:layout_alignBottom="@+id/nameView"
+
+        android:layout_marginLeft="34dp"
+        android:layout_toEndOf="@+id/nameView"
+        android:layout_toRightOf="@+id/nameView"
         android:background="@drawable/button_small_selector"
         android:shadowColor="#A8A8A8"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:layout_toEndOf="@+id/nameView"
-        android:layout_alignBottom="@+id/nameView"
-        android:layout_toRightOf="@+id/nameView"
-        android:layout_marginLeft="34dp" />
+        android:text="@string/register"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
 
     <ImageButton
+        android:id="@+id/fbLoginBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/fbLoginBtn"
-        android:src="@drawable/fb_login_btn_selector"
-        android:background="@null"
-        android:layout_toEndOf="@+id/nameView"
-        android:layout_marginTop="26dp"
-        android:layout_below="@+id/loginRegisterBtn"
+        android:layout_alignEnd="@+id/loginRegisterBtn"
         android:layout_alignLeft="@+id/loginRegisterBtn"
-        android:layout_alignStart="@+id/loginRegisterBtn"
         android:layout_alignRight="@+id/loginRegisterBtn"
-        android:layout_alignEnd="@+id/loginRegisterBtn" />
+        android:layout_alignStart="@+id/loginRegisterBtn"
+        android:layout_below="@+id/loginRegisterBtn"
+        android:layout_marginTop="26dp"
+        android:layout_toEndOf="@+id/nameView"
+        android:background="@null"
+        android:src="@drawable/fb_login_btn_selector" />
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/or"
-        android:id="@+id/textView2"
-        android:layout_toStartOf="@+id/loginRegisterBtn"
         android:layout_alignBottom="@+id/fbLoginBtn"
+        android:layout_alignEnd="@+id/nameView"
         android:layout_alignRight="@+id/nameView"
-        android:layout_alignEnd="@+id/nameView" />
+        android:layout_toStartOf="@+id/loginRegisterBtn"
+        android:text="@string/or"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

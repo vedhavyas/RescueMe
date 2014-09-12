@@ -1,7 +1,6 @@
 package org.rescueme;
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -38,6 +37,7 @@ public class RescueMe extends Activity {
         }
     }
     public void setTitle(String title){
+
         getActionBar().setTitle(title);
     }
 
@@ -49,8 +49,9 @@ public class RescueMe extends Activity {
                     .commit();
         }else if(tag.equalsIgnoreCase(RescueMeConstants.REGISTER)){
             fragmentTag = tag;
-            getFragmentManager().beginTransaction().replace(R.id.container, new RescueMeRegister())
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container, new RescueMeRegister())
+                    .commit();
         }
     }
 

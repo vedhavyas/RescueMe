@@ -3,9 +3,9 @@ package org.rescueme;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteStatement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,17 +15,29 @@ import java.util.List;
  */
 public class RescueMeDBFactory  extends SQLiteOpenHelper{
 
+    private static RescueMeDBFactory dbFactory;
     private String table_name;
 
-    public RescueMeDBFactory(Context context, String table_name){
+    private RescueMeDBFactory(Context context) {
         super(context,RescueMeConstants.DB_NAME,null,1);
+    }
+
+    public static RescueMeDBFactory getInstance(Context context) {
+        if (dbFactory == null) {
+            dbFactory = new RescueMeDBFactory(context);
+        }
+
+        return dbFactory;
+    }
+
+    public void setTable_name(String table_name) {
         this.table_name = table_name;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(RescueMeConstants.SQL_USER_TABLE_CREATE_QUERY);
-        db.execSQL(RescueMeConstants.SQL_CIRCLE_TABLE_QUERY);
+        db.execSQL(RescueMeConstants.SQL_CONTACT_TABLE_QUERY);
     }
 
     @Override
@@ -46,7 +58,6 @@ public class RescueMeDBFactory  extends SQLiteOpenHelper{
         contentValues.put(RescueMeConstants.COLUMN_NUMBER,user.getNumber());
 
         result = db.insert(table_name,null,contentValues);
-        db.close();
         return result;
     }
 
@@ -58,15 +69,13 @@ public class RescueMeDBFactory  extends SQLiteOpenHelper{
 
         if(cursor.moveToFirst()){
             if(user.getHashPassword().equalsIgnoreCase(cursor.getString(0))){
-                db.close();
                 return true;
             }
         }
-        db.close();
         return false;
     }
 
-    public long addCircleContact(RescueMeUserModel contact){
+    public long addEmergencyContact(RescueMeUserModel contact) {
 
         SQLiteDatabase db =this.getWritableDatabase();
 
@@ -75,23 +84,37 @@ public class RescueMeDBFactory  extends SQLiteOpenHelper{
         contentValues.put(RescueMeConstants.COLUMN_EMAIL, contact.getEmail());
         contentValues.put(RescueMeConstants.COLUMN_NUMBER, contact.getNumber());
 
-        long result = db.insert(table_name,null,contentValues);
-
-        db.close();
-        return result;
+        return db.insert(table_name, null, contentValues);
     }
 
-    public long updateCircleContact(RescueMeUserModel contact){
+    public long updateEmergencyContact(RescueMeUserModel contact) {
         SQLiteDatabase db = this.getWritableDatabase();
+        int result = -1;
+
+        RescueMeUserModel oldContactData = getContact(contact.getId());
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(RescueMeConstants.COLUMN_NAME, contact.getName());
-        contentValues.put(RescueMeConstants.COLUMN_EMAIL, contact.getEmail());
-        contentValues.put(RescueMeConstants.COLUMN_NUMBER, contact.getNumber());
+        if (!oldContactData.getName().equals(contact.getName())) {
+            contentValues.put(RescueMeConstants.COLUMN_NAME, contact.getName());
+        }
 
-        long result = db.update(table_name,contentValues,RescueMeConstants.COLUMN_ID+" = ?", new String[]{contact.getId()});
+        if (!oldContactData.getEmail().equals(contact.getEmail())) {
+            contentValues.put(RescueMeConstants.COLUMN_EMAIL, contact.getEmail());
+        }
 
-        db.close();
+        if (!oldContactData.getNumber().equals(contact.getNumber())) {
+            contentValues.put(RescueMeConstants.COLUMN_NUMBER, contact.getNumber());
+        }
+
+        if (contentValues.size() > 0) {
+            try {
+                result = db.update(table_name, contentValues, RescueMeConstants.COLUMN_ID + " = " + contact.getId(), null);
+            } catch (SQLiteConstraintException e) {
+                return result;
+            }
+
+        }
+
         return result;
     }
 
@@ -111,7 +134,6 @@ public class RescueMeDBFactory  extends SQLiteOpenHelper{
                 contact.setNumber(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_NUMBER)));
             }while(cursor.moveToNext());
 
-            db.close();
             return contact;
         }
 

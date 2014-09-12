@@ -1,13 +1,12 @@
 package org.rescueme;
 
 
-
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,78 +98,38 @@ public class RescueMeLogin extends Fragment {
         simpleFacebook.onActivityResult(getActivity(), requestCode, resultCode, data);
     }
 
-    private class LogIn extends AsyncTask<View,Void,String>{
-        @Override
-        protected void onPreExecute() {
-            getActivity().setProgressBarIndeterminateVisibility(true);
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(View... params) {
-            if(isEmailValid()){
-                if(!isPasswordEmpty()){
-                    RescueMeUserModel user = new RescueMeUserModel(email.getText().toString()
-                            ,password.getText().toString());
-                    RescueMeDBFactory dbFactory = new RescueMeDBFactory(getActivity().getBaseContext()
-                            ,RescueMeConstants.USER_TABLE);
-                    if(dbFactory.loginUser(user)){
-                        return RescueMeConstants.SUCCESS;
-                    }else{
-                        return RescueMeConstants.LOGIN_FAIL;
-                    }
-                }else{
-                    return RescueMeConstants.PASSWORD_FAIL;
-                }
-            }else{
-                return RescueMeConstants.EMAIL_FAIL;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            getActivity().setProgressBarIndeterminateVisibility(false);
-            if(result.equalsIgnoreCase(RescueMeConstants.SUCCESS)){
-                Toast.makeText(context,RescueMeConstants.LOGIN_SUCCESS,Toast
-                        .LENGTH_SHORT).show();
-                prefs.edit().putBoolean(RescueMeConstants.LOGIN,true).apply();
-                loadAuthenticatedActivity();
-            }else{
-                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
     private void loadRegistrationFragment(){
-        ((RescueMe)getActivity()).loadFragment(RescueMeConstants.REGISTER);
+        ((RescueMe) getActivity()).loadFragment(RescueMeConstants.REGISTER);
     }
 
-    private void loadAuthenticatedActivity(){
-        Intent intent = new Intent(context,RescueMeTabViewer.class);
+    private void loadAuthenticatedActivity() {
+        Intent intent = new Intent(context, RescueMeTabViewer.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
     }
 
-    private boolean isEmailValid(){
+    private boolean isEmailValid() {
         return email.getText().toString().contains("@");
     }
 
-    private boolean isPasswordEmpty() { return password.getText().toString().isEmpty(); }
+    private boolean isPasswordEmpty() {
+        return password.getText().toString().isEmpty();
+    }
 
-    private void setFbLoginListener(){
+    private void setFbLoginListener() {
         fbLoginListener = new OnLoginListener() {
             @Override
             public void onLogin() {
-                Toast.makeText(context,RescueMeConstants.FB_LOGIN_SUCCESS,Toast.LENGTH_SHORT)
+                Toast.makeText(context, RescueMeConstants.FB_LOGIN_SUCCESS, Toast.LENGTH_SHORT)
                         .show();
                 loadAuthenticatedActivity();
             }
 
             @Override
             public void onNotAcceptingPermissions(Permission.Type type) {
-                Toast.makeText(context,RescueMeConstants.FB_NOT_ACCEPT_PERMISSIONS,Toast.LENGTH_SHORT)
+                Toast.makeText(context, RescueMeConstants.FB_NOT_ACCEPT_PERMISSIONS, Toast.LENGTH_SHORT)
                         .show();
             }
 
@@ -181,15 +140,57 @@ public class RescueMeLogin extends Fragment {
 
             @Override
             public void onException(Throwable throwable) {
-                Toast.makeText(context,RescueMeConstants.FB_EXCEPTION_LOGIN,Toast.LENGTH_SHORT)
+                Toast.makeText(context, RescueMeConstants.FB_EXCEPTION_LOGIN, Toast.LENGTH_SHORT)
                         .show();
             }
 
             @Override
             public void onFail(String s) {
-                Toast.makeText(context,s,Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
             }
         };
+    }
+
+    private class LogIn extends AsyncTask<View, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            getActivity().setProgressBarIndeterminateVisibility(true);
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(View... params) {
+            if (isEmailValid()) {
+                if (!isPasswordEmpty()) {
+                    RescueMeUserModel user = new RescueMeUserModel(email.getText().toString()
+                            , password.getText().toString());
+                    RescueMeDBFactory dbFactory = RescueMeDBFactory.getInstance(context);
+                    dbFactory.setTable_name(RescueMeConstants.USER_TABLE);
+                    if (dbFactory.loginUser(user)) {
+                        return RescueMeConstants.SUCCESS;
+                    } else {
+                        return RescueMeConstants.LOGIN_FAIL;
+                    }
+                } else {
+                    return RescueMeConstants.PASSWORD_FAIL;
+                }
+            } else {
+                return RescueMeConstants.EMAIL_FAIL;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            getActivity().setProgressBarIndeterminateVisibility(false);
+            if (result.equalsIgnoreCase(RescueMeConstants.SUCCESS)) {
+                Toast.makeText(context, RescueMeConstants.LOGIN_SUCCESS, Toast
+                        .LENGTH_SHORT).show();
+                prefs.edit().putBoolean(RescueMeConstants.LOGIN, true).apply();
+                loadAuthenticatedActivity();
+            } else {
+                Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 }

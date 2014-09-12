@@ -3,6 +3,7 @@ package org.rescueme;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,55 +14,47 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
-public class RescueMeRegister extends Fragment {
+public class RescueMeAddEmergencyContact extends Fragment {
 
 
     private EditText name;
     private EditText email;
-    private EditText password;
     private EditText phoneNumber;
+    private Button addContactBtn;
     private Context context;
 
-    public RescueMeRegister() {
+    public RescueMeAddEmergencyContact() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_rescue_me_register, container, false);
-        name = (EditText)rootView.findViewById(R.id.name);
-        email = (EditText)rootView.findViewById(R.id.email);
-        password = (EditText)rootView.findViewById(R.id.password);
-        phoneNumber = (EditText)rootView.findViewById(R.id.phoneNumber);
-        Button registerBtn = (Button) rootView.findViewById(R.id.registerBtn);
-        context = rootView.getContext();
-
-        registerBtn.setOnClickListener(new View.OnClickListener() {
+        View rootView = inflater.inflate(R.layout.fragment_rescue_me_add_emergency_contact, container, false);
+        name = (EditText) rootView.findViewById(R.id.name);
+        email = (EditText) rootView.findViewById(R.id.email);
+        phoneNumber = (EditText) rootView.findViewById(R.id.phoneNumber);
+        addContactBtn = (Button) rootView.findViewById(R.id.addContactBtn);
+        addContactBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new registerTask().execute();
+                new addContactTask().execute();
             }
         });
-        ((RescueMe)getActivity()).setTitle(RescueMeConstants.REGISTER);
+        context = rootView.getContext();
 
         return rootView;
     }
 
-    private String isDataValid(){
+    private String isDataValid() {
         if (!isNameEmpty()) {
             if (validEmail()) {
-                if (validPassword()) {
-                    if (validNumber()) {
-                        return RescueMeConstants.SUCCESS;
-                    } else {
-                        return RescueMeConstants.PHONE_FAIL;
-                    }
+                if (validNumber()) {
+                    return RescueMeConstants.SUCCESS;
                 } else {
-                    return RescueMeConstants.PASSWORD_FAIL;
+                    return RescueMeConstants.PHONE_FAIL;
                 }
-            }else{
+            } else {
                 return RescueMeConstants.EMAIL_FAIL;
             }
         } else {
@@ -75,11 +68,6 @@ public class RescueMeRegister extends Fragment {
 
     }
 
-    private boolean validPassword() {
-        return password.getText().toString().length() >= RescueMeConstants.PASSWORD_MIN_LENGTH;
-
-    }
-
     private boolean validNumber() {
         return phoneNumber.getText().toString().length() == RescueMeConstants.PHONE_NUMBER_LENGTH && phoneNumber.getText().toString().matches("[0-9]+");
 
@@ -89,28 +77,38 @@ public class RescueMeRegister extends Fragment {
         return name.getText().toString().isEmpty();
     }
 
-    public class registerTask extends AsyncTask<Void, Void, String> {
+    private void loadAuthenticatedActivity() {
+        Intent intent = new Intent(context, RescueMeTabViewer.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.putExtra(RescueMeConstants.SELECT_TAG, 2);
+        startActivity(intent);
+    }
+
+    public class addContactTask extends AsyncTask<Void, Void, String> {
         @Override
         protected void onPreExecute() {
             getActivity().setProgressBarIndeterminateVisibility(true);
             super.onPreExecute();
         }
 
+
         @Override
         protected String doInBackground(Void... params) {
             String result = isDataValid();
             if (result.equalsIgnoreCase(RescueMeConstants.SUCCESS)) {
 
-                RescueMeUserModel user = new RescueMeUserModel(name.getText().toString(),
-                        password.getText().toString(), email.getText().toString(),
+                RescueMeUserModel contact = new RescueMeUserModel(name.getText().toString()
+                        , email.getText().toString(),
                         phoneNumber.getText().toString());
 
                 RescueMeDBFactory dbFactory = RescueMeDBFactory.getInstance(context);
-                dbFactory.setTable_name(RescueMeConstants.USER_TABLE);
-                if (dbFactory.registerUser(user) > 0) {
+                dbFactory.setTable_name(RescueMeConstants.CONTACTS_TABLE);
+                if (dbFactory.addEmergencyContact(contact) > 0) {
                     return RescueMeConstants.SUCCESS;
                 } else {
-                    return RescueMeConstants.FAILED;
+                    return RescueMeConstants.FAILED_TO_ADD_CONTACT;
                 }
             } else {
                 return result;
@@ -121,12 +119,12 @@ public class RescueMeRegister extends Fragment {
         protected void onPostExecute(String result) {
             getActivity().setProgressBarIndeterminateVisibility(false);
             if (result.equalsIgnoreCase(RescueMeConstants.SUCCESS)) {
-                ((RescueMe) getActivity()).loadFragment(RescueMeConstants.LOGIN);
+                Toast.makeText(context, RescueMeConstants.ADDED_NEW_CONTACT, Toast.LENGTH_SHORT).show();
+                loadAuthenticatedActivity();
             } else {
                 Toast.makeText(getActivity().getBaseContext(), result, Toast.LENGTH_SHORT).show();
             }
         }
-
     }
 
 }

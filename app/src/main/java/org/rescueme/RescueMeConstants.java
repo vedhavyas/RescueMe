@@ -8,12 +8,21 @@ public class RescueMeConstants {
     public static final String PREFERENCE_NAME = "RescueMe";
     public static final String LOGIN = "Log In";
     public static final String REGISTER = "Registration";
-    public static final String[] TABS = {"Rescue Me", "Profile", "Circles", "Settings"};
+    public static final String NEW_EMERGENCY_CONTACT = "new emergency contact";
+    public static final String UPDATE_EMERGENCY_CONTACT = "update emergency contact";
+    public static final String UPDATE_EMERGENCY_CONTACT_SUCCESS = "Update Successful";
+    public static final String UPDATE_EMERGENCY_CONTACT_FAIL = "Update Failed.. Check Email and PhoneNumber";
+    public static final String ADDED_NEW_CONTACT = "Contact successfully added";
+    public static final String FAILED_TO_ADD_CONTACT = "Failed to add the Contact.. Check Email and PhoneNumber";
+    public static final String[] TABS = {"Rescue Me", "Profile", "Contacts", "Settings"};
     public static final int NO_OF_TABS = TABS.length;
     public static final String RESCUE_ME_MAIN = "Rescue Me";
     public static final String RESCUE_ME = "Rescue Me";
     public static final String LOGOUT_SUCCESS = "Logout Successful";
     public static final int SPLASH_SCREEN_TIMEOUT = 2000;
+    public static final String EMAIL_REGEX = "@";
+    public static final String FRAGMENT_TAG = "Fragment_tag";
+    public static final String SELECT_TAG = "tag to load";
 
     //Login constants
     public static final String LOGIN_SUCCESS = "Login Successful";
@@ -31,27 +40,27 @@ public class RescueMeConstants {
     //Database related constants
     public static final String DB_NAME = "rescueme.db";
     public static final String USER_TABLE = "user_details";
+    public static final String SQL_USER_TABLE_CREATE_QUERY = "CREATE TABLE " + USER_TABLE
+            + " ( ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + "Name TEXT,"
+            + "Password TEXT,"
+            + "Email TEXT UNIQUE,"
+            + "Number TEXT UNIQUE)";
     public static final String CONTACTS_TABLE = "contacts_details";
-    public static final String SQL_CIRCLE_TABLE_QUERY = "CREATE TABLE "+CONTACTS_TABLE
+    public static final String SQL_CONTACT_TABLE_QUERY = "CREATE TABLE " + CONTACTS_TABLE
                                                     +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                                                     +"Name TEXT,"
-                                                    +"Email TEXT,"
-                                                    +"Number TEXT)";
-    public static final String SQL_USER_TABLE_CREATE_QUERY = "CREATE TABLE "+USER_TABLE
-                                                    +" ( ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-                                                    +"Name TEXT,"
-                                                    +"Password TEXT,"
-                                                    +"Email TEXT,"
-                                                    +"Number TEXT)";
+            + "Email TEXT UNIQUE,"
+            + "Number TEXT UNIQUE)";
     public static final String DROP_TABLE = "DROP TABLE IF EXISTS  ";
     public static final String COLUMN_ID = "ID";
     public static final String COLUMN_NAME = "Name";
     public static final String COLUMN_PASSWORD = "Password";
     public static final String COLUMN_EMAIL = "Email";
-    public static final String COLUMN_NUMBER = "Number";
     public static final String SQL_LOGIN_QUERY = "SELECT "+COLUMN_PASSWORD+" FROM "
                                                     +USER_TABLE+" WHERE "
                                                     +COLUMN_EMAIL+" = ";
+    public static final String COLUMN_NUMBER = "Number";
     public static final String SQL_SELECT_ALL_QUERY = "SELECT * FROM ";
     public static final String LOGIN_FAIL = "Login failed!!";
 

@@ -1,7 +1,7 @@
 package org.rescueme;
 
 /**
- * Created by Vedavyas Singareddi on 02-09-2014.
+ * Authored by Vedavyas Singareddi on 02-09-2014.
  */
 public class RescueMeConstants {
 

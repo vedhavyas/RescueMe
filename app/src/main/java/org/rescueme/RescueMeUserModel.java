@@ -5,7 +5,7 @@ import android.util.Base64;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Created by vedhavyas.singareddi on 05-09-2014.
+ * Authored by vedhavyas.singareddi on 05-09-2014.
  */
 public class RescueMeUserModel {
 
@@ -15,26 +15,33 @@ public class RescueMeUserModel {
     private String email;
     private String number;
 
-    public RescueMeUserModel(){
-       //empty constructor
+    public RescueMeUserModel() {
+        //empty constructor
     }
 
-    public RescueMeUserModel(String name, String password,String email, String number){
+    public RescueMeUserModel(String name, String password, String email, String number) {
         this.name = name;
         this.hashPassword = getHash(password);
         this.email = email;
         this.number = number;
     }
 
-    public RescueMeUserModel(String email, String password){
+    public RescueMeUserModel(String email, String password) {
         this.email = email;
         this.hashPassword = getHash(password);
     }
 
-    public RescueMeUserModel(String name, String email, String number){
+    public RescueMeUserModel(String name, String email, String number) {
         this.name = name;
         this.email = email;
         this.number = number;
+    }
+
+    private static String convertToHex(byte[] data) {
+        StringBuilder sb = new StringBuilder();
+        String hex = Base64.encodeToString(data, 0, data.length, Base64.DEFAULT);
+        sb.append(hex);
+        return sb.toString();
     }
 
     public String getId() {
@@ -73,7 +80,7 @@ public class RescueMeUserModel {
         this.number = number;
     }
 
-    private String getHash(String password){
+    private String getHash(String password) {
         java.security.MessageDigest d;
         try {
             d = java.security.MessageDigest.getInstance("SHA-1");
@@ -84,13 +91,6 @@ public class RescueMeUserModel {
             e.printStackTrace();
         }
         return null;
-    }
-
-    private static String convertToHex(byte[] data){
-        StringBuilder sb = new StringBuilder();
-        String hex= Base64.encodeToString(data, 0, data.length, Base64.DEFAULT);
-        sb.append(hex);
-        return sb.toString();
     }
 
     @Override

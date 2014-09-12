@@ -5,7 +5,7 @@ import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
 
 /**
- * Created by Vedavyas Singareddy on 11-09-2014.
+ * Authored by Vedavyas Singareddy on 11-09-2014.
  */
 public class RescueMeTabAdapter extends FragmentPagerAdapter {
 
@@ -19,7 +19,7 @@ public class RescueMeTabAdapter extends FragmentPagerAdapter {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
         //return PlaceholderFragment.newInstance(position + 1);
-        switch(position){
+        switch (position) {
             case 0:
                 return new RescueMePanic();
             case 1:

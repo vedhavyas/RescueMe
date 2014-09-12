@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Created by Vedavyas Singareddi on 11-09-2014.
+ * Authored by Vedhavyas Singareddi on 11-09-2014.
  */
 public class RescueMeContactListAdapter extends BaseAdapter{
 

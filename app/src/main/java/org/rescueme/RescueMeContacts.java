@@ -17,9 +17,6 @@ import android.widget.ListView;
 import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class RescueMeContacts extends Fragment {
 
 

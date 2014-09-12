@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Vedavyas Singareddi on 03-09-2014.
+ * Authored by Vedhavyas Singareddi on 03-09-2014.
  */
 public class RescueMeDBFactory  extends SQLiteOpenHelper{
 

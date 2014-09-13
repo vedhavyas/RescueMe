@@ -34,6 +34,8 @@ public class RescueMeProfile extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.rescue_me_actionbar_menu, menu);
         MenuItem add = menu.findItem(R.id.refreshProfile);
+        MenuItem logout = menu.findItem(R.id.action_logout);
+        logout.setVisible(false);
         add.setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);
     }

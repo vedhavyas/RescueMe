@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,6 @@ public class RescueMeAddEmergencyContact extends Fragment {
     private EditText name;
     private EditText email;
     private EditText phoneNumber;
-    private Button addContactBtn;
     private Context context;
 
     public RescueMeAddEmergencyContact() {
@@ -31,10 +31,15 @@ public class RescueMeAddEmergencyContact extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_rescue_me_add_emergency_contact, container, false);
+        try {
+            getActivity().getActionBar().setTitle(RescueMeConstants.NEW_EMERGENCY_CONTACT);
+        } catch (NullPointerException e) {
+            Log.i(RescueMeConstants.RESCUE_ME, RescueMeConstants.EXCEPTION_CAUGHT);
+        }
         name = (EditText) rootView.findViewById(R.id.name);
         email = (EditText) rootView.findViewById(R.id.email);
         phoneNumber = (EditText) rootView.findViewById(R.id.phoneNumber);
-        addContactBtn = (Button) rootView.findViewById(R.id.addContactBtn);
+        Button addContactBtn = (Button) rootView.findViewById(R.id.addContactBtn);
         addContactBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

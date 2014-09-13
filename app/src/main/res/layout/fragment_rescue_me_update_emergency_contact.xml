@@ -59,4 +59,24 @@
         android:textColor="#FFFFFF"
         android:textSize="24sp" />
 
+    <Button
+        android:id="@+id/deleteContactBtn"
+
+        android:layout_width="108dp"
+        android:layout_height="49dp"
+        android:layout_alignEnd="@+id/updateContactBtn"
+        android:layout_alignLeft="@+id/updateContactBtn"
+        android:layout_alignRight="@+id/updateContactBtn"
+        android:layout_alignStart="@+id/updateContactBtn"
+        android:layout_below="@+id/updateContactBtn"
+        android:layout_marginTop="45dp"
+        android:background="@drawable/button_large_selector"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:text="@string/delete_emergency_contact"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp" />
+
 </RelativeLayout>

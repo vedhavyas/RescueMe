@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,10 +35,16 @@ public class RescueMeUpdateEmergencyContact extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_rescue_me_update_emergency_contact, container, false);
 
+        try {
+            getActivity().getActionBar().setTitle(RescueMeConstants.UPDATE_EMERGENCY_CONTACT);
+        } catch (NullPointerException e) {
+            Log.i(RescueMeConstants.RESCUE_ME, RescueMeConstants.EXCEPTION_CAUGHT);
+        }
         name = (EditText) rootView.findViewById(R.id.name);
         email = (EditText) rootView.findViewById(R.id.email);
         phoneNumber = (EditText) rootView.findViewById(R.id.phoneNumber);
         Button updateContactBtn = (Button) rootView.findViewById(R.id.updateContactBtn);
+        Button deleteContactBtn = (Button) rootView.findViewById(R.id.deleteContactBtn);
         context = rootView.getContext();
         id = getArguments().getString(RescueMeConstants.COLUMN_ID);
 
@@ -54,6 +61,14 @@ public class RescueMeUpdateEmergencyContact extends Fragment {
                 new updateContactTask().execute();
             }
         });
+
+        deleteContactBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new deleteContactTask().execute();
+            }
+        });
+
         return rootView;
     }
 
@@ -97,6 +112,35 @@ public class RescueMeUpdateEmergencyContact extends Fragment {
         startActivity(intent);
     }
 
+    public class deleteContactTask extends AsyncTask<Void, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            getActivity().setProgressBarIndeterminateVisibility(true);
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            if (dbFactory.deleteContact(id) < 0) {
+                return RescueMeConstants.DELETE_EMERGENCY_CONTACT_FAIL;
+            } else {
+                return RescueMeConstants.SUCCESS;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            getActivity().setProgressBarIndeterminateVisibility(false);
+            if (result.equalsIgnoreCase(RescueMeConstants.SUCCESS)) {
+                Toast.makeText(context, RescueMeConstants.DELETE_EMERGENCY_CONTACT_SUCCESS, Toast.LENGTH_SHORT).show();
+                loadAuthenticatedActivity();
+            } else {
+                Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
     public class updateContactTask extends AsyncTask<Void, Void, String> {
         @Override
         protected void onPreExecute() {
@@ -126,7 +170,7 @@ public class RescueMeUpdateEmergencyContact extends Fragment {
             super.onPostExecute(result);
             getActivity().setProgressBarIndeterminateVisibility(false);
             if (result.equalsIgnoreCase(RescueMeConstants.SUCCESS)) {
-                Toast.makeText(context, RescueMeConstants.UPDATE_EMERGENCY_CONTACT_SUCCESS, Toast.LENGTH_SHORT);
+                Toast.makeText(context, RescueMeConstants.UPDATE_EMERGENCY_CONTACT_SUCCESS, Toast.LENGTH_SHORT).show();
                 loadAuthenticatedActivity();
             } else {
                 Toast.makeText(context, result, Toast.LENGTH_SHORT).show();

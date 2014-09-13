@@ -6,14 +6,6 @@ package org.rescueme;
 public class RescueMeConstants {
 
     public static final String PREFERENCE_NAME = "RescueMe";
-    public static final String LOGIN = "Log In";
-    public static final String REGISTER = "Registration";
-    public static final String NEW_EMERGENCY_CONTACT = "new emergency contact";
-    public static final String UPDATE_EMERGENCY_CONTACT = "update emergency contact";
-    public static final String UPDATE_EMERGENCY_CONTACT_SUCCESS = "Update Successful";
-    public static final String UPDATE_EMERGENCY_CONTACT_FAIL = "Update Failed.. Check Email and PhoneNumber";
-    public static final String ADDED_NEW_CONTACT = "Contact successfully added";
-    public static final String FAILED_TO_ADD_CONTACT = "Failed to add the Contact.. Check Email and PhoneNumber";
     public static final String[] TABS = {"Rescue Me", "Profile", "Contacts", "Settings"};
     public static final int NO_OF_TABS = TABS.length;
     public static final String RESCUE_ME_MAIN = "Rescue Me";
@@ -23,11 +15,15 @@ public class RescueMeConstants {
     public static final String EMAIL_REGEX = "@";
     public static final String FRAGMENT_TAG = "Fragment_tag";
     public static final String SELECT_TAG = "tag to load";
+    public static final String EXCEPTION_CAUGHT = "Caught the exception";
 
     //Login constants
+    public static final String LOGIN = "Log In";
     public static final String LOGIN_SUCCESS = "Login Successful";
+    public static final String LOGIN_FAIL = "Failed to Log In";
 
     //Registration constants
+    public static final String REGISTER = "Registration";
     public static final String SUCCESS = "success";
     public static final String FAILED = "failed";
     public static final String EMAIL_FAIL = "Email Doesn't meet the constraints";
@@ -62,7 +58,6 @@ public class RescueMeConstants {
                                                     +COLUMN_EMAIL+" = ";
     public static final String COLUMN_NUMBER = "Number";
     public static final String SQL_SELECT_ALL_QUERY = "SELECT * FROM ";
-    public static final String LOGIN_FAIL = "Login failed!!";
 
     //Facebook related constants
     public static final String FB_APP_ID = "710855998982153";
@@ -70,4 +65,14 @@ public class RescueMeConstants {
     public static final String FB_LOGIN_SUCCESS = "Connected to Facebook";
     public static final String FB_NOT_ACCEPT_PERMISSIONS = "You did not Accept Permissions";
     public static final String FB_EXCEPTION_LOGIN = "Exception occurred during LogIn";
+
+    //Emergency contacts related constants
+    public static final String NEW_EMERGENCY_CONTACT = "Add Contact";
+    public static final String UPDATE_EMERGENCY_CONTACT = "Update Contact";
+    public static final String UPDATE_EMERGENCY_CONTACT_SUCCESS = "Contact Updated Successfully";
+    public static final String UPDATE_EMERGENCY_CONTACT_FAIL = "Update Failed.. Check Email and PhoneNumber";
+    public static final String ADDED_NEW_CONTACT = "Contact successfully added";
+    public static final String FAILED_TO_ADD_CONTACT = "Failed to add the Contact.. Check Email and PhoneNumber";
+    public static final String DELETE_EMERGENCY_CONTACT_SUCCESS = "Contact Successfully deleted";
+    public static final String DELETE_EMERGENCY_CONTACT_FAIL = "Failed to Delete the contact";
 }

@@ -23,5 +23,6 @@
     <string name="title_activity_rescue_me_utils">RescueMeUtilsActivity</string>
     <string name="title_activity_rescue_me_util">RescueMeUtilActivity</string>
     <string name="update_contact">Update</string>
+    <string name="delete_emergency_contact">Delete Contact</string>
 
 </resources>

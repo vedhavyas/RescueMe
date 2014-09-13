@@ -24,5 +24,8 @@
     <string name="title_activity_rescue_me_util">RescueMeUtilActivity</string>
     <string name="update_contact">Update</string>
     <string name="delete_emergency_contact">Delete Contact</string>
+    <string name="refresh_profile">Refresh Profile</string>
+    <string name="tap_to_send">Tap to send message with your Location details to your Emergency Contacts</string>
+    <string name="connect_fb">Connect to FaceBook</string>
 
 </resources>

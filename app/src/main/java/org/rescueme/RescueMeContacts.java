@@ -55,7 +55,7 @@ public class RescueMeContacts extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.rescue_me_main_view, menu);
+        inflater.inflate(R.menu.rescue_me_actionbar_menu, menu);
         MenuItem add = menu.findItem(R.id.add_circle_contact);
         add.setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);

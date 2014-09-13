@@ -2,14 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context="org.rescueme.RescueMeContacts"
-    android:background="#ff9ecb5d">
+    android:background="#ffebecee"
+    tools:context="org.rescueme.RescueMeContacts">
 
     <ListView
+        android:id="@+id/circlesListView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/circlesListView"
-        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true" />
 </RelativeLayout>

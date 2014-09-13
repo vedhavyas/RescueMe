@@ -46,7 +46,7 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 
-        for(String tab_name : RescueMeConstants.TABS){
+        for (String tab_name : RescueMeConstants.TABS) {
             actionBar.addTab(actionBar.newTab().setText(tab_name).setTabListener(this));
         }
 
@@ -76,38 +76,37 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.rescue_me_main_view, menu);
+        getMenuInflater().inflate(R.menu.rescue_me_actionbar_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.action_logout){
-           logoutUser();
-            Toast.makeText(context,RescueMeConstants.LOGOUT_SUCCESS,Toast.LENGTH_SHORT).show();
+        if (id == R.id.action_logout) {
+            logoutUser();
+            Toast.makeText(context, RescueMeConstants.LOGOUT_SUCCESS, Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
 
 
-    private void logoutUser(){
-        if(prefs.getBoolean(RescueMeConstants.LOGIN,false) && !simpleFacebook.isLogin()){
-            prefs.edit().putBoolean(RescueMeConstants.LOGIN,false).apply();
-        }else if(prefs.getBoolean(RescueMeConstants.LOGIN,false) && simpleFacebook.isLogin()){
-            prefs.edit().putBoolean(RescueMeConstants.LOGIN,false).apply();
+    private void logoutUser() {
+        if (prefs.getBoolean(RescueMeConstants.LOGIN, false) && !simpleFacebook.isLogin()) {
+            prefs.edit().putBoolean(RescueMeConstants.LOGIN, false).apply();
+        } else if (prefs.getBoolean(RescueMeConstants.LOGIN, false) && simpleFacebook.isLogin()) {
+            prefs.edit().putBoolean(RescueMeConstants.LOGIN, false).apply();
             simpleFacebook.logout(fbLogoutListener);
-        }else if(!prefs.getBoolean(RescueMeConstants.LOGIN,false) && simpleFacebook.isLogin()){
+        } else if (!prefs.getBoolean(RescueMeConstants.LOGIN, false) && simpleFacebook.isLogin()) {
             simpleFacebook.logout(fbLogoutListener);
         }
-        Toast.makeText(context,RescueMeConstants.LOGOUT_SUCCESS,Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, RescueMeConstants.LOGOUT_SUCCESS, Toast.LENGTH_SHORT).show();
         startMainActivity();
     }
 
 
-
-    private void startMainActivity(){
-        Intent intent = new Intent(this,RescueMe.class);
+    private void startMainActivity() {
+        Intent intent = new Intent(this, RescueMe.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -139,10 +138,10 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        simpleFacebook.onActivityResult(this,requestCode,resultCode,data);
+        simpleFacebook.onActivityResult(this, requestCode, resultCode, data);
     }
 
-    private void setFbLogoutListener(){
+    private void setFbLogoutListener() {
         fbLogoutListener = new OnLogoutListener() {
             @Override
             public void onLogout() {

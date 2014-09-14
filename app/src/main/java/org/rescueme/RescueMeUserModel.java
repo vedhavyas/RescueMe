@@ -14,6 +14,8 @@ public class RescueMeUserModel {
     private String hashPassword;
     private String email;
     private String number;
+    private String message;
+    private byte[] profilePic;
 
     public RescueMeUserModel() {
         //empty constructor
@@ -37,11 +39,26 @@ public class RescueMeUserModel {
         this.number = number;
     }
 
+    public RescueMeUserModel(String name, String email, String number, byte[] profilePic) {
+        this.name = name;
+        this.email = email;
+        this.number = number;
+        this.profilePic = profilePic;
+    }
+
     private static String convertToHex(byte[] data) {
         StringBuilder sb = new StringBuilder();
         String hex = Base64.encodeToString(data, 0, data.length, Base64.DEFAULT);
         sb.append(hex);
         return sb.toString();
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getId() {
@@ -78,6 +95,14 @@ public class RescueMeUserModel {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public byte[] getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(byte[] profilePic) {
+        this.profilePic = profilePic;
     }
 
     private String getHash(String password) {

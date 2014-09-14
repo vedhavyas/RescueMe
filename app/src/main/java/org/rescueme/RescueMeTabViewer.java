@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.sromku.simple.fb.SimpleFacebook;
@@ -30,7 +31,9 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         simpleFacebook = SimpleFacebook.getInstance(this);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_rescue_me_tab_viewer);
+
 
         prefs = getSharedPreferences(RescueMeConstants.PREFERENCE_NAME, Context.MODE_PRIVATE);
         viewPager = (ViewPager) findViewById(R.id.pager);

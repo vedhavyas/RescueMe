@@ -54,25 +54,33 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(RescueMeConstants.COLUMN_NAME, user.getName());
         contentValues.put(RescueMeConstants.COLUMN_EMAIL, user.getEmail());
-        contentValues.put(RescueMeConstants.COLUMN_PASSWORD, user.getHashPassword());
+        if (user.getHashPassword() != null) {
+            contentValues.put(RescueMeConstants.COLUMN_PASSWORD, user.getHashPassword());
+        }
+
+        if (user.getProfilePic() != null) {
+            contentValues.put(RescueMeConstants.COLUMN_PROFILE_PIC, user.getProfilePic());
+        }
+
         contentValues.put(RescueMeConstants.COLUMN_NUMBER, user.getNumber());
 
         result = db.insert(table_name, null, contentValues);
         return result;
     }
 
-    public boolean loginUser(RescueMeUserModel user) {
+    public int loginUser(RescueMeUserModel user) {
         SQLiteDatabase db = this.getReadableDatabase();
 
+        int result = -1;
         String sqlQuery = RescueMeConstants.SQL_LOGIN_QUERY + "\"" + user.getEmail() + "\"";
         Cursor cursor = db.rawQuery(sqlQuery, null);
 
         if (cursor.moveToFirst()) {
-            if (user.getHashPassword().equalsIgnoreCase(cursor.getString(0))) {
-                return true;
+            if (user.getHashPassword().equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_PASSWORD)))) {
+                return cursor.getInt(cursor.getColumnIndex(RescueMeConstants.COLUMN_ID));
             }
         }
-        return false;
+        return result;
     }
 
     public long addEmergencyContact(RescueMeUserModel contact) {
@@ -168,5 +176,41 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
 
         return db.delete(table_name, RescueMeConstants.COLUMN_ID + " = " + id, null);
     }
+
+    public RescueMeUserModel getUserDetails(String id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sqlQuery = "SELECT * FROM " + table_name + " WHERE " + RescueMeConstants.COLUMN_ID
+                + " = " + id;
+        Cursor cursor = db.rawQuery(sqlQuery, null);
+
+        if (cursor.moveToFirst()) {
+            RescueMeUserModel user = new RescueMeUserModel();
+            do {
+                user.setId(String.valueOf(cursor.getInt(cursor.getColumnIndex(RescueMeConstants.COLUMN_ID))));
+                user.setName(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_NAME)));
+                user.setEmail(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_EMAIL)));
+                user.setNumber(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_NUMBER)));
+                user.setProfilePic(cursor.getBlob(cursor.getColumnIndex(RescueMeConstants.COLUMN_PROFILE_PIC)));
+                user.setMessage(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_PERSONAL_MESSAGE)));
+            } while (cursor.moveToNext());
+
+            return user;
+        }
+
+        return null;
+    }
+
+    public int updateProfilePicture(RescueMeUserModel user) {
+        SQLiteDatabase db = getWritableDatabase();
+        int result = -1;
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(RescueMeConstants.COLUMN_PROFILE_PIC, user.getProfilePic());
+
+        result = db.update(table_name, contentValues, RescueMeConstants.COLUMN_ID + " = " + user.getId(), null);
+        return result;
+    }
+
 }
 

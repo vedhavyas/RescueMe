@@ -31,10 +31,10 @@ public class RescueMeRegister extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_rescue_me_register, container, false);
-        name = (EditText)rootView.findViewById(R.id.name);
-        email = (EditText)rootView.findViewById(R.id.email);
-        password = (EditText)rootView.findViewById(R.id.password);
-        phoneNumber = (EditText)rootView.findViewById(R.id.phoneNumber);
+        name = (EditText) rootView.findViewById(R.id.name);
+        email = (EditText) rootView.findViewById(R.id.email);
+        password = (EditText) rootView.findViewById(R.id.password);
+        phoneNumber = (EditText) rootView.findViewById(R.id.phoneNumber);
         Button registerBtn = (Button) rootView.findViewById(R.id.registerBtn);
         context = rootView.getContext();
 
@@ -44,12 +44,12 @@ public class RescueMeRegister extends Fragment {
                 new registerTask().execute();
             }
         });
-        ((RescueMe)getActivity()).setTitle(RescueMeConstants.REGISTER);
+        ((RescueMe) getActivity()).setTitle(RescueMeConstants.REGISTER);
 
         return rootView;
     }
 
-    private String isDataValid(){
+    private String isDataValid() {
         if (!isNameEmpty()) {
             if (validEmail()) {
                 if (validPassword()) {
@@ -61,7 +61,7 @@ public class RescueMeRegister extends Fragment {
                 } else {
                     return RescueMeConstants.PASSWORD_FAIL;
                 }
-            }else{
+            } else {
                 return RescueMeConstants.EMAIL_FAIL;
             }
         } else {
@@ -121,7 +121,8 @@ public class RescueMeRegister extends Fragment {
         protected void onPostExecute(String result) {
             getActivity().setProgressBarIndeterminateVisibility(false);
             if (result.equalsIgnoreCase(RescueMeConstants.SUCCESS)) {
-                ((RescueMe) getActivity()).loadFragment(RescueMeConstants.LOGIN);
+                Toast.makeText(context, RescueMeConstants.LOGIN_NOW, Toast.LENGTH_SHORT).show();
+                ((RescueMe) getActivity()).loadFragment(RescueMeConstants.LOGIN, null);
             } else {
                 Toast.makeText(getActivity().getBaseContext(), result, Toast.LENGTH_SHORT).show();
             }

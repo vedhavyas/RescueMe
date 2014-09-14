@@ -5,8 +5,11 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +20,14 @@ import android.widget.Toast;
 
 import com.sromku.simple.fb.Permission;
 import com.sromku.simple.fb.SimpleFacebook;
+import com.sromku.simple.fb.entities.Profile;
 import com.sromku.simple.fb.listeners.OnLoginListener;
+import com.sromku.simple.fb.listeners.OnProfileListener;
+import com.sromku.simple.fb.utils.Attributes;
+import com.sromku.simple.fb.utils.PictureAttributes;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 
 
 public class RescueMeLogin extends Fragment {
@@ -31,6 +41,9 @@ public class RescueMeLogin extends Fragment {
     private SimpleFacebook simpleFacebook;
     private OnLoginListener fbLoginListener;
     private Context context;
+    private OnProfileListener onProfileListener;
+    private Profile fbUserProfile;
+    private byte[] blob;
 
     public RescueMeLogin() {
         // Required empty public constructor
@@ -52,15 +65,15 @@ public class RescueMeLogin extends Fragment {
         email = (EditText) rootView.findViewById(R.id.email);
         password = (EditText) rootView.findViewById(R.id.password);
         logInBtn = (Button) rootView.findViewById(R.id.logInBtn);
-        fbLogInBtn = (ImageButton)rootView.findViewById(R.id.fbLoginBtn);
+        fbLogInBtn = (ImageButton) rootView.findViewById(R.id.fbLoginBtn);
         register = (Button) rootView.findViewById(R.id.loginRegisterBtn);
         context = rootView.getContext();
 
         //initialize functions
-        ((RescueMe)getActivity()).setTitle(RescueMeConstants.LOGIN);
+        ((RescueMe) getActivity()).setTitle(RescueMeConstants.LOGIN);
         setFbLoginListener();
 
-        //set onClickListners
+        //set onClickListeners
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,8 +111,8 @@ public class RescueMeLogin extends Fragment {
         simpleFacebook.onActivityResult(getActivity(), requestCode, resultCode, data);
     }
 
-    private void loadRegistrationFragment(){
-        ((RescueMe) getActivity()).loadFragment(RescueMeConstants.REGISTER);
+    private void loadRegistrationFragment() {
+        ((RescueMe) getActivity()).loadFragment(RescueMeConstants.REGISTER, null);
     }
 
     private void loadAuthenticatedActivity() {
@@ -124,7 +137,12 @@ public class RescueMeLogin extends Fragment {
             public void onLogin() {
                 Toast.makeText(context, RescueMeConstants.FB_LOGIN_SUCCESS, Toast.LENGTH_SHORT)
                         .show();
-                loadAuthenticatedActivity();
+                if (prefs.getBoolean(RescueMeConstants.FB_FIRST_TIME_LOGIN, true)) {
+                    getProfileInfo();
+                } else {
+                    prefs.edit().putString(RescueMeConstants.LOGGED_IN_USER_ID, prefs.getString(RescueMeConstants.FB_USER_ID, String.valueOf(1))).apply();
+                    loadAuthenticatedActivity();
+                }
             }
 
             @Override
@@ -151,6 +169,49 @@ public class RescueMeLogin extends Fragment {
         };
     }
 
+    public void getProfileInfo() {
+        onProfileListener = new OnProfileListener() {
+            @Override
+            public void onComplete(Profile profile) {
+                Toast.makeText(context, RescueMeConstants.GOT_PROFILE_DATA, Toast.LENGTH_SHORT).show();
+                fbUserProfile = profile;
+                new DownloadImageTask().execute(fbUserProfile.getPicture());
+            }
+        };
+
+        PictureAttributes pictureAttributes = Attributes.createPictureAttributes();
+        pictureAttributes.setHeight(RescueMeConstants.FB_PROFILE_PIC_HEIGHT);
+        pictureAttributes.setWidth(RescueMeConstants.FB_PROFILE_PIC_WIDTH);
+        pictureAttributes.setType(PictureAttributes.PictureType.SQUARE);
+
+        Profile.Properties properties = new Profile.Properties.Builder()
+                .add(Profile.Properties.ID)
+                .add(Profile.Properties.NAME)
+                .add(Profile.Properties.EMAIL)
+                .add(Profile.Properties.PICTURE, pictureAttributes)
+                .build();
+
+        simpleFacebook.getProfile(properties, onProfileListener);
+        getActivity().setProgressBarIndeterminateVisibility(true);
+    }
+
+    private byte[] getBlob(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        byte[] blob = stream.toByteArray();
+
+        return blob;
+    }
+
+    private void loadProfileEditFragment() {
+        Bundle profileData = new Bundle();
+        profileData.putString(RescueMeConstants.COLUMN_NAME, fbUserProfile.getName());
+        profileData.putString(RescueMeConstants.COLUMN_EMAIL, fbUserProfile.getEmail());
+        profileData.putByteArray(RescueMeConstants.COLUMN_PROFILE_PIC, blob);
+
+        ((RescueMe) getActivity()).loadFragment(RescueMeConstants.UPDATE_PROFILE, profileData);
+    }
+
     private class LogIn extends AsyncTask<View, Void, String> {
         @Override
         protected void onPreExecute() {
@@ -166,7 +227,9 @@ public class RescueMeLogin extends Fragment {
                             , password.getText().toString());
                     RescueMeDBFactory dbFactory = RescueMeDBFactory.getInstance(context);
                     dbFactory.setTable_name(RescueMeConstants.USER_TABLE);
-                    if (dbFactory.loginUser(user)) {
+                    int userId = dbFactory.loginUser(user);
+                    if (userId > 0) {
+                        prefs.edit().putString(RescueMeConstants.LOGGED_IN_USER_ID, String.valueOf(userId)).apply();
                         return RescueMeConstants.SUCCESS;
                     } else {
                         return RescueMeConstants.LOGIN_FAIL;
@@ -193,4 +256,29 @@ public class RescueMeLogin extends Fragment {
         }
     }
 
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+
+        public DownloadImageTask() {
+            //empty constructor
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String url = urls[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(url).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap bitmap) {
+            blob = getBlob(bitmap);
+            getActivity().setProgressBarIndeterminateVisibility(false);
+            loadProfileEditFragment();
+        }
+    }
 }

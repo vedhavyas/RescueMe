@@ -100,8 +100,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/fbLoginBtn"
-        android:layout_alignEnd="@+id/nameView"
-        android:layout_alignRight="@+id/nameView"
+        android:layout_alignLeft="@+id/nameView"
+        android:layout_alignStart="@+id/nameView"
         android:layout_toStartOf="@+id/loginRegisterBtn"
         android:text="@string/or"
         android:textAppearance="?android:attr/textAppearanceMedium" />

@@ -21,19 +21,10 @@ public class RescueMeAppExtension extends Application {
         Logger.DEBUG_WITH_STACKTRACE = true;
 
         // initialize facebook configuration
-        Permission[] permissions = new Permission[] {
+        Permission[] permissions = new Permission[]{
                 Permission.PUBLIC_PROFILE,
-                Permission.USER_GROUPS,
-                Permission.USER_BIRTHDAY,
-                Permission.USER_LIKES,
                 Permission.USER_PHOTOS,
-                Permission.USER_VIDEOS,
-                Permission.USER_FRIENDS,
-                Permission.USER_EVENTS,
-                Permission.USER_VIDEOS,
-                Permission.USER_RELATIONSHIPS,
-                Permission.READ_STREAM,
-                Permission.PUBLISH_ACTION
+                Permission.EMAIL
         };
 
         SimpleFacebookConfiguration configuration = new SimpleFacebookConfiguration.Builder()

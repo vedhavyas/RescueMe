@@ -32,6 +32,10 @@ public class RescueMeUtilActivity extends Activity {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, updateContactFrag)
                     .commit();
+        } else if (fragmentTag.equalsIgnoreCase(RescueMeConstants.UPDATE_PROFILE)) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, new RescueMeUpdateProfile())
+                    .commit();
         }
     }
 }

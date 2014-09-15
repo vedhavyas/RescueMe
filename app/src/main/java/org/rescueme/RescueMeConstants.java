@@ -17,13 +17,17 @@ public class RescueMeConstants {
     public static final String SELECT_TAG = "tag to load";
     public static final String EXCEPTION_CAUGHT = "Caught the exception";
     public static final String LOGIN_NOW = "Please Log In Now";
+    public static final String FAILED_TO_GET_USER_PROFILE = "Failed to get the profile";
+    public static final String UPDATING_USER_PROFILE = "Updating Profile Info";
+    public static final String UPDATE_PROFILE_FAIL = "Profile Update Failed";
+    public static final String UPDATE_PROFILE_SUCCESS = "Updated Profile Info";
 
     //Login constants
     public static final String LOGIN = "Log In";
     public static final String LOGIN_SUCCESS = "Login Successful";
     public static final String LOGIN_FAIL = "Failed to Log In";
     public static final String LOGGED_IN_USER_ID = "Logged in user ID";
-    public static final String UPDATE_PROFILE = "Update user Profile";
+    public static final String UPDATE_PROFILE = "Update Profile";
 
     //Registration constants
     public static final String REGISTER = "Registration";
@@ -34,6 +38,8 @@ public class RescueMeConstants {
     public static final String PASSWORD_FAIL = "Password is too short (Min 5 characters)";
     public static final String PHONE_FAIL = "Not a 10 digit number or contains characters";
     public static final String NAME_EMPTY = "Name cannot be blank";
+    public static final String MESSAGE_EMPTY = "Message cannot be blank";
+    public static final int SELECT_PICTURE = 1;
     public static final int PASSWORD_MIN_LENGTH = 5;
     public static final int PHONE_NUMBER_LENGTH = 10;
 

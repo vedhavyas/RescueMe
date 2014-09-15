@@ -45,6 +45,7 @@ public class RescueMeProfileEdit extends Fragment {
         name = (EditText) rootView.findViewById(R.id.name);
         email = (EditText) rootView.findViewById(R.id.email);
         phoneNumber = (EditText) rootView.findViewById(R.id.phoneNumber);
+        getActivity().getActionBar().setTitle(RescueMeConstants.UPDATE_PROFILE);
         Button updateProfileBtn = (Button) rootView.findViewById(R.id.updateProfileBtn);
         updateProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override

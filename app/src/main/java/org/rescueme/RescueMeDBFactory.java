@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -203,12 +204,49 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
 
     public int updateProfilePicture(RescueMeUserModel user) {
         SQLiteDatabase db = getWritableDatabase();
-        int result = -1;
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(RescueMeConstants.COLUMN_PROFILE_PIC, user.getProfilePic());
 
-        result = db.update(table_name, contentValues, RescueMeConstants.COLUMN_ID + " = " + user.getId(), null);
+        return db.update(table_name, contentValues, RescueMeConstants.COLUMN_ID + " = " + user.getId(), null);
+    }
+
+    public int updateUserData(RescueMeUserModel user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int result = -1;
+
+        RescueMeUserModel oldUserData = getUserDetails(user.getId());
+
+        ContentValues contentValues = new ContentValues();
+        if (!oldUserData.getName().equals(user.getName())) {
+            contentValues.put(RescueMeConstants.COLUMN_NAME, user.getName());
+        }
+
+        if (!oldUserData.getEmail().equals(user.getEmail())) {
+            contentValues.put(RescueMeConstants.COLUMN_EMAIL, user.getEmail());
+        }
+
+        if (!oldUserData.getNumber().equals(user.getNumber())) {
+            contentValues.put(RescueMeConstants.COLUMN_NUMBER, user.getNumber());
+        }
+
+        if (!oldUserData.getMessage().equals(user.getMessage())) {
+            contentValues.put(RescueMeConstants.COLUMN_PERSONAL_MESSAGE, user.getMessage());
+        }
+
+        if (!Arrays.equals(oldUserData.getProfilePic(), user.getProfilePic())) {
+            contentValues.put(RescueMeConstants.COLUMN_PROFILE_PIC, user.getProfilePic());
+        }
+
+        if (contentValues.size() > 0) {
+            try {
+                result = db.update(table_name, contentValues, RescueMeConstants.COLUMN_ID + " = " + user.getId(), null);
+            } catch (SQLiteConstraintException e) {
+                return result;
+            }
+
+        }
+
         return result;
     }
 

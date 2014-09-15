@@ -3,6 +3,7 @@ package org.rescueme;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -42,7 +43,6 @@ public class RescueMeProfile extends Fragment {
     private String userId;
     private RescueMeUserModel userData;
     private Bitmap profilePicBitmap;
-    private MenuItem refresh;
 
     public RescueMeProfile() {
         // Required empty public constructor
@@ -77,7 +77,9 @@ public class RescueMeProfile extends Fragment {
         inflater.inflate(R.menu.rescue_me_actionbar_menu, menu);
         MenuItem refresh = menu.findItem(R.id.refreshProfile);
         MenuItem logout = menu.findItem(R.id.action_logout);
+        MenuItem updateProfile = menu.findItem(R.id.updateProfile);
         logout.setVisible(false);
+        updateProfile.setVisible(true);
         if (simpleFacebook.isLogin()) {
             refresh.setVisible(true);
         }
@@ -89,6 +91,8 @@ public class RescueMeProfile extends Fragment {
         int itemId = item.getItemId();
         if (itemId == R.id.refreshProfile) {
             updateProfilePicture();
+        } else if (itemId == R.id.updateProfile) {
+            startUtilActivity();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -140,9 +144,14 @@ public class RescueMeProfile extends Fragment {
     private byte[] getBlob(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
-        byte[] blob = stream.toByteArray();
 
-        return blob;
+        return stream.toByteArray();
+    }
+
+    private void startUtilActivity(){
+        Intent intent = new Intent(context, RescueMeUtilActivity.class);
+        intent.putExtra(RescueMeConstants.FRAGMENT_TAG, RescueMeConstants.UPDATE_PROFILE);
+        startActivity(intent);
     }
 
     public class setProfileTask extends AsyncTask<Void, Void, Void> {

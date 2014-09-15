@@ -22,4 +22,18 @@
         android:title="@string/refresh_profile"
         android:visible="false" />
 
+    <item
+        android:id="@+id/updateProfile"
+        android:icon="@drawable/ic_action_edit"
+        android:showAsAction="ifRoom"
+        android:title="@string/update_profile"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/doneEditing"
+        android:icon="@drawable/ic_action_accept"
+        android:showAsAction="ifRoom"
+        android:title="@string/finish_editing_profile"
+        android:visible="false" />
+
 </menu>

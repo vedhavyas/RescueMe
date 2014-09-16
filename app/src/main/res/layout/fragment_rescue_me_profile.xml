@@ -20,10 +20,9 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/profilePic"
-        android:layout_alignStart="@+id/profilePic"
-        android:layout_below="@+id/profilePic"
-        android:layout_marginStart="42dp"
+        android:layout_alignLeft="@+id/email"
+        android:layout_alignStart="@+id/email"
+        android:layout_centerVertical="true"
         android:hint="@string/name_hint"
         android:paddingTop="15dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -32,10 +31,10 @@
         android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/name"
-        android:layout_alignStart="@+id/name"
+        android:layout_alignLeft="@+id/profilePic"
+        android:layout_alignStart="@+id/profilePic"
         android:layout_below="@+id/name"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="29dp"
         android:hint="@string/email"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -46,7 +45,7 @@
         android:layout_alignLeft="@+id/email"
         android:layout_alignStart="@+id/email"
         android:layout_below="@+id/email"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="31dp"
         android:hint="@string/number"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -57,7 +56,7 @@
         android:layout_alignLeft="@+id/phoneNumber"
         android:layout_alignStart="@+id/phoneNumber"
         android:layout_below="@+id/phoneNumber"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="36dp"
         android:hint="@string/personal_msg"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 

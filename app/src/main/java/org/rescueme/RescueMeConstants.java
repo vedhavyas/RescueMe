@@ -11,7 +11,7 @@ public class RescueMeConstants {
     public static final String RESCUE_ME_MAIN = "Rescue Me";
     public static final String RESCUE_ME = "Rescue Me";
     public static final String LOGOUT_SUCCESS = "Logout Successful";
-    public static final int SPLASH_SCREEN_TIMEOUT = 2000;
+    public static final int SPLASH_SCREEN_TIMEOUT = 1500;
     public static final String EMAIL_REGEX = "@";
     public static final String FRAGMENT_TAG = "Fragment_tag";
     public static final String SELECT_TAG = "tag to load";
@@ -97,4 +97,25 @@ public class RescueMeConstants {
     public static final String FAILED_TO_ADD_CONTACT = "Failed to add the Contact.. Check Email and PhoneNumber";
     public static final String DELETE_EMERGENCY_CONTACT_SUCCESS = "Contact Successfully deleted";
     public static final String DELETE_EMERGENCY_CONTACT_FAIL = "Failed to Delete the contact";
+
+    //Panic button related
+    public static final String DIALOG_TITLE = "Emergency";
+    public static final String PANIC_CNF = "Confirm";
+    public static final String PANIC_FALSE_ALARM = "False Alarm";
+    public static final String DIALOG_MESSAGE = "Do you think you are in Danger ?";
+    public static final String SMS_SENT_SUCCESS = "SMS Sent to All of the contacts";
+    public static final String GET_GPS_LOCATION_AGAIN = "Getting Coordinates again";
+
+
+    //GPS Location related Constants
+    public static final long MIN_DISTANCE_FOR_UPDATE = 10; //meters
+    public static final long MIN_TIME_FOR_UPDATE = 1000 * 60 * 2; //2 minutes
+    public static final String ADD_EXTRA_MESSAGE = "I'm at the location : ";
+    public static final String LATITUDE = "Latitude : ";
+    public static final String LONGITUDE = "Longitude : ";
+    public static final String SETTINGS = " Settings";
+    public static final String PROVIDER_NOT_ENABLED = " is not enabled! Want to go to settings menu?";
+    public static final String CANCEL = "Cancel";
+    public static final int GPS_LOCATION_SETTINGS = 1;
+    public static final int GPS_AFTER_SETTINGS_SLEEP = 6000;
 }

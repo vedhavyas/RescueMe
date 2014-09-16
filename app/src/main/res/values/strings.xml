@@ -30,4 +30,5 @@
     <string name="connect_fb">Connect to FaceBook for Profile Picture</string>
     <string name="update_profile">Update</string>
     <string name="finish_editing_profile">Done Editing</string>
+    <string name="panic_btn_desc">Panic Button</string>
 </resources>

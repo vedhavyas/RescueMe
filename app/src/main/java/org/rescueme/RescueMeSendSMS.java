@@ -51,6 +51,8 @@ public class RescueMeSendSMS extends AsyncTask<Location, Void, String> {
         activity.setProgressBarIndeterminateVisibility(false);
         if (result.equalsIgnoreCase(RescueMeConstants.SUCCESS)) {
             Toast.makeText(context, RescueMeConstants.SMS_SENT_SUCCESS, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, RescueMeConstants.SMS_FAILED, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -63,8 +65,12 @@ public class RescueMeSendSMS extends AsyncTask<Location, Void, String> {
         personalMessage = dbFactory.getUserDetails(userId).getMessage();
         personalMessage = personalMessage + "\n" + RescueMeConstants.ADD_EXTRA_MESSAGE + "\n" + RescueMeConstants.LATITUDE +
                 location.getLatitude() + "\n" + RescueMeConstants.LONGITUDE + location.getLongitude();
-        for (RescueMeUserModel contact : contacts) {
-            smsManager.sendTextMessage(contact.getNumber(), null, personalMessage, null, null);
+        if (contacts != null) {
+            for (RescueMeUserModel contact : contacts) {
+                smsManager.sendTextMessage(contact.getNumber(), null, personalMessage, null, null);
+            }
+        } else {
+            return false;
         }
 
         return true;

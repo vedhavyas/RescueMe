@@ -105,6 +105,7 @@ public class RescueMeConstants {
     public static final String DIALOG_MESSAGE = "Do you think you are in Danger ?";
     public static final String SMS_SENT_SUCCESS = "SMS Sent to All of the contacts";
     public static final String GET_GPS_LOCATION_AGAIN = "Getting Coordinates again";
+    public static final String SMS_FAILED = "SMS failed. You didn't configure Emergency contacs";
 
 
     //GPS Location related Constants

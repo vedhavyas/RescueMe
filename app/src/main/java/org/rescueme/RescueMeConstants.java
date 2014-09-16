@@ -21,6 +21,7 @@ public class RescueMeConstants {
     public static final String UPDATING_USER_PROFILE = "Updating Profile Info";
     public static final String UPDATE_PROFILE_FAIL = "Profile Update Failed";
     public static final String UPDATE_PROFILE_SUCCESS = "Updated Profile Info";
+    public static final String LOG_TAG = "RescueME";
 
     //Login constants
     public static final String LOGIN = "Log In";

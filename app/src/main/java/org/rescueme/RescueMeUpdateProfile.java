@@ -200,7 +200,9 @@ public class RescueMeUpdateProfile extends Fragment {
                 email.setText(userData.getEmail());
                 phoneNumber.setText(userData.getNumber());
                 personalMessage.setText(userData.getMessage());
-                profilePic.setImageBitmap(profilePicBitmap);
+                if (profilePicBitmap != null) {
+                    profilePic.setImageBitmap(profilePicBitmap);
+                }
             }
         }
     }

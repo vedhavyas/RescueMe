@@ -163,7 +163,11 @@ public class RescueMeProfile extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
             userData = dbFactory.getUserDetails(userId);
-            profilePicBitmap = getBitmapFromBlob(userData.getProfilePic());
+            try {
+                profilePicBitmap = getBitmapFromBlob(userData.getProfilePic());
+            } catch (NullPointerException e) {
+                Log.i(RescueMeConstants.LOG_TAG, e.toString());
+            }
             return null;
         }
 

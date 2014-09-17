@@ -18,7 +18,7 @@ public class RescueMeSplashScreen extends Activity {
 
         //hide notifications bar
         View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
         //hide action bar
         ActionBar actionBar = getActionBar();

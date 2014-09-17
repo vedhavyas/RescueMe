@@ -101,9 +101,11 @@ public class RescueMeUpdateProfile extends Fragment {
 
     private byte[] getBlob(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
-
-        return stream.toByteArray();
+        if(bitmap != null) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+            return stream.toByteArray();
+        }
+        return null;
     }
 
     private String isDataValid() {
@@ -222,7 +224,9 @@ public class RescueMeUpdateProfile extends Fragment {
                 userData.setEmail(email.getText().toString());
                 userData.setNumber(phoneNumber.getText().toString());
                 userData.setMessage(personalMessage.getText().toString());
-                userData.setProfilePic(getBlob(profilePicBitmap));
+                if(profilePicBitmap != null) {
+                    userData.setProfilePic(getBlob(profilePicBitmap));
+                }
                 dbFactory.setTable_name(RescueMeConstants.USER_TABLE);
                 if (dbFactory.updateUserData(userData) > 0) {
                     return RescueMeConstants.SUCCESS;

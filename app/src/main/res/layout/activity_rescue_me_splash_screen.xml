@@ -12,14 +12,12 @@
         android:layout_alignTop="@+id/appName"
         android:layout_marginRight="41dp"
         android:layout_toLeftOf="@+id/appName"
-        android:layout_toStartOf="@+id/appName"
         android:src="@drawable/ic_launcher" />
 
     <TextView
         android:id="@+id/appName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="36dp"

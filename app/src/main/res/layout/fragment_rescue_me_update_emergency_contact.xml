@@ -20,7 +20,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/name"
-        android:layout_alignStart="@+id/name"
         android:layout_below="@+id/name"
         android:layout_marginTop="45dp"
         android:ems="10"
@@ -31,23 +30,20 @@
         android:id="@+id/phoneNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/email"
-        android:layout_below="@+id/email"
-        android:layout_marginTop="47dp"
         android:ems="10"
         android:hint="@string/number"
-        android:inputType="phone" />
+        android:inputType="phone"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/email" />
 
     <Button
         android:id="@+id/updateContactBtn"
 
         android:layout_width="108dp"
         android:layout_height="49dp"
-        android:layout_alignEnd="@+id/phoneNumber"
 
         android:layout_alignLeft="@+id/phoneNumber"
         android:layout_alignRight="@+id/phoneNumber"
-        android:layout_alignStart="@+id/phoneNumber"
         android:layout_below="@+id/phoneNumber"
         android:layout_marginTop="51dp"
         android:background="@drawable/button_large_selector"
@@ -64,10 +60,8 @@
 
         android:layout_width="108dp"
         android:layout_height="49dp"
-        android:layout_alignEnd="@+id/updateContactBtn"
         android:layout_alignLeft="@+id/updateContactBtn"
         android:layout_alignRight="@+id/updateContactBtn"
-        android:layout_alignStart="@+id/updateContactBtn"
         android:layout_below="@+id/updateContactBtn"
         android:layout_marginTop="45dp"
         android:background="@drawable/button_large_selector"

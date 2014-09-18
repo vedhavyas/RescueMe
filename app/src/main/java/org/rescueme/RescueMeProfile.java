@@ -30,6 +30,8 @@ import com.sromku.simple.fb.utils.Attributes;
 import com.sromku.simple.fb.utils.PictureAttributes;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 
 public class RescueMeProfile extends Fragment {
@@ -47,6 +49,7 @@ public class RescueMeProfile extends Fragment {
     private RescueMeUserModel userData;
     private Bitmap profilePicBitmap;
     private File croppedImageFile;
+    private String tempImagePath;
 
     public RescueMeProfile() {
         // Required empty public constructor
@@ -151,6 +154,12 @@ public class RescueMeProfile extends Fragment {
         if (resultCode == Activity.RESULT_OK && requestCode == RescueMeConstants.CROP_IMAGE) {
             profilePicBitmap = BitmapFactory.decodeFile(croppedImageFile.getAbsolutePath());
             profilePic.setImageBitmap(profilePicBitmap);
+            if (tempImagePath != null) {
+                File tempFile = new File(tempImagePath);
+                if (tempFile.delete()) {
+                    tempImagePath = null;
+                }
+            }
             new UpdateBlobInDB().execute();
         }
 
@@ -213,8 +222,17 @@ public class RescueMeProfile extends Fragment {
                 Uri croppedImage = Uri.fromFile(croppedImageFile);
                 CropImageIntentBuilder cropImage = new CropImageIntentBuilder(450,
                         450, croppedImage);
-                cropImage.setBitmap(bitmap);
-                startActivityForResult(cropImage.getIntent(getActivity()), RescueMeConstants.CROP_IMAGE);
+                File outDir = context.getCacheDir().getAbsoluteFile();
+                tempImagePath = outDir + "/temp_image";
+                try {
+                    FileOutputStream fos = new FileOutputStream(tempImagePath);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                    cropImage.setSourceImage(Uri.fromFile(new File(tempImagePath)));
+                    startActivityForResult(cropImage.getIntent(getActivity()), RescueMeConstants.CROP_IMAGE);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
     }

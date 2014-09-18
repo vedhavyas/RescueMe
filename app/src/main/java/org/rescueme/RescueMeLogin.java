@@ -30,6 +30,8 @@ import com.sromku.simple.fb.utils.Attributes;
 import com.sromku.simple.fb.utils.PictureAttributes;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 
 
@@ -48,6 +50,7 @@ public class RescueMeLogin extends Fragment {
     private Profile fbUserProfile;
     private byte[] blob;
     private File croppedImageFile;
+    private String tempImagePath;
 
     public RescueMeLogin() {
         // Required empty public constructor
@@ -115,6 +118,12 @@ public class RescueMeLogin extends Fragment {
         simpleFacebook.onActivityResult(getActivity(), requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == RescueMeConstants.CROP_IMAGE) {
             blob = RescueMeUtilClass.getBlob(BitmapFactory.decodeFile(croppedImageFile.getAbsolutePath()));
+            if (tempImagePath != null) {
+                File tempFile = new File(tempImagePath);
+                if (tempFile.delete()) {
+                    tempImagePath = null;
+                }
+            }
             loadProfileEditFragment();
         }
     }
@@ -289,8 +298,16 @@ public class RescueMeLogin extends Fragment {
             Uri croppedImage = Uri.fromFile(croppedImageFile);
             CropImageIntentBuilder cropImage = new CropImageIntentBuilder(450,
                     450, croppedImage);
-            cropImage.setBitmap(bitmap);
-            startActivityForResult(cropImage.getIntent(getActivity()), RescueMeConstants.CROP_IMAGE);
+            File outDir = context.getCacheDir().getAbsoluteFile();
+            tempImagePath = outDir + "/temp_image";
+            try {
+                FileOutputStream fos = new FileOutputStream(tempImagePath);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                cropImage.setSourceImage(Uri.fromFile(new File(tempImagePath)));
+                startActivityForResult(cropImage.getIntent(getActivity()), RescueMeConstants.CROP_IMAGE);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

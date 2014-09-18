@@ -26,7 +26,6 @@ import com.sromku.simple.fb.listeners.OnProfileListener;
 import com.sromku.simple.fb.utils.Attributes;
 import com.sromku.simple.fb.utils.PictureAttributes;
 
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 
@@ -195,13 +194,6 @@ public class RescueMeLogin extends Fragment {
         getActivity().setProgressBarIndeterminateVisibility(true);
     }
 
-    private byte[] getBlob(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
-        byte[] blob = stream.toByteArray();
-
-        return blob;
-    }
 
     private void loadProfileEditFragment() {
         Bundle profileData = new Bundle();
@@ -276,7 +268,7 @@ public class RescueMeLogin extends Fragment {
         }
 
         protected void onPostExecute(Bitmap bitmap) {
-            blob = getBlob(bitmap);
+            blob = RescueMeUtilClass.getBlob(bitmap);
             getActivity().setProgressBarIndeterminateVisibility(false);
             loadProfileEditFragment();
         }

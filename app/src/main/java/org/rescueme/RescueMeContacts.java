@@ -37,8 +37,8 @@ public class RescueMeContacts extends Fragment {
 
         List<RescueMeUserModel> emergencyContacts = getContacts();
 
-        RescueMeContactListAdapter circlesAdapter = new RescueMeContactListAdapter(context, emergencyContacts);
-        contactsListView.setAdapter(circlesAdapter);
+        RescueMeContactListAdapter contactsAdapter = new RescueMeContactListAdapter(context, emergencyContacts);
+        contactsListView.setAdapter(contactsAdapter);
 
         contactsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

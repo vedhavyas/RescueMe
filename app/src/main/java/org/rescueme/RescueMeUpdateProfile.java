@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,7 +21,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 
@@ -89,23 +87,6 @@ public class RescueMeUpdateProfile extends Fragment {
             new updateProfileTask().execute();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private Bitmap getBitmapFromBlob(byte[] blob) {
-        Bitmap bitmap = null;
-        if (blob != null) {
-            bitmap = BitmapFactory.decodeByteArray(blob, 0, blob.length);
-        }
-        return bitmap;
-    }
-
-    private byte[] getBlob(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        if(bitmap != null) {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
-            return stream.toByteArray();
-        }
-        return null;
     }
 
     private String isDataValid() {
@@ -188,7 +169,7 @@ public class RescueMeUpdateProfile extends Fragment {
         protected Void doInBackground(Void... params) {
             dbFactory.setTable_name(RescueMeConstants.USER_TABLE);
             userData = dbFactory.getUserDetails(prefs.getString(RescueMeConstants.LOGGED_IN_USER_ID, String.valueOf(1)));
-            profilePicBitmap = getBitmapFromBlob(userData.getProfilePic());
+            profilePicBitmap = RescueMeUtilClass.getBitmapFromBlob(userData.getProfilePic());
             return null;
         }
 
@@ -225,7 +206,7 @@ public class RescueMeUpdateProfile extends Fragment {
                 userData.setNumber(phoneNumber.getText().toString());
                 userData.setMessage(personalMessage.getText().toString());
                 if(profilePicBitmap != null) {
-                    userData.setProfilePic(getBlob(profilePicBitmap));
+                    userData.setProfilePic(RescueMeUtilClass.getBlob(profilePicBitmap));
                 }
                 dbFactory.setTable_name(RescueMeConstants.USER_TABLE);
                 if (dbFactory.updateUserData(userData) > 0) {

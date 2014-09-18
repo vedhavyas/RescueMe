@@ -26,7 +26,6 @@ import com.sromku.simple.fb.listeners.OnProfileListener;
 import com.sromku.simple.fb.utils.Attributes;
 import com.sromku.simple.fb.utils.PictureAttributes;
 
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 public class RescueMeProfile extends Fragment {
@@ -107,13 +106,6 @@ public class RescueMeProfile extends Fragment {
         new setProfileTask().execute();
     }
 
-    private Bitmap getBitmapFromBlob(byte[] blob) {
-        Bitmap bitmap = null;
-        if (blob != null) {
-            bitmap = BitmapFactory.decodeByteArray(blob, 0, blob.length);
-        }
-        return bitmap;
-    }
 
     private void updateProfilePicture() {
         OnProfileListener onProfileListener = new OnProfileListener() {
@@ -141,14 +133,7 @@ public class RescueMeProfile extends Fragment {
         Toast.makeText(context, RescueMeConstants.UPDATE_FB_PROFILE_PIC, Toast.LENGTH_SHORT).show();
     }
 
-    private byte[] getBlob(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
-
-        return stream.toByteArray();
-    }
-
-    private void startUtilActivity(){
+    private void startUtilActivity() {
         Intent intent = new Intent(context, RescueMeUtilActivity.class);
         intent.putExtra(RescueMeConstants.FRAGMENT_TAG, RescueMeConstants.UPDATE_PROFILE);
         startActivity(intent);
@@ -164,7 +149,7 @@ public class RescueMeProfile extends Fragment {
         protected Void doInBackground(Void... params) {
             userData = dbFactory.getUserDetails(userId);
             try {
-                profilePicBitmap = getBitmapFromBlob(userData.getProfilePic());
+                profilePicBitmap = RescueMeUtilClass.getBitmapFromBlob(userData.getProfilePic());
             } catch (NullPointerException e) {
                 Log.i(RescueMeConstants.LOG_TAG, e.toString());
             }
@@ -200,18 +185,23 @@ public class RescueMeProfile extends Fragment {
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
             }
-            byte[] blob = getBlob(bitmap);
+            byte[] blob = RescueMeUtilClass.getBlob(bitmap);
             RescueMeUserModel user = new RescueMeUserModel();
             user.setId(userId);
-            user.setProfilePic(blob);
-            dbFactory.setTable_name(RescueMeConstants.USER_TABLE);
-            int result = dbFactory.updateProfilePicture(user);
-            if (result > 0) {
-                profilePicBitmap = getBitmapFromBlob(dbFactory.getUserDetails(userId).getProfilePic());
-                return RescueMeConstants.SUCCESS;
-            } else {
-                return RescueMeConstants.UPDATE_FB_PROFILE_PIC_FAIL;
+            if (blob != null) {
+                user.setProfilePic(blob);
+                dbFactory.setTable_name(RescueMeConstants.USER_TABLE);
+                int result = dbFactory.updateProfilePicture(user);
+                if (result > 0) {
+                    profilePicBitmap = RescueMeUtilClass.getBitmapFromBlob(dbFactory.getUserDetails(userId).getProfilePic());
+                    return RescueMeConstants.SUCCESS;
+                } else {
+                    return RescueMeConstants.UPDATE_FB_PROFILE_PIC_FAIL;
+                }
             }
+
+            return RescueMeConstants.UPDATE_FB_PROFILE_PIC_FAIL;
+
         }
 
         protected void onPostExecute(String result) {

@@ -7,10 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,7 +22,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.IOException;
+import com.android.camera.CropImageIntentBuilder;
+
+import java.io.File;
 
 
 public class RescueMeUpdateProfile extends Fragment {
@@ -54,7 +57,11 @@ public class RescueMeUpdateProfile extends Fragment {
         phoneNumber = (EditText) rootView.findViewById(R.id.phoneNumber);
         personalMessage = (EditText) rootView.findViewById(R.id.personalMessage);
         dbFactory = RescueMeDBFactory.getInstance(context);
-        getActivity().getActionBar().setTitle(RescueMeConstants.UPDATE_PROFILE);
+        try {
+            getActivity().getActionBar().setTitle(RescueMeConstants.UPDATE_PROFILE);
+        } catch (NullPointerException e) {
+            Log.i(RescueMeConstants.LOG_TAG, RescueMeConstants.EXCEPTION_CAUGHT);
+        }
         prefs = getActivity().getSharedPreferences(RescueMeConstants.PREFERENCE_NAME
                 , Context.MODE_PRIVATE);
         new setUI().execute();
@@ -137,14 +144,19 @@ public class RescueMeUpdateProfile extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        File croppedImageFile = new File(context.getFilesDir(), "cropFile.jpg");
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == RescueMeConstants.SELECT_PICTURE) {
                 Uri selectedImageUri = data.getData();
-                try {
-                    profilePicBitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), selectedImageUri);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Uri croppedImage = Uri.fromFile(croppedImageFile);
+
+                CropImageIntentBuilder cropImage = new CropImageIntentBuilder(450,
+                        450, croppedImage);
+                cropImage.setSourceImage(selectedImageUri);
+                startActivityForResult(cropImage.getIntent(getActivity()), RescueMeConstants.CROP_IMAGE);
+            } else if (requestCode == RescueMeConstants.CROP_IMAGE) {
+                profilePicBitmap = BitmapFactory.decodeFile(croppedImageFile.getAbsolutePath());
                 profilePic.setImageBitmap(profilePicBitmap);
             }
         }
@@ -205,7 +217,7 @@ public class RescueMeUpdateProfile extends Fragment {
                 userData.setEmail(email.getText().toString());
                 userData.setNumber(phoneNumber.getText().toString());
                 userData.setMessage(personalMessage.getText().toString());
-                if(profilePicBitmap != null) {
+                if (profilePicBitmap != null) {
                     userData.setProfilePic(RescueMeUtilClass.getBlob(profilePicBitmap));
                 }
                 dbFactory.setTable_name(RescueMeConstants.USER_TABLE);

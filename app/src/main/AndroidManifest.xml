@@ -50,6 +50,8 @@
             android:label="@string/title_activity_rescue_me_util"
             android:screenOrientation="portrait" />
 
+        <activity android:name="com.android.camera.CropImage" />
+
     </application>
 
 </manifest>

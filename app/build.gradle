@@ -30,4 +30,5 @@ dependencies {
     compile 'com.android.support:support-v4:20.0.0'
     compile 'com.github.asne.facebook:facebook:3.17.2'
     compile files('libs/simple.facebook-2.1.jar')
+    compile project(':CropImage')
 }

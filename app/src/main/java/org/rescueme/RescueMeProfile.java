@@ -1,12 +1,14 @@
 package org.rescueme;
 
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,12 +22,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.camera.CropImageIntentBuilder;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.entities.Profile;
 import com.sromku.simple.fb.listeners.OnProfileListener;
 import com.sromku.simple.fb.utils.Attributes;
 import com.sromku.simple.fb.utils.PictureAttributes;
 
+import java.io.File;
 import java.io.InputStream;
 
 public class RescueMeProfile extends Fragment {
@@ -42,6 +46,7 @@ public class RescueMeProfile extends Fragment {
     private String userId;
     private RescueMeUserModel userData;
     private Bitmap profilePicBitmap;
+    private File croppedImageFile;
 
     public RescueMeProfile() {
         // Required empty public constructor
@@ -139,6 +144,18 @@ public class RescueMeProfile extends Fragment {
         startActivity(intent);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        simpleFacebook.onActivityResult(getActivity(), requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == RescueMeConstants.CROP_IMAGE) {
+            profilePicBitmap = BitmapFactory.decodeFile(croppedImageFile.getAbsolutePath());
+            profilePic.setImageBitmap(profilePicBitmap);
+            new UpdateBlobInDB().execute();
+        }
+
+    }
+
     public class setProfileTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
@@ -169,50 +186,68 @@ public class RescueMeProfile extends Fragment {
         }
     }
 
-    private class DownloadImageAndSetTask extends AsyncTask<String, Void, String> {
+    private class DownloadImageAndSetTask extends AsyncTask<String, Void, Bitmap> {
 
         public DownloadImageAndSetTask() {
             //empty constructor
         }
 
-        protected String doInBackground(String... urls) {
+        protected Bitmap doInBackground(String... urls) {
             String url = urls[0];
             Bitmap bitmap = null;
             try {
                 InputStream in = new java.net.URL(url).openStream();
                 bitmap = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
-                Log.e("Error", e.getMessage());
+                Log.e(RescueMeConstants.LOG_TAG, e.getMessage());
                 e.printStackTrace();
             }
-            byte[] blob = RescueMeUtilClass.getBlob(bitmap);
+            return bitmap;
+
+        }
+
+        protected void onPostExecute(Bitmap bitmap) {
+            getActivity().setProgressBarIndeterminateVisibility(false);
+            if (bitmap != null) {
+                croppedImageFile = new File(context.getFilesDir(), "cropFile.jpg");
+                Uri croppedImage = Uri.fromFile(croppedImageFile);
+                CropImageIntentBuilder cropImage = new CropImageIntentBuilder(450,
+                        450, croppedImage);
+                cropImage.setBitmap(bitmap);
+                startActivityForResult(cropImage.getIntent(getActivity()), RescueMeConstants.CROP_IMAGE);
+            }
+        }
+    }
+
+    private class UpdateBlobInDB extends AsyncTask<Void, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            getActivity().setProgressBarIndeterminateVisibility(true);
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
             RescueMeUserModel user = new RescueMeUserModel();
             user.setId(userId);
+            byte[] blob = RescueMeUtilClass.getBlob(profilePicBitmap);
             if (blob != null) {
                 user.setProfilePic(blob);
                 dbFactory.setTable_name(RescueMeConstants.USER_TABLE);
                 int result = dbFactory.updateProfilePicture(user);
                 if (result > 0) {
                     profilePicBitmap = RescueMeUtilClass.getBitmapFromBlob(dbFactory.getUserDetails(userId).getProfilePic());
-                    return RescueMeConstants.SUCCESS;
-                } else {
-                    return RescueMeConstants.UPDATE_FB_PROFILE_PIC_FAIL;
+                    return RescueMeConstants.UPDATE_FB_PROFILE_PIC_SUCCESS;
                 }
             }
 
             return RescueMeConstants.UPDATE_FB_PROFILE_PIC_FAIL;
-
         }
 
+        @Override
         protected void onPostExecute(String result) {
             getActivity().setProgressBarIndeterminateVisibility(false);
-            if (result.equalsIgnoreCase(RescueMeConstants.SUCCESS)) {
-                profilePic.setImageBitmap(profilePicBitmap);
-                Toast.makeText(context, RescueMeConstants.UPDATE_FB_PROFILE_PIC_SUCCESS, Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
         }
     }
-
 }

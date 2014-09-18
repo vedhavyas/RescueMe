@@ -40,7 +40,6 @@ public class RescueMeConstants {
     public static final String PHONE_FAIL = "Not a 10 digit number or contains characters";
     public static final String NAME_EMPTY = "Name cannot be blank";
     public static final String MESSAGE_EMPTY = "Message cannot be blank";
-    public static final int SELECT_PICTURE = 1;
     public static final int PASSWORD_MIN_LENGTH = 5;
     public static final int PHONE_NUMBER_LENGTH = 10;
 
@@ -82,12 +81,14 @@ public class RescueMeConstants {
     public static final String FB_EXCEPTION_LOGIN = "Exception occurred during LogIn";
     public static final int FB_PROFILE_PIC_HEIGHT = 500;
     public static final int FB_PROFILE_PIC_WIDTH = 800;
+    public static final String DOWNLOADING_PROFILE = "Downloading your Profile";
     public static final String GOT_PROFILE_DATA = "Downloaded your Profile";
+    public static final String DOWNLOADING_PROFILE_PIC = "Downloading your Profile Picture";
     public static final String FB_FIRST_TIME_LOGIN = "First time login";
     public static final String FB_USER_ID = "Facebook connected user ID";
     public static final String UPDATE_FB_PROFILE_PIC = "Updating your Profile Picture...";
     public static final String UPDATE_FB_PROFILE_PIC_SUCCESS = "Profile Pic updated successfully";
-    public static final String UPDATE_FB_PROFILE_PIC_FAIL = "Profile PIc Update Failed";
+    public static final String UPDATE_FB_PROFILE_PIC_FAIL = "Profile Pic Update Failed";
 
     //Emergency contacts related constants
     public static final String NEW_EMERGENCY_CONTACT = "Add Contact";
@@ -120,4 +121,9 @@ public class RescueMeConstants {
     public static final String CANCEL = "Cancel";
     public static final int GPS_LOCATION_SETTINGS = 1;
     public static final int GPS_AFTER_SETTINGS_SLEEP = 6000;
+
+
+    //Media constants
+    public static final int SELECT_PICTURE = 1;
+    public static final int CROP_IMAGE = 2;
 }

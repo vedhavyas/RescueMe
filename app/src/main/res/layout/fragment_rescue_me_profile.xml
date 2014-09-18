@@ -50,11 +50,13 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="30dp"
         android:orientation="vertical"
         android:showDividers="beginning">
 
@@ -62,11 +64,12 @@
             android:id="@+id/profilePic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:maxHeight="500dp"
-            android:maxWidth="400dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="30dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
             android:src="@drawable/default_profile_pic" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

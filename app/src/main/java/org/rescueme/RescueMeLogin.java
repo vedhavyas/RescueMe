@@ -1,12 +1,14 @@
 package org.rescueme;
 
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.android.camera.CropImageIntentBuilder;
 import com.sromku.simple.fb.Permission;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.entities.Profile;
@@ -26,6 +29,7 @@ import com.sromku.simple.fb.listeners.OnProfileListener;
 import com.sromku.simple.fb.utils.Attributes;
 import com.sromku.simple.fb.utils.PictureAttributes;
 
+import java.io.File;
 import java.io.InputStream;
 
 
@@ -43,6 +47,7 @@ public class RescueMeLogin extends Fragment {
     private OnProfileListener onProfileListener;
     private Profile fbUserProfile;
     private byte[] blob;
+    private File croppedImageFile;
 
     public RescueMeLogin() {
         // Required empty public constructor
@@ -108,6 +113,10 @@ public class RescueMeLogin extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         simpleFacebook.onActivityResult(getActivity(), requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == RescueMeConstants.CROP_IMAGE) {
+            blob = RescueMeUtilClass.getBlob(BitmapFactory.decodeFile(croppedImageFile.getAbsolutePath()));
+            loadProfileEditFragment();
+        }
     }
 
     private void loadRegistrationFragment() {
@@ -192,6 +201,7 @@ public class RescueMeLogin extends Fragment {
 
         simpleFacebook.getProfile(properties, onProfileListener);
         getActivity().setProgressBarIndeterminateVisibility(true);
+        Toast.makeText(context, RescueMeConstants.DOWNLOADING_PROFILE, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -254,6 +264,12 @@ public class RescueMeLogin extends Fragment {
             //empty constructor
         }
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(context, RescueMeConstants.DOWNLOADING_PROFILE_PIC, Toast.LENGTH_SHORT).show();
+        }
+
         protected Bitmap doInBackground(String... urls) {
             String url = urls[0];
             Bitmap bitmap = null;
@@ -268,9 +284,13 @@ public class RescueMeLogin extends Fragment {
         }
 
         protected void onPostExecute(Bitmap bitmap) {
-            blob = RescueMeUtilClass.getBlob(bitmap);
             getActivity().setProgressBarIndeterminateVisibility(false);
-            loadProfileEditFragment();
+            croppedImageFile = new File(context.getFilesDir(), "cropFile.jpg");
+            Uri croppedImage = Uri.fromFile(croppedImageFile);
+            CropImageIntentBuilder cropImage = new CropImageIntentBuilder(450,
+                    450, croppedImage);
+            cropImage.setBitmap(bitmap);
+            startActivityForResult(cropImage.getIntent(getActivity()), RescueMeConstants.CROP_IMAGE);
         }
     }
 }

@@ -96,9 +96,12 @@ public class RescueMeConstants {
     public static final String UPDATE_EMERGENCY_CONTACT_SUCCESS = "Contact Updated Successfully";
     public static final String UPDATE_EMERGENCY_CONTACT_FAIL = "Update Failed.. Check Email and PhoneNumber";
     public static final String ADDED_NEW_CONTACT = "Contact successfully added";
-    public static final String FAILED_TO_ADD_CONTACT = "Failed to add the Contact.. Check Email and PhoneNumber";
+    public static final String FAILED_TO_ADD_CONTACT = "Failed to add the Contact..";
     public static final String DELETE_EMERGENCY_CONTACT_SUCCESS = "Contact Successfully deleted";
     public static final String DELETE_EMERGENCY_CONTACT_FAIL = "Failed to Delete the contact";
+    public static final int PICK_CONTACT_FROM_LOCAL = 3;
+    public static final String PICK_NUMBER = "Pick a Number";
+    public static final String PICK_EMAIL = "Pick an Email";
 
     //Panic button related
     public static final String DIALOG_TITLE = "Emergency";
@@ -107,7 +110,7 @@ public class RescueMeConstants {
     public static final String DIALOG_MESSAGE = "Do you think you are in Danger ?";
     public static final String SMS_SENT_SUCCESS = "SMS Sent to All of the contacts";
     public static final String GET_GPS_LOCATION_AGAIN = "Getting Coordinates again";
-    public static final String SMS_FAILED = "SMS failed. You didn't configure Emergency contacs";
+    public static final String SMS_FAILED = "SMS failed. You didn't configure Emergency contacts";
 
 
     //GPS Location related Constants

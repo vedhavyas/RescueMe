@@ -13,7 +13,19 @@
         android:icon="@drawable/ic_action_new"
         android:showAsAction="ifRoom"
         android:title="@string/action_add_circle_contact"
-        android:visible="false" />
+        android:visible="false">
+
+        <menu>
+            <item
+                android:id="@+id/localContacts"
+                android:icon="@drawable/ic_action_add_person"
+                android:title="@string/local_contacts" />
+            <item
+                android:id="@+id/fbContacts"
+                android:icon="@drawable/facebook_btn_on_press"
+                android:title="@string/fb_contacts" />
+        </menu>
+    </item>
 
     <item
         android:id="@+id/refreshProfile"

@@ -67,7 +67,9 @@ public class RescueMeSendSMS extends AsyncTask<Location, Void, String> {
                 location.getLatitude() + "\n" + RescueMeConstants.LONGITUDE + location.getLongitude();
         if (contacts != null) {
             for (RescueMeUserModel contact : contacts) {
-                smsManager.sendTextMessage(contact.getNumber(), null, personalMessage, null, null);
+                if (contact.getNumber() != null) {
+                    smsManager.sendTextMessage(contact.getNumber(), null, personalMessage, null, null);
+                }
             }
         } else {
             return false;

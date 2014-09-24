@@ -31,4 +31,6 @@
     <string name="update_profile">Update</string>
     <string name="finish_editing_profile">Done Editing</string>
     <string name="panic_btn_desc">Panic Button</string>
+    <string name="local_contacts">Local Contacts</string>
+    <string name="fb_contacts">Facebook Friends</string>
 </resources>

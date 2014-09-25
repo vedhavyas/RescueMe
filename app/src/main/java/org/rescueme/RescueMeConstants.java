@@ -32,8 +32,9 @@ public class RescueMeConstants {
 
     //Registration constants
     public static final String REGISTER = "Registration";
+    public static final String REGISTERING_USER = "Please wait while we Register you";
     public static final String SUCCESS = "success";
-    public static final String FAILED = "Registration Failed";
+    public static final String REGISTRATION_FAILED = "Registration Failed";
     public static final String REGISTRATION_SUCCESS = "Registration Successful";
     public static final String EMAIL_FAIL = "Email Doesn't meet the constraints";
     public static final String PASSWORD_FAIL = "Password is too short (Min 5 characters)";
@@ -42,6 +43,8 @@ public class RescueMeConstants {
     public static final String MESSAGE_EMPTY = "Message cannot be blank";
     public static final int PASSWORD_MIN_LENGTH = 5;
     public static final int PHONE_NUMBER_LENGTH = 10;
+    public static final String CHOOSE_THE_PROFILE_PIC = "Profile pic cannot be blank";
+    public static final String FACEBOOK = "Facebook";
 
     //Database related constants
     public static final String DB_NAME = "rescueme.db";

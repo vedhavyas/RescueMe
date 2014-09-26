@@ -225,9 +225,10 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
         if (!oldUserData.getEmail().equals(user.getEmail())) {
             contentValues.put(RescueMeConstants.COLUMN_EMAIL, user.getEmail());
         }
-
-        if (!oldUserData.getNumber().equals(user.getNumber())) {
-            contentValues.put(RescueMeConstants.COLUMN_NUMBER, user.getNumber());
+        if (oldUserData.getNumber() != null) {
+            if (!oldUserData.getNumber().equals(user.getNumber())) {
+                contentValues.put(RescueMeConstants.COLUMN_NUMBER, user.getNumber());
+            }
         }
 
         if (!oldUserData.getMessage().equals(user.getMessage())) {

@@ -8,22 +8,28 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.plus.Plus;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.listeners.OnLogoutListener;
 
 
-public class RescueMeTabViewer extends Activity implements ActionBar.TabListener {
+public class RescueMeTabViewer extends Activity implements ActionBar.TabListener, GoogleApiClient.OnConnectionFailedListener
+        , GoogleApiClient.ConnectionCallbacks {
 
     private ActionBar actionBar;
     private ViewPager viewPager;
     private SharedPreferences prefs;
     private Context context;
     private SimpleFacebook simpleFacebook;
+    private GoogleApiClient googleApiClient;
     private OnLogoutListener fbLogoutListener;
 
 
@@ -31,6 +37,12 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         simpleFacebook = SimpleFacebook.getInstance(this);
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addOnConnectionFailedListener(this)
+                .addConnectionCallbacks(this)
+                .addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .build();
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_rescue_me_tab_viewer);
 
@@ -43,6 +55,7 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
         context = getBaseContext();
         RescueMeTabAdapter sectionsPagerAdapter = new RescueMeTabAdapter(getFragmentManager());
         setFbLogoutListener();
+        googleApiClient.connect();
         int selectTab = getIntent().getIntExtra(RescueMeConstants.SELECT_TAG, 0);
 
         viewPager.setAdapter(sectionsPagerAdapter);
@@ -95,13 +108,18 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
 
 
     private void logoutUser() {
-        if (prefs.getBoolean(RescueMeConstants.LOGIN, false) && !simpleFacebook.isLogin()) {
-            prefs.edit().putBoolean(RescueMeConstants.LOGIN, false).apply();
-        } else if (prefs.getBoolean(RescueMeConstants.LOGIN, false) && simpleFacebook.isLogin()) {
-            prefs.edit().putBoolean(RescueMeConstants.LOGIN, false).apply();
+        boolean fbLogin = simpleFacebook.isLogin();
+        boolean gPlusLogin = googleApiClient.isConnected();
+        prefs.edit().putBoolean(RescueMeConstants.LOGIN, false).apply();
+        if (fbLogin && gPlusLogin) {
             simpleFacebook.logout(fbLogoutListener);
-        } else if (!prefs.getBoolean(RescueMeConstants.LOGIN, false) && simpleFacebook.isLogin()) {
+            Plus.AccountApi.clearDefaultAccount(googleApiClient);
+            googleApiClient.disconnect();
+        } else if (fbLogin) {
             simpleFacebook.logout(fbLogoutListener);
+        } else if (gPlusLogin) {
+            Plus.AccountApi.clearDefaultAccount(googleApiClient);
+            googleApiClient.disconnect();
         }
         Toast.makeText(context, RescueMeConstants.LOGOUT_SUCCESS, Toast.LENGTH_SHORT).show();
         startMainActivity();
@@ -148,7 +166,7 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
         fbLogoutListener = new OnLogoutListener() {
             @Override
             public void onLogout() {
-
+                Log.i(RescueMeConstants.LOG_TAG, "Logged out from FB");
             }
 
             @Override
@@ -166,5 +184,20 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
 
             }
         };
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.i(RescueMeConstants.LOG_TAG, "Connected to Google");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(RescueMeConstants.LOG_TAG, "Connection suspended");
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        Log.i(RescueMeConstants.LOG_TAG, "Connection Failed");
     }
 }

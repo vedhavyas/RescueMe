@@ -33,7 +33,8 @@ public class RescueMeConstants {
     //Registration constants
     public static final String REGISTER = "Registration";
     public static final String REGISTERING_USER = "Please wait while we Register you";
-    public static final String SUCCESS = "success";
+    public static final String SUCCESS = "Success";
+    public static final String FAILED = "Failed";
     public static final String REGISTRATION_FAILED = "Registration Failed";
     public static final String REGISTRATION_SUCCESS = "Registration Successful";
     public static final String EMAIL_FAIL = "Email Doesn't meet the constraints";
@@ -129,7 +130,11 @@ public class RescueMeConstants {
     public static final int GPS_AFTER_SETTINGS_SLEEP = 6000;
 
 
-    //Media constants
+    //request codes
     public static final int SELECT_PICTURE = 1;
     public static final int CROP_IMAGE = 2;
+    public static final int GOOGLE_PLUS_LOGIN_RESOLUTION = 3;
+    public static final String GOOGLE_CONNECTION_SUCCESS = "Connected to Google";
+    public static final String GOOGLE_PLUS = "G Plus";
+    public static final String G_PLUS_FIRST_TIME_LOGIN = "gPlus first time login";
 }

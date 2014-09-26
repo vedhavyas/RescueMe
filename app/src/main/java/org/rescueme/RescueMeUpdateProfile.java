@@ -151,8 +151,8 @@ public class RescueMeUpdateProfile extends Fragment {
                 Uri selectedImageUri = data.getData();
                 Uri croppedImage = Uri.fromFile(croppedImageFile);
 
-                CropImageIntentBuilder cropImage = new CropImageIntentBuilder(450,
-                        450, croppedImage);
+                CropImageIntentBuilder cropImage = new CropImageIntentBuilder(200,
+                        200, croppedImage);
                 cropImage.setSourceImage(selectedImageUri);
                 startActivityForResult(cropImage.getIntent(getActivity()), RescueMeConstants.CROP_IMAGE);
             } else if (requestCode == RescueMeConstants.CROP_IMAGE) {
@@ -180,7 +180,7 @@ public class RescueMeUpdateProfile extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
             dbFactory.setTable_name(RescueMeConstants.USER_TABLE);
-            userData = dbFactory.getUserDetails(prefs.getString(RescueMeConstants.LOGGED_IN_USER_ID, String.valueOf(1)));
+            userData = dbFactory.getUserDetails(String.valueOf(prefs.getInt(RescueMeConstants.LOGGED_IN_USER_ID, 1)));
             profilePicBitmap = RescueMeUtilClass.getBitmapFromBlob(userData.getProfilePic());
             return null;
         }
@@ -212,7 +212,7 @@ public class RescueMeUpdateProfile extends Fragment {
         protected String doInBackground(Void... params) {
             String result = isDataValid();
             if (result.equalsIgnoreCase(RescueMeConstants.SUCCESS)) {
-                userData.setId(prefs.getString(RescueMeConstants.LOGGED_IN_USER_ID, String.valueOf(1)));
+                userData.setId(String.valueOf(prefs.getInt(RescueMeConstants.LOGGED_IN_USER_ID, 1)));
                 userData.setName(name.getText().toString());
                 userData.setEmail(email.getText().toString());
                 userData.setNumber(phoneNumber.getText().toString());

@@ -73,6 +73,7 @@ public class RescueMe extends Activity implements
             googleApiClient = new GoogleApiClient.Builder(context)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
+                    .addScope(Plus.SCOPE_PLUS_LOGIN)
                     .addScope(Plus.SCOPE_PLUS_PROFILE)
                     .addApi(Plus.API)
                     .build();
@@ -154,6 +155,7 @@ public class RescueMe extends Activity implements
             @Override
             public void onComplete(Profile profile) {
                 Toast.makeText(context, RescueMeConstants.GOT_PROFILE_DATA, Toast.LENGTH_SHORT).show();
+                userProfile = new RescueMeUserModel();
                 userProfile.setName(profile.getName());
                 userProfile.setEmail(profile.getEmail());
                 new downloadImageTask().execute(profile.getPicture());
@@ -234,13 +236,14 @@ public class RescueMe extends Activity implements
 
     private void getUserGooglePlusProfile() {
         try {
-            if (Plus.PeopleApi.getCurrentPerson(googleApiClient) != null) {
-                Person currentPerson = Plus.PeopleApi
+            Person currentPerson = Plus.PeopleApi
                         .getCurrentPerson(googleApiClient);
+            if (currentPerson != null) {
                 String personName = currentPerson.getDisplayName();
                 String personPhotoUrl = currentPerson.getImage().getUrl();
                 String personGooglePlusProfile = currentPerson.getUrl();
                 String email = Plus.AccountApi.getAccountName(googleApiClient);
+                userProfile = new RescueMeUserModel();
                 userProfile.setName(personName);
                 userProfile.setEmail(email);
                 Log.i(RescueMeConstants.LOG_TAG, "Name: " + personName + ", plusProfile: "

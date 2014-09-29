@@ -41,7 +41,6 @@ public class RescueMe extends Activity implements
 
 
     private SharedPreferences prefs;
-    private boolean isLoggedIn;
     private SimpleFacebook simpleFacebook;
     private OnLoginListener fbLoginListener;
     private RescueMeUserModel userProfile;
@@ -61,7 +60,7 @@ public class RescueMe extends Activity implements
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         prefs = getSharedPreferences(RescueMeConstants.PREFERENCE_NAME, MODE_PRIVATE);
-        isLoggedIn = prefs.getBoolean(RescueMeConstants.LOGIN, false);
+        boolean isLoggedIn = prefs.getBoolean(RescueMeConstants.LOGIN, false);
         if (isLoggedIn) {
             loadAuthenticatedActivity();
         } else {
@@ -119,6 +118,7 @@ public class RescueMe extends Activity implements
             public void onLogin() {
                 Toast.makeText(context, RescueMeConstants.FB_LOGIN_SUCCESS, Toast.LENGTH_SHORT).show();
                 if (prefs.getBoolean(RescueMeConstants.FB_FIRST_TIME_LOGIN, true)) {
+                    setButtonsClickable(false);
                     getFBProfileInfo();
                 } else {
                     loadAuthenticatedActivity();
@@ -175,7 +175,6 @@ public class RescueMe extends Activity implements
                 .build();
 
         simpleFacebook.getProfile(properties, fbProfileListener);
-        setProgressBarIndeterminateVisibility(true);
         Toast.makeText(context, RescueMeConstants.DOWNLOADING_PROFILE, Toast.LENGTH_SHORT).show();
     }
 
@@ -237,7 +236,7 @@ public class RescueMe extends Activity implements
     private void getUserGooglePlusProfile() {
         try {
             Person currentPerson = Plus.PeopleApi
-                        .getCurrentPerson(googleApiClient);
+                    .getCurrentPerson(googleApiClient);
             if (currentPerson != null) {
                 String personName = currentPerson.getDisplayName();
                 String personPhotoUrl = currentPerson.getImage().getUrl();
@@ -254,7 +253,7 @@ public class RescueMe extends Activity implements
                 personPhotoUrl = personPhotoUrl.substring(0,
                         personPhotoUrl.length() - 2)
                         + 400;
-                setProgressBarIndeterminateVisibility(true);
+
                 new downloadImageTask().execute(personPhotoUrl);
 
             } else {
@@ -312,6 +311,7 @@ public class RescueMe extends Activity implements
     private void setButtonsClickable(Boolean clickable) {
         fbLoginBtn.setClickable(clickable);
         gPlusLoginBtn.setClickable(clickable);
+        setProgressBarIndeterminateVisibility(!clickable);
     }
 
     private class downloadImageTask extends AsyncTask<String, Void, Void> {
@@ -336,7 +336,6 @@ public class RescueMe extends Activity implements
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            setProgressBarIndeterminateVisibility(false);
             startCropActivity();
         }
     }
@@ -351,7 +350,6 @@ public class RescueMe extends Activity implements
 
         @Override
         protected void onPreExecute() {
-            setProgressBarIndeterminateVisibility(true);
             if (register) {
                 Toast.makeText(context, RescueMeConstants.REGISTERING_USER, Toast.LENGTH_SHORT).show();
             } else {
@@ -384,7 +382,6 @@ public class RescueMe extends Activity implements
 
         @Override
         protected void onPostExecute(String result) {
-            setProgressBarIndeterminateVisibility(false);
             if (result.equalsIgnoreCase(RescueMeConstants.SUCCESS)) {
                 prefs.edit().putBoolean(RescueMeConstants.LOGIN, true).apply();
                 if (register) {

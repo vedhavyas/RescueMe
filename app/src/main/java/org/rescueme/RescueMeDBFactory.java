@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -225,14 +226,17 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
         if (!oldUserData.getEmail().equals(user.getEmail())) {
             contentValues.put(RescueMeConstants.COLUMN_EMAIL, user.getEmail());
         }
-        if (oldUserData.getNumber() != null) {
+
+        try {
             if (!oldUserData.getNumber().equals(user.getNumber())) {
                 contentValues.put(RescueMeConstants.COLUMN_NUMBER, user.getNumber());
             }
-        }
 
-        if (!oldUserData.getMessage().equals(user.getMessage())) {
-            contentValues.put(RescueMeConstants.COLUMN_PERSONAL_MESSAGE, user.getMessage());
+            if (!oldUserData.getMessage().equals(user.getMessage())) {
+                contentValues.put(RescueMeConstants.COLUMN_PERSONAL_MESSAGE, user.getMessage());
+            }
+        } catch (NullPointerException e) {
+            Log.i(RescueMeConstants.LOG_TAG, "Caught Null");
         }
 
         if (!Arrays.equals(oldUserData.getProfilePic(), user.getProfilePic())) {

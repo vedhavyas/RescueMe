@@ -179,7 +179,7 @@ public class RescueMeUpdateProfile extends Fragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            dbFactory.setTable_name(RescueMeConstants.USER_TABLE);
+            dbFactory.setTableName(RescueMeConstants.USER_TABLE);
             userData = dbFactory.getUserDetails(String.valueOf(prefs.getInt(RescueMeConstants.LOGGED_IN_USER_ID, 1)));
             profilePicBitmap = RescueMeUtilClass.getBitmapFromBlob(userData.getProfilePic());
             return null;
@@ -220,7 +220,7 @@ public class RescueMeUpdateProfile extends Fragment {
                 if (profilePicBitmap != null) {
                     userData.setProfilePic(RescueMeUtilClass.getBlob(profilePicBitmap));
                 }
-                dbFactory.setTable_name(RescueMeConstants.USER_TABLE);
+                dbFactory.setTableName(RescueMeConstants.USER_TABLE);
                 if (dbFactory.updateUserData(userData) > 0) {
                     return RescueMeConstants.SUCCESS;
                 } else {

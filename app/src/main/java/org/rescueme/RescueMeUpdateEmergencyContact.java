@@ -49,7 +49,7 @@ public class RescueMeUpdateEmergencyContact extends Fragment {
         id = getArguments().getString(RescueMeConstants.COLUMN_ID);
 
         dbFactory = RescueMeDBFactory.getInstance(context);
-        dbFactory.setTable_name(RescueMeConstants.CONTACTS_TABLE);
+        dbFactory.setTableName(RescueMeConstants.CONTACTS_TABLE);
         RescueMeUserModel contact = dbFactory.getContact(id);
         name.setText(contact.getName());
         email.setText(contact.getEmail());

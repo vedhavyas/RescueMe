@@ -19,11 +19,7 @@ public class RescueMeUtilActivity extends Activity {
     }
 
     public void loadFragment() {
-        if (fragmentTag.equalsIgnoreCase(RescueMeConstants.NEW_EMERGENCY_CONTACT)) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new RescueMeAddEmergencyContact())
-                    .commit();
-        } else if (fragmentTag.equalsIgnoreCase(RescueMeConstants.UPDATE_EMERGENCY_CONTACT)) {
+        if (fragmentTag.equalsIgnoreCase(RescueMeConstants.UPDATE_EMERGENCY_CONTACT)) {
             String id = getIntent().getStringExtra(RescueMeConstants.COLUMN_ID);
             Bundle data = new Bundle();
             data.putString(RescueMeConstants.COLUMN_ID, id);

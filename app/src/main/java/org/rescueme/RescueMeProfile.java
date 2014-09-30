@@ -18,15 +18,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.sromku.simple.fb.SimpleFacebook;
-
-import java.io.File;
-
 public class RescueMeProfile extends Fragment {
 
     private Context context;
-    private SimpleFacebook simpleFacebook;
-    private SharedPreferences prefs;
     private RescueMeDBFactory dbFactory;
     private ImageView profilePic;
     private TextView name;
@@ -36,9 +30,6 @@ public class RescueMeProfile extends Fragment {
     private int userId;
     private RescueMeUserModel userData;
     private Bitmap profilePicBitmap;
-    private File croppedImageFile;
-    private String tempImagePath;
-
     public RescueMeProfile() {
         // Required empty public constructor
     }
@@ -49,10 +40,10 @@ public class RescueMeProfile extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_rescue_me_profile, container, false);
         context = rootView.getContext();
-        prefs = getActivity().getSharedPreferences(RescueMeConstants.PREFERENCE_NAME
+        SharedPreferences prefs = getActivity().getSharedPreferences(RescueMeConstants.PREFERENCE_NAME
                 , Context.MODE_PRIVATE);
         dbFactory = RescueMeDBFactory.getInstance(context);
-        dbFactory.setTable_name(RescueMeConstants.USER_TABLE);
+        dbFactory.setTableName(RescueMeConstants.USER_TABLE);
         setHasOptionsMenu(true);
         profilePic = (ImageView) rootView.findViewById(R.id.profilePic);
         name = (TextView) rootView.findViewById(R.id.name);
@@ -83,12 +74,6 @@ public class RescueMeProfile extends Fragment {
             startUtilActivity();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        simpleFacebook = SimpleFacebook.getInstance(getActivity());
     }
 
     private void setProfile() {

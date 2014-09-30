@@ -16,7 +16,6 @@ public class RescueMeConstants {
     public static final String FRAGMENT_TAG = "Fragment_tag";
     public static final String SELECT_TAG = "tag to load";
     public static final String EXCEPTION_CAUGHT = "Caught the exception";
-    public static final String LOGIN_NOW = "Please Log In Now";
     public static final String FAILED_TO_GET_USER_PROFILE = "Failed to get the profile";
     public static final String UPDATING_USER_PROFILE = "Updating Profile Info";
     public static final String UPDATE_PROFILE_FAIL = "Profile Update Failed";
@@ -25,24 +24,19 @@ public class RescueMeConstants {
 
     //Login constants
     public static final String LOGIN = "Log In";
-    public static final String LOGIN_SUCCESS = "Login Successful";
-    public static final String LOGIN_FAIL = "Failed to Log In";
     public static final String LOGGED_IN_USER_ID = "Logged in user ID";
     public static final String UPDATE_PROFILE = "Update Profile";
 
     //Registration constants
-    public static final String REGISTER = "Registration";
     public static final String REGISTERING_USER = "Please wait while we Register you";
     public static final String SUCCESS = "Success";
     public static final String FAILED = "Failed";
     public static final String REGISTRATION_FAILED = "Registration Failed";
     public static final String REGISTRATION_SUCCESS = "Registration Successful";
     public static final String EMAIL_FAIL = "Email Doesn't meet the constraints";
-    public static final String PASSWORD_FAIL = "Password is too short (Min 5 characters)";
     public static final String PHONE_FAIL = "Not a 10 digit number or contains characters";
     public static final String NAME_EMPTY = "Name cannot be blank";
     public static final String MESSAGE_EMPTY = "Message cannot be blank";
-    public static final int PASSWORD_MIN_LENGTH = 5;
     public static final int PHONE_NUMBER_LENGTH = 10;
     public static final String CHOOSE_THE_PROFILE_PIC = "Profile pic cannot be blank";
     public static final String FACEBOOK = "Facebook";
@@ -69,9 +63,6 @@ public class RescueMeConstants {
     public static final String COLUMN_NAME = "Name";
     public static final String COLUMN_PASSWORD = "Password";
     public static final String COLUMN_EMAIL = "Email";
-    public static final String SQL_LOGIN_QUERY = "SELECT * FROM "
-            + USER_TABLE + " WHERE "
-            + COLUMN_EMAIL + " = ";
     public static final String COLUMN_PROFILE_PIC = "ProfilePic";
     public static final String COLUMN_PERSONAL_MESSAGE = "PersonalMessage";
     public static final String COLUMN_NUMBER = "Number";
@@ -89,10 +80,6 @@ public class RescueMeConstants {
     public static final String GOT_PROFILE_DATA = "Downloaded your Profile";
     public static final String DOWNLOADING_PROFILE_PIC = "Downloading your Profile Picture";
     public static final String FB_FIRST_TIME_LOGIN = "First time login";
-    public static final String FB_USER_ID = "Facebook connected user ID";
-    public static final String UPDATE_FB_PROFILE_PIC = "Updating your Profile Picture...";
-    public static final String UPDATE_FB_PROFILE_PIC_SUCCESS = "Profile Pic updated successfully";
-    public static final String UPDATE_FB_PROFILE_PIC_FAIL = "Profile Pic Update Failed";
 
     //Emergency contacts related constants
     public static final String NEW_EMERGENCY_CONTACT = "Add Contact";

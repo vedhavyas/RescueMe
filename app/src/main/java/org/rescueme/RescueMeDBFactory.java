@@ -6,10 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,7 +16,7 @@ import java.util.List;
 public class RescueMeDBFactory extends SQLiteOpenHelper {
 
     private static RescueMeDBFactory dbFactory;
-    private String table_name;
+    private String tableName;
 
     private RescueMeDBFactory(Context context) {
         super(context, RescueMeConstants.DB_NAME, null, 1);
@@ -32,8 +30,8 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
         return dbFactory;
     }
 
-    public void setTable_name(String table_name) {
-        this.table_name = table_name;
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 
     @Override
@@ -66,22 +64,7 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
 
         contentValues.put(RescueMeConstants.COLUMN_NUMBER, user.getNumber());
 
-        result = db.insert(table_name, null, contentValues);
-        return result;
-    }
-
-    public int loginUser(RescueMeUserModel user) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        int result = -1;
-        String sqlQuery = RescueMeConstants.SQL_LOGIN_QUERY + "\"" + user.getEmail() + "\"";
-        Cursor cursor = db.rawQuery(sqlQuery, null);
-
-        if (cursor.moveToFirst()) {
-            if (user.getHashPassword().equalsIgnoreCase(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_PASSWORD)))) {
-                return cursor.getInt(cursor.getColumnIndex(RescueMeConstants.COLUMN_ID));
-            }
-        }
+        result = db.insert(tableName, null, contentValues);
         return result;
     }
 
@@ -94,7 +77,7 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
         contentValues.put(RescueMeConstants.COLUMN_EMAIL, contact.getEmail());
         contentValues.put(RescueMeConstants.COLUMN_NUMBER, contact.getNumber());
 
-        return db.insert(table_name, null, contentValues);
+        return db.insert(tableName, null, contentValues);
     }
 
     public long updateEmergencyContact(RescueMeUserModel contact) {
@@ -118,7 +101,7 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
 
         if (contentValues.size() > 0) {
             try {
-                result = db.update(table_name, contentValues, RescueMeConstants.COLUMN_ID + " = " + contact.getId(), null);
+                result = db.update(tableName, contentValues, RescueMeConstants.COLUMN_ID + " = " + contact.getId(), null);
             } catch (SQLiteConstraintException e) {
                 return result;
             }
@@ -131,7 +114,7 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
     public RescueMeUserModel getContact(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String sqlQuery = "SELECT * FROM " + table_name + " WHERE " + RescueMeConstants.COLUMN_ID
+        String sqlQuery = "SELECT * FROM " + tableName + " WHERE " + RescueMeConstants.COLUMN_ID
                 + " = " + id;
         Cursor cursor = db.rawQuery(sqlQuery, null);
 
@@ -154,7 +137,7 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         List<RescueMeUserModel> contacts = new ArrayList<RescueMeUserModel>();
 
-        String sqlQuery = RescueMeConstants.SQL_SELECT_ALL_QUERY + table_name;
+        String sqlQuery = RescueMeConstants.SQL_SELECT_ALL_QUERY + tableName;
         Cursor cursor = db.rawQuery(sqlQuery, null);
 
         if (cursor.moveToFirst()) {
@@ -176,13 +159,13 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
     public int deleteContact(String id) {
         SQLiteDatabase db = getWritableDatabase();
 
-        return db.delete(table_name, RescueMeConstants.COLUMN_ID + " = " + id, null);
+        return db.delete(tableName, RescueMeConstants.COLUMN_ID + " = " + id, null);
     }
 
     public RescueMeUserModel getUserDetails(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String sqlQuery = "SELECT * FROM " + table_name + " WHERE " + RescueMeConstants.COLUMN_ID
+        String sqlQuery = "SELECT * FROM " + tableName + " WHERE " + RescueMeConstants.COLUMN_ID
                 + " = " + id;
         Cursor cursor = db.rawQuery(sqlQuery, null);
 
@@ -203,54 +186,30 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
         return null;
     }
 
-    public int updateProfilePicture(RescueMeUserModel user) {
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(RescueMeConstants.COLUMN_PROFILE_PIC, user.getProfilePic());
-
-        return db.update(table_name, contentValues, RescueMeConstants.COLUMN_ID + " = " + user.getId(), null);
-    }
-
     public int updateUserData(RescueMeUserModel user) {
         SQLiteDatabase db = this.getWritableDatabase();
         int result = -1;
 
-        RescueMeUserModel oldUserData = getUserDetails(user.getId());
-
         ContentValues contentValues = new ContentValues();
-        if (!oldUserData.getName().equals(user.getName())) {
-            contentValues.put(RescueMeConstants.COLUMN_NAME, user.getName());
+
+        contentValues.put(RescueMeConstants.COLUMN_NAME, user.getName());
+
+        contentValues.put(RescueMeConstants.COLUMN_EMAIL, user.getEmail());
+
+        contentValues.put(RescueMeConstants.COLUMN_NUMBER, user.getNumber());
+
+        if (user.getMessage() != null) {
+            contentValues.put(RescueMeConstants.COLUMN_PERSONAL_MESSAGE, user.getMessage());
         }
 
-        if (!oldUserData.getEmail().equals(user.getEmail())) {
-            contentValues.put(RescueMeConstants.COLUMN_EMAIL, user.getEmail());
-        }
+        contentValues.put(RescueMeConstants.COLUMN_PROFILE_PIC, user.getProfilePic());
 
         try {
-            if (!oldUserData.getNumber().equals(user.getNumber())) {
-                contentValues.put(RescueMeConstants.COLUMN_NUMBER, user.getNumber());
-            }
-
-            if (!oldUserData.getMessage().equals(user.getMessage())) {
-                contentValues.put(RescueMeConstants.COLUMN_PERSONAL_MESSAGE, user.getMessage());
-            }
-        } catch (NullPointerException e) {
-            Log.i(RescueMeConstants.LOG_TAG, "Caught Null");
+            result = db.update(tableName, contentValues, RescueMeConstants.COLUMN_ID + " = " + user.getId(), null);
+        } catch (SQLiteConstraintException e) {
+            return result;
         }
 
-        if (!Arrays.equals(oldUserData.getProfilePic(), user.getProfilePic())) {
-            contentValues.put(RescueMeConstants.COLUMN_PROFILE_PIC, user.getProfilePic());
-        }
-
-        if (contentValues.size() > 0) {
-            try {
-                result = db.update(table_name, contentValues, RescueMeConstants.COLUMN_ID + " = " + user.getId(), null);
-            } catch (SQLiteConstraintException e) {
-                return result;
-            }
-
-        }
 
         return result;
     }

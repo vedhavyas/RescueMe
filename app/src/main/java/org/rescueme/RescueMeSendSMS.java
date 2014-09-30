@@ -57,11 +57,11 @@ public class RescueMeSendSMS extends AsyncTask<Location, Void, String> {
     }
 
     public boolean triggerSMS(Location location) {
-        dbFactory.setTable_name(RescueMeConstants.CONTACTS_TABLE);
+        dbFactory.setTableName(RescueMeConstants.CONTACTS_TABLE);
         List<RescueMeUserModel> contacts = dbFactory.getAllContacts();
 
-        dbFactory.setTable_name(RescueMeConstants.USER_TABLE);
-        userId = prefs.getString(RescueMeConstants.LOGGED_IN_USER_ID, String.valueOf(1));
+        dbFactory.setTableName(RescueMeConstants.USER_TABLE);
+        userId = String.valueOf(prefs.getInt(RescueMeConstants.LOGGED_IN_USER_ID, 1));
         personalMessage = dbFactory.getUserDetails(userId).getMessage();
         personalMessage = personalMessage + "\n" + RescueMeConstants.ADD_EXTRA_MESSAGE + "\n" + RescueMeConstants.LATITUDE +
                 location.getLatitude() + "\n" + RescueMeConstants.LONGITUDE + location.getLongitude();

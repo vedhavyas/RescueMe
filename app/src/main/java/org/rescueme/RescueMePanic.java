@@ -1,6 +1,7 @@
 package org.rescueme;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
@@ -9,7 +10,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +22,7 @@ public class RescueMePanic extends Fragment {
     private Context context;
     private RescueMeLocationService locationService;
     private Location location;
+    private Activity activity;
     public RescueMePanic() {
         // Required empty public constructor
     }
@@ -31,6 +32,7 @@ public class RescueMePanic extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_rescue_me_panic, container, false);
+        activity = getActivity();
         context = rootView.getContext();
         ImageButton panicBtn = (ImageButton) rootView.findViewById(R.id.panicBtn);
         locationService = new RescueMeLocationService(context);
@@ -69,40 +71,11 @@ public class RescueMePanic extends Fragment {
     private void sendEmergencyAlerts() {
         location = locationService.getLocation(LocationManager.NETWORK_PROVIDER);
         if (location == null) {
-            showSettingsAlert(LocationManager.NETWORK_PROVIDER);
+            locationService.showSettingsAlert(activity, LocationManager.NETWORK_PROVIDER);
         } else {
             RescueMeSendSMS smsTask = new RescueMeSendSMS(getActivity());
             smsTask.execute(location);
         }
-    }
-
-
-    public void showSettingsAlert(String provider) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-
-        alertDialog.setTitle(provider + RescueMeConstants.SETTINGS);
-
-        alertDialog
-                .setMessage(provider + RescueMeConstants.PROVIDER_NOT_ENABLED);
-
-        alertDialog.setIcon(R.drawable.ic_launcher);
-
-        alertDialog.setPositiveButton(RescueMeConstants.SETTINGS,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),
-                                RescueMeConstants.GPS_LOCATION_SETTINGS);
-                    }
-                });
-
-        alertDialog.setNegativeButton(RescueMeConstants.CANCEL,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-        alertDialog.show();
     }
 
     @Override

@@ -64,7 +64,8 @@ public class RescueMe extends Activity implements
         if (isLoggedIn) {
             loadAuthenticatedActivity();
         } else {
-            getActionBar().setTitle(RescueMeConstants.LOGIN);
+            //getActionBar().setTitle(RescueMeConstants.LOGIN);
+            getActionBar().hide();
             setContentView(R.layout.activity_rescue_me);
             activity = this;
             context = activity.getBaseContext();
@@ -80,7 +81,7 @@ public class RescueMe extends Activity implements
             gPlusLoginBtn = (ImageButton) findViewById(R.id.gPlusLogin);
             setFbLoginListener();
             dbFactory = RescueMeDBFactory.getInstance(context);
-            dbFactory.setTable_name(RescueMeConstants.USER_TABLE);
+            dbFactory.setTableName(RescueMeConstants.USER_TABLE);
 
             //setup listeners
             fbLoginBtn.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +106,7 @@ public class RescueMe extends Activity implements
     }
 
     private void loadAuthenticatedActivity() {
+        prefs.edit().putBoolean(RescueMeConstants.LOGIN, true).apply();
         Intent intent = new Intent(this, RescueMeTabViewer.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

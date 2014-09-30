@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -76,7 +77,7 @@ public class RescueMeContacts extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.fbContacts) {
-
+            Toast.makeText(context, "Coming soon!!", Toast.LENGTH_SHORT).show();
         } else if (itemId == R.id.localContacts) {
             Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
             startActivityForResult(intent, RescueMeConstants.PICK_CONTACT_FROM_LOCAL);
@@ -97,7 +98,7 @@ public class RescueMeContacts extends Fragment {
 
     private List<RescueMeUserModel> getContacts() {
         RescueMeDBFactory dbFactory = RescueMeDBFactory.getInstance(context);
-        dbFactory.setTable_name(RescueMeConstants.CONTACTS_TABLE);
+        dbFactory.setTableName(RescueMeConstants.CONTACTS_TABLE);
         return dbFactory.getAllContacts();
     }
 
@@ -205,8 +206,10 @@ public class RescueMeContacts extends Fragment {
 
     private void putContactIntoDB(RescueMeUserModel contact) {
         RescueMeDBFactory dbFactory = RescueMeDBFactory.getInstance(context);
-        dbFactory.setTable_name(RescueMeConstants.CONTACTS_TABLE);
+        dbFactory.setTableName(RescueMeConstants.CONTACTS_TABLE);
         if (dbFactory.addEmergencyContact(contact) > 0) {
+            Toast.makeText(context, RescueMeConstants.ADDED_NEW_CONTACT, Toast.LENGTH_SHORT).show();
+            Log.i(RescueMeConstants.LOG_TAG, RescueMeConstants.ADDED_NEW_CONTACT);
             loadAuthenticatedActivity();
         } else {
             Toast.makeText(context, RescueMeConstants.FAILED_TO_ADD_CONTACT, Toast.LENGTH_SHORT).show();

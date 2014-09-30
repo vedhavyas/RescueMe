@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -31,6 +32,7 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
     private SimpleFacebook simpleFacebook;
     private GoogleApiClient googleApiClient;
     private OnLogoutListener fbLogoutListener;
+    private RescueMeLocationService locationService;
 
 
     @Override
@@ -53,6 +55,7 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
         actionBar.setTitle(RescueMeConstants.RESCUE_ME_MAIN);
 
         context = getBaseContext();
+        locationService = new RescueMeLocationService(context);
         RescueMeTabAdapter sectionsPagerAdapter = new RescueMeTabAdapter(getFragmentManager());
         setFbLogoutListener();
         googleApiClient.connect();
@@ -86,12 +89,13 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
         });
 
         viewPager.setCurrentItem(selectTab);
+
+        checkGPSProvidersStatus();
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.rescue_me_actionbar_menu, menu);
         return true;
     }
@@ -199,5 +203,11 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         Log.i(RescueMeConstants.LOG_TAG, "Connection Failed");
+    }
+
+    private void checkGPSProvidersStatus() {
+        if (!locationService.isProvidersEnabled(LocationManager.NETWORK_PROVIDER)) {
+            locationService.showSettingsAlert(this, LocationManager.NETWORK_PROVIDER);
+        }
     }
 }

@@ -33,4 +33,6 @@
     <string name="panic_btn_desc">Panic Button</string>
     <string name="local_contacts">Local Contacts</string>
     <string name="fb_contacts">Facebook Friends</string>
+    <string name="profile_edit">Profile Edit</string>
+    <string name="profile_desc">Profile Picture</string>
 </resources>

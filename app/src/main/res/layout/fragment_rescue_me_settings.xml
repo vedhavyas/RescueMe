@@ -10,7 +10,7 @@
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:background="#5a140f0f"
+        android:background="#61000000"
         android:orientation="vertical">
 
         <LinearLayout
@@ -24,14 +24,9 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:baselineAlignBottom="true"
+                android:contentDescription="@string/profile_desc"
                 android:src="@drawable/default_profile_pic" />
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:orientation="horizontal" />
 
     </LinearLayout>
 
@@ -65,7 +60,7 @@
                 android:hint="@string/name_hint"
                 android:text="Vedhavyas Singareddi"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="15dp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/email"
@@ -78,7 +73,7 @@
                 android:text="vedhavyas.sinagreddi@gmail.com"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textIsSelectable="true"
-                android:textSize="10dp" />
+                android:textSize="11sp" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -95,9 +90,12 @@
 
         <ImageButton
             android:id="@+id/updateProfile"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_weight="1.37"
+            android:background="@null"
+            android:baselineAlignBottom="true"
+            android:contentDescription="@string/profile_edit"
             android:src="@drawable/ic_action_edit" />
     </LinearLayout>
 

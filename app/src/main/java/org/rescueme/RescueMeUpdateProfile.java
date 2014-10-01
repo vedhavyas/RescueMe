@@ -96,44 +96,7 @@ public class RescueMeUpdateProfile extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private String isDataValid() {
-        if (!isNameEmpty()) {
-            if (validEmail()) {
-                if (validNumber()) {
-                    if (!isMessageEmpty()) {
-                        return RescueMeConstants.SUCCESS;
-                    } else {
-                        return RescueMeConstants.MESSAGE_EMPTY;
-                    }
-                } else {
-                    return RescueMeConstants.PHONE_FAIL;
-                }
-            } else {
-                return RescueMeConstants.EMAIL_FAIL;
-            }
-        } else {
-            return RescueMeConstants.NAME_EMPTY;
-        }
 
-    }
-
-    private boolean validEmail() {
-        return email.getText().toString().contains(RescueMeConstants.EMAIL_REGEX);
-
-    }
-
-    private boolean validNumber() {
-        return phoneNumber.getText().toString().length() == RescueMeConstants.PHONE_NUMBER_LENGTH && phoneNumber.getText().toString().matches("[0-9]+");
-
-    }
-
-    private boolean isNameEmpty() {
-        return name.getText().toString().isEmpty();
-    }
-
-    private boolean isMessageEmpty() {
-        return personalMessage.getText().toString().isEmpty();
-    }
 
     private void getImageFromGallery() {
         Intent intent = new Intent();
@@ -151,8 +114,8 @@ public class RescueMeUpdateProfile extends Fragment {
                 Uri selectedImageUri = data.getData();
                 Uri croppedImage = Uri.fromFile(croppedImageFile);
 
-                CropImageIntentBuilder cropImage = new CropImageIntentBuilder(200,
-                        200, croppedImage);
+                CropImageIntentBuilder cropImage = new CropImageIntentBuilder(400,
+                        400, croppedImage);
                 cropImage.setSourceImage(selectedImageUri);
                 startActivityForResult(cropImage.getIntent(getActivity()), RescueMeConstants.CROP_IMAGE);
             } else if (requestCode == RescueMeConstants.CROP_IMAGE) {
@@ -167,7 +130,7 @@ public class RescueMeUpdateProfile extends Fragment {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        intent.putExtra(RescueMeConstants.SELECT_TAG, 1);
+        intent.putExtra(RescueMeConstants.SELECT_TAG, 2);
         startActivity(intent);
     }
 
@@ -210,16 +173,16 @@ public class RescueMeUpdateProfile extends Fragment {
 
         @Override
         protected String doInBackground(Void... params) {
-            String result = isDataValid();
+            userData.setId(String.valueOf(prefs.getInt(RescueMeConstants.LOGGED_IN_USER_ID, 1)));
+            userData.setName(name.getText().toString());
+            userData.setEmail(email.getText().toString());
+            userData.setNumber(phoneNumber.getText().toString());
+            userData.setMessage(personalMessage.getText().toString());
+            if (profilePicBitmap != null) {
+                userData.setProfilePic(RescueMeUtilClass.getBlob(profilePicBitmap));
+            }
+            String result = RescueMeUtilClass.isUserDataValid(userData);
             if (result.equalsIgnoreCase(RescueMeConstants.SUCCESS)) {
-                userData.setId(String.valueOf(prefs.getInt(RescueMeConstants.LOGGED_IN_USER_ID, 1)));
-                userData.setName(name.getText().toString());
-                userData.setEmail(email.getText().toString());
-                userData.setNumber(phoneNumber.getText().toString());
-                userData.setMessage(personalMessage.getText().toString());
-                if (profilePicBitmap != null) {
-                    userData.setProfilePic(RescueMeUtilClass.getBlob(profilePicBitmap));
-                }
                 dbFactory.setTableName(RescueMeConstants.USER_TABLE);
                 if (dbFactory.updateUserData(userData) > 0) {
                     return RescueMeConstants.SUCCESS;

@@ -221,7 +221,7 @@ public class RescueMeContacts extends Fragment {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        intent.putExtra(RescueMeConstants.SELECT_TAG, 2);
+        intent.putExtra(RescueMeConstants.SELECT_TAG, 1);
         startActivity(intent);
     }
 }

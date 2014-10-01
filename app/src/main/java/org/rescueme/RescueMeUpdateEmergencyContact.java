@@ -72,43 +72,12 @@ public class RescueMeUpdateEmergencyContact extends Fragment {
         return rootView;
     }
 
-    private String isDataValid() {
-        if (!isNameEmpty()) {
-            if (validEmail()) {
-                if (validNumber()) {
-                    return RescueMeConstants.SUCCESS;
-                } else {
-                    return RescueMeConstants.PHONE_FAIL;
-                }
-            } else {
-                return RescueMeConstants.EMAIL_FAIL;
-            }
-        } else {
-            return RescueMeConstants.NAME_EMPTY;
-        }
-
-    }
-
-    private boolean validEmail() {
-        return email.getText().toString().contains(RescueMeConstants.EMAIL_REGEX);
-
-    }
-
-    private boolean validNumber() {
-        return phoneNumber.getText().toString().length() == RescueMeConstants.PHONE_NUMBER_LENGTH && phoneNumber.getText().toString().matches("[0-9]+");
-
-    }
-
-    private boolean isNameEmpty() {
-        return name.getText().toString().isEmpty();
-    }
-
     private void loadAuthenticatedActivity() {
         Intent intent = new Intent(context, RescueMeTabViewer.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        intent.putExtra(RescueMeConstants.SELECT_TAG, 2);
+        intent.putExtra(RescueMeConstants.SELECT_TAG, 1);
         startActivity(intent);
     }
 
@@ -150,12 +119,12 @@ public class RescueMeUpdateEmergencyContact extends Fragment {
 
         @Override
         protected String doInBackground(Void... params) {
-            String result = isDataValid();
+            RescueMeUserModel contact = new RescueMeUserModel(name.getText().toString(),
+                    email.getText().toString(),
+                    phoneNumber.getText().toString());
+            contact.setId(id);
+            String result = RescueMeUtilClass.isContactDataValid(contact);
             if (result.equalsIgnoreCase(RescueMeConstants.SUCCESS)) {
-                RescueMeUserModel contact = new RescueMeUserModel(name.getText().toString(),
-                        email.getText().toString(),
-                        phoneNumber.getText().toString());
-                contact.setId(id);
                 if (dbFactory.updateEmergencyContact(contact) > 0) {
                     return RescueMeConstants.SUCCESS;
                 } else {

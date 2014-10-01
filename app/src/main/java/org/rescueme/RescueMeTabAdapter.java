@@ -23,10 +23,8 @@ public class RescueMeTabAdapter extends FragmentPagerAdapter {
             case 0:
                 return new RescueMePanic();
             case 1:
-                return new RescueMeProfile();
-            case 2:
                 return new RescueMeContacts();
-            case 3:
+            case 2:
                 return new RescueMeSettings();
         }
 
@@ -35,7 +33,6 @@ public class RescueMeTabAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        // Show 3 total pages.
         return RescueMeConstants.NO_OF_TABS;
     }
 }

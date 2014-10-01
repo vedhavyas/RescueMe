@@ -6,7 +6,7 @@ package org.rescueme;
 public class RescueMeConstants {
 
     public static final String PREFERENCE_NAME = "RescueMe";
-    public static final String[] TABS = {"Rescue Me", "Profile", "Contacts", "Settings"};
+    public static final String[] TABS = {"Rescue Me", "Contacts", "Settings"};
     public static final int NO_OF_TABS = TABS.length;
     public static final String RESCUE_ME_MAIN = "Rescue Me";
     public static final String RESCUE_ME = "Rescue Me";
@@ -51,7 +51,7 @@ public class RescueMeConstants {
             + "Email TEXT UNIQUE,"
             + "Number TEXT UNIQUE, " +
             "ProfilePic BLOB," +
-            "PersonalMessage TEXT DEFAULT 'Update to Add Custom Rescue Message')";
+            "PersonalMessage TEXT DEFAULT 'This is an Emergency!!')";
     public static final String CONTACTS_TABLE = "contacts_details";
     public static final String SQL_CONTACT_TABLE_QUERY = "CREATE TABLE " + CONTACTS_TABLE
             + " (ID INTEGER PRIMARY KEY AUTOINCREMENT,"

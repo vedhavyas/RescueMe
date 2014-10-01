@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Authored by Vedhavyas Singareddi on 11-09-2014.
  */
-public class RescueMeContactListAdapter extends BaseAdapter{
+public class RescueMeContactListAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
     private List<RescueMeUserModel> contacts;
@@ -43,16 +43,16 @@ public class RescueMeContactListAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = inflater.inflate(R.layout.contact_each_item_view,null);
 
+        convertView = inflater.inflate(R.layout.contact_each_item_view, null);
         RescueMeUserModel contact = contacts.get(position);
 
-        TextView nameView = (TextView)view.findViewById(R.id.nameView);
-        TextView numberView = (TextView)view.findViewById(R.id.numberView);
+        TextView nameView = (TextView) convertView.findViewById(R.id.nameView);
+        TextView numberView = (TextView) convertView.findViewById(R.id.numberView);
 
         nameView.setText(contact.getName());
         numberView.setText(contact.getNumber());
 
-        return view;
+        return convertView;
     }
 }

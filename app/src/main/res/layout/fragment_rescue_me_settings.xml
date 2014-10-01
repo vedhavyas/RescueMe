@@ -10,7 +10,8 @@
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:background="#61000000"
+        android:background="#75060505"
+        android:clickable="true"
         android:orientation="vertical">
 
         <LinearLayout
@@ -58,9 +59,9 @@
                 android:layout_marginTop="0dp"
                 android:gravity="center_horizontal|fill_vertical"
                 android:hint="@string/name_hint"
-                android:text="Vedhavyas Singareddi"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="15sp" />
+                android:textSize="20sp"
+                android:textStyle="bold|italic" />
 
             <TextView
                 android:id="@+id/email"
@@ -70,10 +71,10 @@
                 android:layout_alignParentLeft="true"
                 android:gravity="center_horizontal|fill_vertical"
                 android:hint="@string/email"
-                android:text="vedhavyas.sinagreddi@gmail.com"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textIsSelectable="true"
-                android:textSize="11sp" />
+                android:textIsSelectable="false"
+                android:textSize="12sp"
+                android:textStyle="italic" />
         </RelativeLayout>
 
     </LinearLayout>

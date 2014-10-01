@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -43,16 +44,32 @@ public class RescueMeContactListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
-        convertView = inflater.inflate(R.layout.contact_each_item_view, null);
+        ViewHolder holder;
         RescueMeUserModel contact = contacts.get(position);
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.contact_each_item_view, null);
+            holder = new ViewHolder();
+            holder.contactPic = (ImageView) convertView.findViewById(R.id.contactPic);
+            holder.name = (TextView) convertView.findViewById(R.id.name);
+            holder.email = (TextView) convertView.findViewById(R.id.email);
+            holder.number = (TextView) convertView.findViewById(R.id.number);
 
-        TextView nameView = (TextView) convertView.findViewById(R.id.nameView);
-        TextView numberView = (TextView) convertView.findViewById(R.id.numberView);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
-        nameView.setText(contact.getName());
-        numberView.setText(contact.getNumber());
+        holder.name.setText(contact.getName());
+        holder.email.setText(contact.getEmail());
+        holder.number.setText(contact.getNumber());
 
         return convertView;
+    }
+
+    class ViewHolder {
+        ImageView contactPic;
+        TextView name;
+        TextView email;
+        TextView number;
     }
 }

@@ -19,8 +19,6 @@ public class RescueMeSendSMS extends AsyncTask<Location, Void, String> {
     private Activity activity;
     private RescueMeDBFactory dbFactory;
     private SmsManager smsManager;
-    private String personalMessage;
-    private String userId;
     private SharedPreferences prefs;
 
     public RescueMeSendSMS(Activity activity) {
@@ -61,8 +59,8 @@ public class RescueMeSendSMS extends AsyncTask<Location, Void, String> {
         List<RescueMeUserModel> contacts = dbFactory.getAllContacts();
 
         dbFactory.setTableName(RescueMeConstants.USER_TABLE);
-        userId = String.valueOf(prefs.getInt(RescueMeConstants.LOGGED_IN_USER_ID, 1));
-        personalMessage = dbFactory.getUserDetails(userId).getMessage();
+        String userId = String.valueOf(prefs.getInt(RescueMeConstants.LOGGED_IN_USER_ID, 1));
+        String personalMessage = dbFactory.getUserDetails(userId).getMessage();
         personalMessage = personalMessage + "\n" + RescueMeConstants.ADD_EXTRA_MESSAGE + "\n" + RescueMeConstants.LATITUDE +
                 location.getLatitude() + "\n" + RescueMeConstants.LONGITUDE + location.getLongitude();
         if (contacts != null) {

@@ -10,16 +10,17 @@ public class RescueMeConstants {
     public static final int NO_OF_TABS = TABS.length;
     public static final String RESCUE_ME_MAIN = "Rescue Me";
     public static final String LOGOUT_SUCCESS = "Logout Successful";
-    public static final int SPLASH_SCREEN_TIMEOUT = 1500;
+    public static final int SPLASH_SCREEN_TIMEOUT = 1000;
     public static final String EMAIL_REGEX = "@";
     public static final String FRAGMENT_TAG = "Fragment_tag";
     public static final String SELECT_TAG = "tag to load";
-    public static final String EXCEPTION_CAUGHT = "Caught the exception";
     public static final String UPDATING_USER_PROFILE = "Updating Profile Info";
     public static final String UPDATE_PROFILE_FAIL = "Profile Update Failed";
     public static final String UPDATE_PROFILE_SUCCESS = "Updated Profile Info";
-    public static final String LOG_TAG = "RescueME";
+    public static final String LOG_TAG = "RescueMe";
     public static final String EDIT_MODE = "edit mode";
+    public static final String SUCCESS = "Success";
+    public static final String FAILED = "Failed";
 
     //Login constants
     public static final String LOGIN = "Log In";
@@ -28,8 +29,6 @@ public class RescueMeConstants {
 
     //Registration constants
     public static final String REGISTERING_USER = "Please wait while we Register you";
-    public static final String SUCCESS = "Success";
-    public static final String FAILED = "Failed";
     public static final String REGISTRATION_FAILED = "Registration Failed";
     public static final String REGISTRATION_SUCCESS = "Registration Successful";
     public static final String EMAIL_FAIL = "Email Doesn't meet the constraints";

@@ -1,6 +1,7 @@
 package org.rescueme;
 
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
@@ -37,7 +38,6 @@ public class RescueMeUpdateUserData extends Fragment {
     private EditText phoneNumber;
     private RescueMeUserModel userData;
     private RescueMeDBFactory dbFactory;
-    private SharedPreferences prefs;
     private Bitmap profilePicBitmap;
     private String editMode;
     private String userId;
@@ -52,7 +52,7 @@ public class RescueMeUpdateUserData extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_rescue_me_update_user_data, container, false);
         context = rootView.getContext();
-        prefs = getActivity().getSharedPreferences(RescueMeConstants.PREFERENCE_NAME
+        SharedPreferences prefs = getActivity().getSharedPreferences(RescueMeConstants.PREFERENCE_NAME
                 , Context.MODE_PRIVATE);
         profilePic = (ImageView) rootView.findViewById(R.id.profilePic);
         name = (EditText) rootView.findViewById(R.id.name);
@@ -69,10 +69,9 @@ public class RescueMeUpdateUserData extends Fragment {
             dbFactory.setTableName(RescueMeConstants.USER_TABLE);
         }
 
-        try {
-            getActivity().getActionBar().setTitle(RescueMeConstants.UPDATE_PROFILE);
-        } catch (NullPointerException e) {
-            Log.i(RescueMeConstants.LOG_TAG, RescueMeConstants.EXCEPTION_CAUGHT);
+        ActionBar actionBar = getActivity().getActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(RescueMeConstants.UPDATE_PROFILE);
         }
 
         new setUI().execute();

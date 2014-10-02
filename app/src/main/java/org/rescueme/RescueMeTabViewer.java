@@ -52,7 +52,9 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
         prefs = getSharedPreferences(RescueMeConstants.PREFERENCE_NAME, Context.MODE_PRIVATE);
         viewPager = (ViewPager) findViewById(R.id.pager);
         actionBar = getActionBar();
-        actionBar.setTitle(RescueMeConstants.RESCUE_ME_MAIN);
+        if (actionBar != null) {
+            actionBar.setTitle(RescueMeConstants.RESCUE_ME_MAIN);
+        }
 
         context = getBaseContext();
         locationService = new RescueMeLocationService(context);

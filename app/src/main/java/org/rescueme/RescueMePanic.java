@@ -21,8 +21,8 @@ public class RescueMePanic extends Fragment {
 
     private Context context;
     private RescueMeLocationService locationService;
-    private Location location;
     private Activity activity;
+
     public RescueMePanic() {
         // Required empty public constructor
     }
@@ -69,7 +69,7 @@ public class RescueMePanic extends Fragment {
     }
 
     private void sendEmergencyAlerts() {
-        location = locationService.getLocation(LocationManager.NETWORK_PROVIDER);
+        Location location = locationService.getLocation(LocationManager.NETWORK_PROVIDER);
         if (location == null) {
             locationService.showSettingsAlert(activity, LocationManager.NETWORK_PROVIDER);
         } else {

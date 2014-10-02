@@ -21,7 +21,6 @@ import android.util.Log;
 public class RescueMeLocationService extends Service implements LocationListener {
 
     protected LocationManager locationManager;
-    private Location location;
 
 
     public RescueMeLocationService(Context context) {
@@ -34,8 +33,7 @@ public class RescueMeLocationService extends Service implements LocationListener
             locationManager.requestLocationUpdates(provider,
                     RescueMeConstants.MIN_TIME_FOR_UPDATE, RescueMeConstants.MIN_DISTANCE_FOR_UPDATE, this);
             if (locationManager != null) {
-                location = locationManager.getLastKnownLocation(provider);
-                return location;
+                return locationManager.getLastKnownLocation(provider);
             }
         }
         return null;

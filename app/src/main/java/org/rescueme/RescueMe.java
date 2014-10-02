@@ -1,5 +1,6 @@
 package org.rescueme;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -64,8 +65,10 @@ public class RescueMe extends Activity implements
         if (isLoggedIn) {
             loadAuthenticatedActivity();
         } else {
-            //getActionBar().setTitle(RescueMeConstants.LOGIN);
-            getActionBar().hide();
+            ActionBar actionBar = getActionBar();
+            if (actionBar != null) {
+                actionBar.setTitle(RescueMeConstants.LOGIN);
+            }
             setContentView(R.layout.activity_rescue_me);
             activity = this;
             context = activity.getBaseContext();

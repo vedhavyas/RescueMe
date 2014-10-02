@@ -33,9 +33,7 @@ import java.util.List;
 public class RescueMeContacts extends Fragment {
 
 
-    private ListView contactsListView;
     private Context context;
-    private RescueMeUserModel contact;
 
     public RescueMeContacts() {
         // Required empty public constructor
@@ -47,7 +45,7 @@ public class RescueMeContacts extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_rescue_me_contacts, container, false);
         context = rootView.getContext();
-        contactsListView = (ListView) rootView.findViewById(R.id.circlesListView);
+        ListView contactsListView = (ListView) rootView.findViewById(R.id.circlesListView);
 
         List<RescueMeUserModel> emergencyContacts = getContacts();
 
@@ -120,7 +118,7 @@ public class RescueMeContacts extends Fragment {
         List<String> emailsList = new ArrayList<String>();
         Uri contactData = data.getData();
         Cursor cursor = context.getContentResolver().query(contactData, null, null, null, null);
-        contact = new RescueMeUserModel();
+        RescueMeUserModel contact = new RescueMeUserModel();
 
         if (cursor.moveToFirst()) {
             contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));

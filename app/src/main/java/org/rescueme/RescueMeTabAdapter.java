@@ -5,7 +5,7 @@ import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
 
 /**
- * Authored by Vedavyas Singareddy on 11-09-2014.
+ * Authored by Vedhavyas Singareddi on 11-09-2014.
  */
 public class RescueMeTabAdapter extends FragmentPagerAdapter {
 

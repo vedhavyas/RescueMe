@@ -20,10 +20,8 @@ public class RescueMeSettings extends Fragment {
 
     private ImageView profilePic;
     private TextView name, email;
-    private ImageButton editProfile;
     private Context context;
     private RescueMeDBFactory dbFactory;
-    private SharedPreferences prefs;
     private String userID;
     private RescueMeUserModel userData;
 
@@ -40,10 +38,10 @@ public class RescueMeSettings extends Fragment {
         profilePic = (ImageView) rootView.findViewById(R.id.profilePic);
         name = (TextView) rootView.findViewById(R.id.name);
         email = (TextView) rootView.findViewById(R.id.email);
-        editProfile = (ImageButton) rootView.findViewById(R.id.editProfile);
+        ImageButton editProfile = (ImageButton) rootView.findViewById(R.id.editProfile);
         dbFactory = RescueMeDBFactory.getInstance(context);
         dbFactory.setTableName(RescueMeConstants.USER_TABLE);
-        prefs = getActivity().getSharedPreferences(RescueMeConstants.PREFERENCE_NAME
+        SharedPreferences prefs = getActivity().getSharedPreferences(RescueMeConstants.PREFERENCE_NAME
                 , Context.MODE_PRIVATE);
         userID = String.valueOf(prefs.getInt(RescueMeConstants.LOGGED_IN_USER_ID, 1));
 
@@ -93,7 +91,6 @@ public class RescueMeSettings extends Fragment {
             }
         }
     }
-
 
 
 }

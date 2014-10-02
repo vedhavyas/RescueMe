@@ -9,8 +9,6 @@ import android.view.View;
 
 
 public class RescueMeSplashScreen extends Activity {
-    // Splash screen timer
-    private static int SPLASH_TIME_OUT = RescueMeConstants.SPLASH_SCREEN_TIMEOUT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +20,12 @@ public class RescueMeSplashScreen extends Activity {
 
         //hide action bar
         ActionBar actionBar = getActionBar();
-        actionBar.hide();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
         setContentView(R.layout.activity_rescue_me_splash_screen);
 
+        int SPLASH_TIME_OUT = RescueMeConstants.SPLASH_SCREEN_TIMEOUT;
         new Handler().postDelayed(new Runnable() {
 
             @Override

@@ -8,9 +8,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +24,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,9 +123,12 @@ public class RescueMeContacts extends Fragment {
         contact = new RescueMeUserModel();
 
         if (cursor.moveToFirst()) {
-            name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-            contact.setName(name);
             contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+            name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+
+            Log.i(RescueMeConstants.LOG_TAG, contactId + " - " + name);
+            contact.setName(name);
+
             Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
                     ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
 
@@ -137,6 +144,21 @@ public class RescueMeContacts extends Fragment {
             }
             emails.close();
 
+            String contactPicUri = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
+            if (contactPicUri != null) {
+                Log.i(RescueMeConstants.LOG_TAG, Uri.parse(contactPicUri).toString());
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media
+                            .getBitmap(context.getContentResolver(),
+                                    Uri.parse(contactPicUri));
+                    contact.setProfilePic(RescueMeUtilClass.getBlob(bitmap));
+                    Log.i(RescueMeConstants.LOG_TAG, "Got the blob");
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
             if (numbersList.size() > 0 && emailsList.size() > 0) {
                 if (numbersList.size() > 1 && !(emailsList.size() > 1)) {

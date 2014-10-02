@@ -54,9 +54,6 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(RescueMeConstants.COLUMN_NAME, user.getName());
         contentValues.put(RescueMeConstants.COLUMN_EMAIL, user.getEmail());
-        if (user.getHashPassword() != null) {
-            contentValues.put(RescueMeConstants.COLUMN_PASSWORD, user.getHashPassword());
-        }
 
         if (user.getProfilePic() != null) {
             contentValues.put(RescueMeConstants.COLUMN_PROFILE_PIC, user.getProfilePic());
@@ -76,6 +73,9 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
         contentValues.put(RescueMeConstants.COLUMN_NAME, contact.getName());
         contentValues.put(RescueMeConstants.COLUMN_EMAIL, contact.getEmail());
         contentValues.put(RescueMeConstants.COLUMN_NUMBER, contact.getNumber());
+        if (contact.getProfilePic() != null) {
+            contentValues.put(RescueMeConstants.COLUMN_PROFILE_PIC, contact.getProfilePic());
+        }
 
         return db.insert(tableName, null, contentValues);
     }
@@ -84,28 +84,21 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         int result = -1;
 
-        RescueMeUserModel oldContactData = getContact(contact.getId());
-
         ContentValues contentValues = new ContentValues();
-        if (!oldContactData.getName().equals(contact.getName())) {
-            contentValues.put(RescueMeConstants.COLUMN_NAME, contact.getName());
+
+        contentValues.put(RescueMeConstants.COLUMN_NAME, contact.getName());
+
+        contentValues.put(RescueMeConstants.COLUMN_EMAIL, contact.getEmail());
+
+        contentValues.put(RescueMeConstants.COLUMN_NUMBER, contact.getNumber());
+        if (contact.getProfilePic() != null) {
+            contentValues.put(RescueMeConstants.COLUMN_PROFILE_PIC, contact.getProfilePic());
         }
 
-        if (!oldContactData.getEmail().equals(contact.getEmail())) {
-            contentValues.put(RescueMeConstants.COLUMN_EMAIL, contact.getEmail());
-        }
-
-        if (!oldContactData.getNumber().equals(contact.getNumber())) {
-            contentValues.put(RescueMeConstants.COLUMN_NUMBER, contact.getNumber());
-        }
-
-        if (contentValues.size() > 0) {
-            try {
-                result = db.update(tableName, contentValues, RescueMeConstants.COLUMN_ID + " = " + contact.getId(), null);
-            } catch (SQLiteConstraintException e) {
-                return result;
-            }
-
+        try {
+            result = db.update(tableName, contentValues, RescueMeConstants.COLUMN_ID + " = " + contact.getId(), null);
+        } catch (SQLiteConstraintException e) {
+            return result;
         }
 
         return result;
@@ -125,6 +118,7 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
                 contact.setName(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_NAME)));
                 contact.setEmail(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_EMAIL)));
                 contact.setNumber(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_NUMBER)));
+                contact.setProfilePic(cursor.getBlob(cursor.getColumnIndex(RescueMeConstants.COLUMN_PROFILE_PIC)));
             } while (cursor.moveToNext());
 
             return contact;
@@ -147,6 +141,7 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
                 contact.setName(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_NAME)));
                 contact.setEmail(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_EMAIL)));
                 contact.setNumber(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_NUMBER)));
+                contact.setProfilePic(cursor.getBlob(cursor.getColumnIndex(RescueMeConstants.COLUMN_PROFILE_PIC)));
                 contacts.add(contact);
             } while (cursor.moveToNext());
 

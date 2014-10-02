@@ -41,4 +41,11 @@
         android:title="@string/finish_editing_profile"
         android:visible="false" />
 
+    <item
+        android:id="@+id/discardContact"
+        android:icon="@drawable/ic_action_discard"
+        android:showAsAction="ifRoom"
+        android:title="@string/discard_contact"
+        android:visible="false" />
+
 </menu>

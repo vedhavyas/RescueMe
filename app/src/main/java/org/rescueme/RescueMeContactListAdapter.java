@@ -1,6 +1,7 @@
 package org.rescueme;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,10 @@ public class RescueMeContactListAdapter extends BaseAdapter {
         holder.name.setText(contact.getName());
         holder.email.setText(contact.getEmail());
         holder.number.setText(contact.getNumber());
+        Bitmap bitmap = RescueMeUtilClass.getBitmapFromBlob(contact.getProfilePic());
+        if (bitmap != null) {
+            holder.contactPic.setImageBitmap(bitmap);
+        }
 
         return convertView;
     }

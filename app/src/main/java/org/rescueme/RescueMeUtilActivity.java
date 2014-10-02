@@ -22,15 +22,20 @@ public class RescueMeUtilActivity extends Activity {
         if (fragmentTag.equalsIgnoreCase(RescueMeConstants.UPDATE_EMERGENCY_CONTACT)) {
             String id = getIntent().getStringExtra(RescueMeConstants.COLUMN_ID);
             Bundle data = new Bundle();
+            data.putString(RescueMeConstants.EDIT_MODE, RescueMeConstants.UPDATE_EMERGENCY_CONTACT);
             data.putString(RescueMeConstants.COLUMN_ID, id);
-            RescueMeUpdateEmergencyContact updateContactFrag = new RescueMeUpdateEmergencyContact();
+            RescueMeUpdateUserData updateContactFrag = new RescueMeUpdateUserData();
             updateContactFrag.setArguments(data);
             getFragmentManager().beginTransaction()
                     .add(R.id.container, updateContactFrag)
                     .commit();
         } else if (fragmentTag.equalsIgnoreCase(RescueMeConstants.UPDATE_PROFILE)) {
+            Bundle data = new Bundle();
+            data.putString(RescueMeConstants.EDIT_MODE, RescueMeConstants.UPDATE_PROFILE);
+            RescueMeUpdateUserData profileUpdateFrag = new RescueMeUpdateUserData();
+            profileUpdateFrag.setArguments(data);
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new RescueMeUpdateProfile())
+                    .add(R.id.container, profileUpdateFrag)
                     .commit();
         }
     }

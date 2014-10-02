@@ -9,18 +9,17 @@ public class RescueMeConstants {
     public static final String[] TABS = {"Rescue Me", "Contacts", "Settings"};
     public static final int NO_OF_TABS = TABS.length;
     public static final String RESCUE_ME_MAIN = "Rescue Me";
-    public static final String RESCUE_ME = "Rescue Me";
     public static final String LOGOUT_SUCCESS = "Logout Successful";
     public static final int SPLASH_SCREEN_TIMEOUT = 1500;
     public static final String EMAIL_REGEX = "@";
     public static final String FRAGMENT_TAG = "Fragment_tag";
     public static final String SELECT_TAG = "tag to load";
     public static final String EXCEPTION_CAUGHT = "Caught the exception";
-    public static final String FAILED_TO_GET_USER_PROFILE = "Failed to get the profile";
     public static final String UPDATING_USER_PROFILE = "Updating Profile Info";
     public static final String UPDATE_PROFILE_FAIL = "Profile Update Failed";
     public static final String UPDATE_PROFILE_SUCCESS = "Updated Profile Info";
     public static final String LOG_TAG = "RescueME";
+    public static final String EDIT_MODE = "edit mode";
 
     //Login constants
     public static final String LOGIN = "Log In";
@@ -36,7 +35,6 @@ public class RescueMeConstants {
     public static final String EMAIL_FAIL = "Email Doesn't meet the constraints";
     public static final String PHONE_FAIL = "Not a 10 digit number or contains characters";
     public static final String NAME_EMPTY = "Name cannot be blank";
-    public static final String MESSAGE_EMPTY = "Message cannot be blank";
     public static final int PHONE_NUMBER_LENGTH = 10;
     public static final String CHOOSE_THE_PROFILE_PIC = "Profile pic cannot be blank";
     public static final String FACEBOOK = "Facebook";
@@ -47,7 +45,6 @@ public class RescueMeConstants {
     public static final String SQL_USER_TABLE_CREATE_QUERY = "CREATE TABLE " + USER_TABLE
             + " ( ID INTEGER PRIMARY KEY AUTOINCREMENT,"
             + "Name TEXT,"
-            + "Password TEXT,"
             + "Email TEXT UNIQUE,"
             + "Number TEXT UNIQUE, " +
             "ProfilePic BLOB," +
@@ -57,11 +54,11 @@ public class RescueMeConstants {
             + " (ID INTEGER PRIMARY KEY AUTOINCREMENT,"
             + "Name TEXT,"
             + "Email TEXT UNIQUE,"
-            + "Number TEXT UNIQUE)";
+            + "Number TEXT UNIQUE," +
+            "ProfilePic BLOB )";
     public static final String DROP_TABLE = "DROP TABLE IF EXISTS  ";
     public static final String COLUMN_ID = "ID";
     public static final String COLUMN_NAME = "Name";
-    public static final String COLUMN_PASSWORD = "Password";
     public static final String COLUMN_EMAIL = "Email";
     public static final String COLUMN_PROFILE_PIC = "ProfilePic";
     public static final String COLUMN_PERSONAL_MESSAGE = "PersonalMessage";

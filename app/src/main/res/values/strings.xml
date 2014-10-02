@@ -35,4 +35,5 @@
     <string name="fb_contacts">Facebook Friends</string>
     <string name="profile_edit">Profile Edit</string>
     <string name="profile_desc">Profile Picture</string>
+    <string name="discard_contact">discard contact</string>
 </resources>

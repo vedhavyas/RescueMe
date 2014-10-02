@@ -18,7 +18,7 @@ public class RescueMeAppExtension extends Application {
         super.onCreate();
 
         // set log to true
-        Logger.DEBUG_WITH_STACKTRACE = true;
+        Logger.DEBUG_WITH_STACKTRACE = false;
 
         // initialize facebook configuration
         Permission[] permissions = new Permission[]{

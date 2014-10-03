@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@android:color/darker_gray"
+    android:background="#361f1717"
     tools:context="org.rescueme.RescueMeContacts">
 
     <ListView
@@ -10,5 +10,13 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:divider="@android:color/white"
+        android:dividerHeight="5dp"
+        android:drawSelectorOnTop="false"
+        android:fastScrollAlwaysVisible="false"
+        android:fastScrollEnabled="true"
+        android:scrollingCache="false"
+        android:smoothScrollbar="true"
+        android:stackFromBottom="false" />
 </RelativeLayout>

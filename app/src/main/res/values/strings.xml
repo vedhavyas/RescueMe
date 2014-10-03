@@ -36,4 +36,16 @@
     <string name="profile_edit">Profile Edit</string>
     <string name="profile_desc">Profile Picture</string>
     <string name="discard_contact">discard contact</string>
+    <string name="rescueme_tag">Rescue Me</string>
+    <string name="custom_message">Custom Rescue Me Message</string>
+    <string name="send_sms">Send SMS</string>
+    <string name="send_email">Send Email</string>
+    <string name="send_push">Send Push Notifications</string>
+    <string name="rescuer">Rescuer</string>
+    <string name="receive_sms">Receive SMS</string>
+    <string name="receive_email">Receive Email</string>
+    <string name="receive_push">Receive Push</string>
+    <string name="send_alert_with_in">Send Alerts With In</string>
+    <string name="receive_alert_view">Receive Alerts With In</string>
+    <string name="are_you_a_rescuer">Are you a Rescuer</string>
 </resources>

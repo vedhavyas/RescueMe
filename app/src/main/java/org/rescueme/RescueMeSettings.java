@@ -14,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RescueMeSettings extends Fragment {
 
@@ -39,6 +41,7 @@ public class RescueMeSettings extends Fragment {
         name = (TextView) rootView.findViewById(R.id.name);
         email = (TextView) rootView.findViewById(R.id.email);
         ImageButton editProfile = (ImageButton) rootView.findViewById(R.id.editProfile);
+        LinearLayout customMessageTab = (LinearLayout) rootView.findViewById(R.id.customMessage);
         dbFactory = RescueMeDBFactory.getInstance(context);
         dbFactory.setTableName(RescueMeConstants.USER_TABLE);
         SharedPreferences prefs = getActivity().getSharedPreferences(RescueMeConstants.PREFERENCE_NAME
@@ -49,6 +52,12 @@ public class RescueMeSettings extends Fragment {
             @Override
             public void onClick(View view) {
                 startUtilActivity();
+            }
+        });
+        customMessageTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, "Custom message", Toast.LENGTH_SHORT).show();
             }
         });
 

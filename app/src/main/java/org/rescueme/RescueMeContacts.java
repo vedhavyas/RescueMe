@@ -131,14 +131,18 @@ public class RescueMeContacts extends Fragment {
                     ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
 
             while (phones.moveToNext()) {
-                numbersList.add(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+                if (!numbersList.contains(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)))) {
+                    numbersList.add(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+                }
             }
             phones.close();
 
             Cursor emails = context.getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
                     ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = " + contactId, null, null);
             while (emails.moveToNext()) {
-                emailsList.add(emails.getString(emails.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)));
+                if (!emailsList.contains(emails.getString(emails.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)))) {
+                    emailsList.add(emails.getString(emails.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)));
+                }
             }
             emails.close();
 

@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@null"
+            android:contentDescription="@string/fb_login_btn"
             android:cropToPadding="false"
             android:scaleType="fitCenter"
             android:src="@drawable/fb_login_btn_selector" />
@@ -41,6 +42,7 @@
             android:layout_gravity="center"
             android:adjustViewBounds="false"
             android:background="@null"
+            android:contentDescription="@string/g_plus_login_btn"
             android:cropToPadding="false"
             android:scaleType="fitCenter"
             android:src="@drawable/google_plus_login_btn_selector" />

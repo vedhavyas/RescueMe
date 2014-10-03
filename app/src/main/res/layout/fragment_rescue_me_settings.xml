@@ -28,6 +28,7 @@
                 android:id="@+id/profilePic"
                 android:layout_width="80dp"
                 android:layout_height="fill_parent"
+                android:contentDescription="@string/profile_pic"
                 android:src="@drawable/default_profile_pic" />
 
             <LinearLayout
@@ -69,6 +70,7 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:background="@null"
+                android:contentDescription="@string/edit_profile_btn"
                 android:src="@drawable/ic_action_edit" />
         </LinearLayout>
     </LinearLayout>

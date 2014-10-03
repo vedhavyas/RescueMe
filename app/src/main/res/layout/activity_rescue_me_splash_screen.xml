@@ -12,6 +12,7 @@
         android:layout_alignTop="@+id/appName"
         android:layout_marginRight="41dp"
         android:layout_toLeftOf="@+id/appName"
+        android:contentDescription="@string/app_icon"
         android:src="@drawable/ic_launcher" />
 
     <TextView
@@ -21,10 +22,10 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="36dp"
-        android:text="Rescue ME"
+        android:text="@string/app_name"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#f019030b"
-        android:textSize="40dp"
+        android:textSize="40sp"
         android:textStyle="italic" />
 
 </RelativeLayout>

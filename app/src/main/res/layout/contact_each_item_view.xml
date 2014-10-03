@@ -22,6 +22,7 @@
             android:id="@+id/contactPic"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:contentDescription="@string/profile_pic"
             android:src="@drawable/default_profile_pic" />
     </LinearLayout>
 

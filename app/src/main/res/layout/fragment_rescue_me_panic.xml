@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@null"
+            android:contentDescription="@string/panic_btn"
             android:cropToPadding="false"
             android:src="@drawable/panic_btn_selector" />
     </LinearLayout>

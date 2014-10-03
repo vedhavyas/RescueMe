@@ -48,4 +48,10 @@
     <string name="send_alert_with_in">Send Alerts With In</string>
     <string name="receive_alert_view">Receive Alerts With In</string>
     <string name="are_you_a_rescuer">Are you a Rescuer</string>
+    <string name="fb_login_btn">FaceBook Login Button</string>
+    <string name="g_plus_login_btn">Google Plus Login Button</string>
+    <string name="app_icon">App Icon</string>
+    <string name="profile_pic">Profile Picture</string>
+    <string name="panic_btn">Panic Button</string>
+    <string name="edit_profile_btn">Edit Profile Button</string>
 </resources>

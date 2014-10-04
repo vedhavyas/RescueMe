@@ -342,7 +342,7 @@ public class RescueMeSettings extends Fragment implements
         }
 
         if (googleApiClient.isConnected()) {
-            connectToGPlus.setText("Connected to Google Plus");
+            connectToGPlus.setText(RescueMeConstants.GOOGLE_CONNECTION_SUCCESS);
             gPlusConnectBtn.setEnabled(false);
         }
     }
@@ -403,7 +403,7 @@ public class RescueMeSettings extends Fragment implements
 
     @Override
     public void onConnected(Bundle bundle) {
-        connectToGPlus.setText("Connected to Google Plus");
+        connectToGPlus.setText(RescueMeConstants.GOOGLE_CONNECTION_SUCCESS);
         gPlusConnectBtn.setEnabled(false);
     }
 

@@ -2,6 +2,7 @@ package org.rescueme;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
@@ -164,8 +165,16 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         simpleFacebook.onActivityResult(this, requestCode, resultCode, data);
+        if (requestCode == RescueMeConstants.GOOGLE_PLUS_LOGIN_RESOLUTION) {
+            Fragment settingsFragment = getFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + viewPager.getCurrentItem());
+            if (resultCode == Activity.RESULT_OK) {
+                googleApiClient.connect();
+            }
+            if (viewPager.getCurrentItem() == 2 && settingsFragment != null) {
+                settingsFragment.onActivityResult(requestCode, resultCode, data);
+            }
+        }
     }
 
     private void setFbLogoutListener() {

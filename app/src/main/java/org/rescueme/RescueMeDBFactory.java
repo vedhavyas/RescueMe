@@ -172,7 +172,6 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
                 user.setEmail(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_EMAIL)));
                 user.setNumber(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_NUMBER)));
                 user.setProfilePic(cursor.getBlob(cursor.getColumnIndex(RescueMeConstants.COLUMN_PROFILE_PIC)));
-                user.setMessage(cursor.getString(cursor.getColumnIndex(RescueMeConstants.COLUMN_PERSONAL_MESSAGE)));
             } while (cursor.moveToNext());
 
             return user;
@@ -192,10 +191,6 @@ public class RescueMeDBFactory extends SQLiteOpenHelper {
         contentValues.put(RescueMeConstants.COLUMN_EMAIL, user.getEmail());
 
         contentValues.put(RescueMeConstants.COLUMN_NUMBER, user.getNumber());
-
-        if (user.getMessage() != null) {
-            contentValues.put(RescueMeConstants.COLUMN_PERSONAL_MESSAGE, user.getMessage());
-        }
 
         contentValues.put(RescueMeConstants.COLUMN_PROFILE_PIC, user.getProfilePic());
 

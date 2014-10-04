@@ -46,8 +46,7 @@ public class RescueMeConstants {
             + "Name TEXT,"
             + "Email TEXT UNIQUE,"
             + "Number TEXT UNIQUE, " +
-            "ProfilePic BLOB," +
-            "PersonalMessage TEXT DEFAULT 'This is an Emergency!!')";
+            "ProfilePic BLOB)";
     public static final String CONTACTS_TABLE = "contacts_details";
     public static final String SQL_CONTACT_TABLE_QUERY = "CREATE TABLE " + CONTACTS_TABLE
             + " (ID INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -60,7 +59,6 @@ public class RescueMeConstants {
     public static final String COLUMN_NAME = "Name";
     public static final String COLUMN_EMAIL = "Email";
     public static final String COLUMN_PROFILE_PIC = "ProfilePic";
-    public static final String COLUMN_PERSONAL_MESSAGE = "PersonalMessage";
     public static final String COLUMN_NUMBER = "Number";
     public static final String SQL_SELECT_ALL_QUERY = "SELECT * FROM ";
 
@@ -120,4 +118,17 @@ public class RescueMeConstants {
     public static final String GOOGLE_CONNECTION_SUCCESS = "Connected to Google";
     public static final String GOOGLE_PLUS = "G Plus";
     public static final String G_PLUS_FIRST_TIME_LOGIN = "gPlus first time login";
+
+    //settings
+    public static final String CUSTOM_MESSAGE = "Custom Message";
+    public static final String DEFAULT_CUSTOM_MESSAGE = "This is an Emergency!!";
+    public static final String SEND_SMS = "Send SMS";
+    public static final String SEND_EMAIL = "Send Email";
+    public static final String SEND_PUSH = "Send Push";
+    public static final String RESCUE_DISTANCE = "Rescue Me Distance";
+    public static final String IS_RESCUER = "Is Rescuer";
+    public static final String RECEIVE_SMS = "Receive SMS";
+    public static final String RECEIVE_EMAIL = "Receive Email";
+    public static final String RECEIVE_PUSH = "Receive Push";
+    public static final String RESCUER_DISTANCE = "Rescuer Alert Distance";
 }

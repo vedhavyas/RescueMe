@@ -9,19 +9,10 @@ public class RescueMeUserModel {
     private String name;
     private String email;
     private String number;
-    private String message;
     private byte[] profilePic;
 
     public RescueMeUserModel() {
         //empty constructor
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public String getId() {

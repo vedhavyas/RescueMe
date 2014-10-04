@@ -7,6 +7,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ public class RescueMePanic extends Fragment {
     private Context context;
     private RescueMeLocationService locationService;
     private Activity activity;
+    private SharedPreferences prefs;
 
     public RescueMePanic() {
         // Required empty public constructor
@@ -42,6 +44,8 @@ public class RescueMePanic extends Fragment {
                 showDialogBox();
             }
         });
+        prefs = getActivity().getSharedPreferences(RescueMeConstants.PREFERENCE_NAME
+                , Context.MODE_PRIVATE);
         return rootView;
     }
 
@@ -73,8 +77,10 @@ public class RescueMePanic extends Fragment {
         if (location == null) {
             locationService.showSettingsAlert(activity, LocationManager.NETWORK_PROVIDER);
         } else {
-            RescueMeSendSMS smsTask = new RescueMeSendSMS(getActivity());
-            smsTask.execute(location);
+            if (prefs.getBoolean(RescueMeConstants.SEND_SMS, true)) {
+                RescueMeSendSMS smsTask = new RescueMeSendSMS(getActivity());
+                smsTask.execute(location);
+            }
         }
     }
 

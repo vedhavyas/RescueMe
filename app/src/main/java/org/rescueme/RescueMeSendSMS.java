@@ -59,8 +59,7 @@ public class RescueMeSendSMS extends AsyncTask<Location, Void, String> {
         List<RescueMeUserModel> contacts = dbFactory.getAllContacts();
 
         dbFactory.setTableName(RescueMeConstants.USER_TABLE);
-        String userId = String.valueOf(prefs.getInt(RescueMeConstants.LOGGED_IN_USER_ID, 1));
-        String personalMessage = dbFactory.getUserDetails(userId).getMessage();
+        String personalMessage = prefs.getString(RescueMeConstants.CUSTOM_MESSAGE, RescueMeConstants.DEFAULT_CUSTOM_MESSAGE);
         personalMessage = personalMessage + "\n" + RescueMeConstants.ADD_EXTRA_MESSAGE + "\n" + RescueMeConstants.LATITUDE +
                 location.getLatitude() + "\n" + RescueMeConstants.LONGITUDE + location.getLongitude();
         if (contacts != null) {

@@ -54,4 +54,8 @@
     <string name="profile_pic">Profile Picture</string>
     <string name="panic_btn">Panic Button</string>
     <string name="edit_profile_btn">Edit Profile Button</string>
+    <string name="seekbar_value_hint">value</string>
+    <string name="social_connections">Social Connections</string>
+    <string name="connect_to_facebook">Connect To FaceBook</string>
+    <string name="connect_to_g_plus">Connect to Google Plus</string>
 </resources>

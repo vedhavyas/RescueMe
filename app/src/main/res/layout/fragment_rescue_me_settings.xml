@@ -92,6 +92,7 @@
                 android:id="@+id/rescueMeTag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
                 android:layout_marginTop="8dp"
                 android:singleLine="false"
                 android:text="@string/rescueme_tag"
@@ -201,6 +202,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/rescueMeLinearLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="80dp"
                 android:layout_marginLeft="8dp"
@@ -236,6 +238,7 @@
                 android:id="@+id/rescuerTag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
                 android:layout_marginTop="8dp"
                 android:singleLine="false"
                 android:text="@string/rescuer"
@@ -342,6 +345,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/rescuerLinearLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="80dp"
                 android:layout_marginLeft="8dp"
@@ -371,6 +375,76 @@
                     android:max="1000"
                     android:progress="400"
                     android:typeface="serif" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/socialTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="8dp"
+                android:singleLine="false"
+                android:text="@string/social_connections"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="italic"
+                android:typeface="serif" />
+
+            <View
+                android:id="@+id/socialTagSeparator"
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="@color/black_overlay" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="10dp"
+                android:background="#361f1717"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/connectToFB"
+                    android:layout_width="250dp"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:text="@string/connect_to_facebook"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <ImageButton
+                    android:id="@+id/fbConnectBtn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@null"
+                    android:contentDescription="@string/fb_login_btn"
+                    android:src="@drawable/fb_connect_selector" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="10dp"
+                android:background="#361f1717"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/connectToGPlus"
+                    android:layout_width="250dp"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:text="@string/connect_to_g_plus"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <ImageButton
+                    android:id="@+id/googlePlusConnectBtn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@null"
+                    android:contentDescription="@string/fb_login_btn"
+                    android:src="@drawable/g_plus_connect_selector" />
             </LinearLayout>
 
         </LinearLayout>

@@ -6,15 +6,12 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -28,17 +25,21 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
 
     private ActionBar actionBar;
     private ViewPager viewPager;
-    private SharedPreferences prefs;
     private Context context;
     private SimpleFacebook simpleFacebook;
     private GoogleApiClient googleApiClient;
     private OnLogoutListener fbLogoutListener;
-    private RescueMeLocationService locationService;
+    private Activity activity;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setContentView(R.layout.activity_rescue_me_tab_viewer);
+
+        activity = this;
+        context = getBaseContext();
         simpleFacebook = SimpleFacebook.getInstance(this);
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addOnConnectionFailedListener(this)
@@ -46,24 +47,18 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
                 .addApi(Plus.API)
                 .addScope(Plus.SCOPE_PLUS_LOGIN)
                 .build();
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setContentView(R.layout.activity_rescue_me_tab_viewer);
 
-
-        prefs = getSharedPreferences(RescueMeConstants.PREFERENCE_NAME, Context.MODE_PRIVATE);
         viewPager = (ViewPager) findViewById(R.id.pager);
         actionBar = getActionBar();
         if (actionBar != null) {
             actionBar.setTitle(RescueMeConstants.RESCUE_ME_MAIN);
         }
 
-        context = getBaseContext();
-        locationService = new RescueMeLocationService(context);
         RescueMeTabAdapter sectionsPagerAdapter = new RescueMeTabAdapter(getFragmentManager());
         setFbLogoutListener();
         googleApiClient.connect();
-        int selectTab = getIntent().getIntExtra(RescueMeConstants.SELECT_TAG, 0);
 
+        int selectTab = getIntent().getIntExtra(RescueMeConstants.SELECT_TAG, 0);
         viewPager.setAdapter(sectionsPagerAdapter);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -96,6 +91,11 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
         checkGPSProvidersStatus();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        checkGPSProvidersStatus();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -108,7 +108,6 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
         int id = item.getItemId();
         if (id == R.id.action_logout) {
             logoutUser();
-            Toast.makeText(context, RescueMeConstants.LOGOUT_SUCCESS, Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -117,7 +116,8 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
     private void logoutUser() {
         boolean fbLogin = simpleFacebook.isLogin();
         boolean gPlusLogin = googleApiClient.isConnected();
-        prefs.edit().putBoolean(RescueMeConstants.LOGIN, false).apply();
+        RescueMeAppExtension appExtension = (RescueMeAppExtension) getApplicationContext();
+        appExtension.setLoggedIn(false);
         if (fbLogin && gPlusLogin) {
             simpleFacebook.logout(fbLogoutListener);
             Plus.AccountApi.clearDefaultAccount(googleApiClient);
@@ -128,7 +128,7 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
             Plus.AccountApi.clearDefaultAccount(googleApiClient);
             googleApiClient.disconnect();
         }
-        Toast.makeText(context, RescueMeConstants.LOGOUT_SUCCESS, Toast.LENGTH_SHORT).show();
+        RescueMeUtilClass.toastAndLog(context, "Logged out successfully!!");
         startMainActivity();
     }
 
@@ -143,8 +143,6 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        // When the given tab is selected, switch to the corresponding page in
-        // the ViewPager.
         viewPager.setCurrentItem(tab.getPosition());
     }
 
@@ -174,6 +172,16 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
             if (viewPager.getCurrentItem() == 2 && settingsFragment != null) {
                 settingsFragment.onActivityResult(requestCode, resultCode, data);
             }
+        } else if (requestCode == RescueMeConstants.GPS_LOCATION_SETTINGS) {
+            new android.os.Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    RescueMeUtilClass.writeToLog("Sending alerts again!!");
+                    RescueMeUtilClass.sendEmergencyAlerts(activity);
+                }
+            }, RescueMeConstants.GPS_AFTER_SETTINGS_SLEEP);
+
         }
     }
 
@@ -181,7 +189,7 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
         fbLogoutListener = new OnLogoutListener() {
             @Override
             public void onLogout() {
-                Log.i(RescueMeConstants.LOG_TAG, "Logged out from FB");
+                RescueMeUtilClass.writeToLog("Logged out from FB");
             }
 
             @Override
@@ -203,22 +211,23 @@ public class RescueMeTabViewer extends Activity implements ActionBar.TabListener
 
     @Override
     public void onConnected(Bundle bundle) {
-        Log.i(RescueMeConstants.LOG_TAG, "Connected to Google");
+        RescueMeUtilClass.writeToLog("Connected to Google");
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.i(RescueMeConstants.LOG_TAG, "Connection suspended");
+        RescueMeUtilClass.writeToLog("Connection suspended");
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-        Log.i(RescueMeConstants.LOG_TAG, "Connection Failed");
+        RescueMeUtilClass.writeToLog("Connection Failed");
     }
 
     private void checkGPSProvidersStatus() {
-        if (!locationService.isProvidersEnabled(LocationManager.NETWORK_PROVIDER)) {
-            locationService.showSettingsAlert(this, LocationManager.NETWORK_PROVIDER);
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            RescueMeUtilClass.showSettingsAlert(this, LocationManager.NETWORK_PROVIDER);
         }
     }
 }

@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.android.camera.CropImageIntentBuilder;
 import com.google.android.gms.common.ConnectionResult;
@@ -55,16 +54,18 @@ public class RescueMe extends Activity implements
     private Activity activity;
     private String whichSocial;
     private ImageButton fbLoginBtn, gPlusLoginBtn;
+    private RescueMeAppExtension appExtension;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        prefs = getSharedPreferences(RescueMeConstants.PREFERENCE_NAME, MODE_PRIVATE);
-        boolean isLoggedIn = prefs.getBoolean(RescueMeConstants.LOGIN, false);
-        if (isLoggedIn) {
+        appExtension = (RescueMeAppExtension) getApplicationContext();
+        if (appExtension.isLoggedIn()) {
+            RescueMeUtilClass.writeToLog("Already Logged in.. Loading Authenticated Activity");
             loadAuthenticatedActivity();
         } else {
+            requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+            prefs = getSharedPreferences(RescueMeConstants.PREFERENCE_NAME, MODE_PRIVATE);
             ActionBar actionBar = getActionBar();
             if (actionBar != null) {
                 actionBar.setTitle(RescueMeConstants.LOGIN);
@@ -109,7 +110,8 @@ public class RescueMe extends Activity implements
     }
 
     private void loadAuthenticatedActivity() {
-        prefs.edit().putBoolean(RescueMeConstants.LOGIN, true).apply();
+        RescueMeUtilClass.writeToLog("Login Successful!!");
+        appExtension.setLoggedIn(true);
         Intent intent = new Intent(this, RescueMeTabViewer.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -121,7 +123,7 @@ public class RescueMe extends Activity implements
         fbLoginListener = new OnLoginListener() {
             @Override
             public void onLogin() {
-                Toast.makeText(context, RescueMeConstants.FB_LOGIN_SUCCESS, Toast.LENGTH_SHORT).show();
+                RescueMeUtilClass.toastAndLog(context, "Connected to Facebook Successfully!!");
                 if (prefs.getBoolean(RescueMeConstants.FB_FIRST_TIME_LOGIN, true)) {
                     setButtonsClickable(false);
                     getFBProfileInfo();
@@ -132,7 +134,7 @@ public class RescueMe extends Activity implements
 
             @Override
             public void onNotAcceptingPermissions(Permission.Type type) {
-                Toast.makeText(context, RescueMeConstants.FB_NOT_ACCEPT_PERMISSIONS, Toast.LENGTH_SHORT).show();
+                RescueMeUtilClass.toastAndLog(context, "Permissions were not accepted!!");
                 setButtonsClickable(true);
             }
 
@@ -143,13 +145,13 @@ public class RescueMe extends Activity implements
 
             @Override
             public void onException(Throwable throwable) {
-                Toast.makeText(context, RescueMeConstants.FB_EXCEPTION_LOGIN, Toast.LENGTH_SHORT).show();
+                RescueMeUtilClass.toastAndLog(context, "Exception while connecting to Facebook!!");
                 setButtonsClickable(true);
             }
 
             @Override
             public void onFail(String s) {
-                Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+                RescueMeUtilClass.toastAndLog(context, "Failed to Connect to Facebook!!");
                 setButtonsClickable(true);
             }
         };
@@ -159,7 +161,7 @@ public class RescueMe extends Activity implements
         OnProfileListener fbProfileListener = new OnProfileListener() {
             @Override
             public void onComplete(Profile profile) {
-                Toast.makeText(context, RescueMeConstants.GOT_PROFILE_DATA, Toast.LENGTH_SHORT).show();
+                RescueMeUtilClass.toastAndLog(context, "Downloaded the Profile!!");
                 userProfile = new RescueMeUserModel();
                 userProfile.setName(profile.getName());
                 userProfile.setEmail(profile.getEmail());
@@ -180,7 +182,7 @@ public class RescueMe extends Activity implements
                 .build();
 
         simpleFacebook.getProfile(properties, fbProfileListener);
-        Toast.makeText(context, RescueMeConstants.DOWNLOADING_PROFILE, Toast.LENGTH_SHORT).show();
+        RescueMeUtilClass.toastAndLog(context, "Downloading your Profile...");
     }
 
     private void startCropActivity() {
@@ -215,12 +217,12 @@ public class RescueMe extends Activity implements
                 }
                 registerUser();
             } else {
-                Toast.makeText(context, RescueMeConstants.CHOOSE_THE_PROFILE_PIC, Toast.LENGTH_SHORT).show();
+                RescueMeUtilClass.toastAndLog(context, "Profile picture is necessary!!");
                 startCropActivity();
             }
         } else if (requestCode == RescueMeConstants.GOOGLE_PLUS_LOGIN_RESOLUTION) {
             if (resultCode == Activity.RESULT_OK) {
-                Log.i(RescueMeConstants.LOG_TAG, "Result code success for Google Login");
+                RescueMeUtilClass.writeToLog("Google plus issue Resolved!!");
                 googleApiClient.connect();
             } else {
                 setButtonsClickable(true);
@@ -245,15 +247,12 @@ public class RescueMe extends Activity implements
             if (currentPerson != null) {
                 String personName = currentPerson.getDisplayName();
                 String personPhotoUrl = currentPerson.getImage().getUrl();
-                String personGooglePlusProfile = currentPerson.getUrl();
                 String email = Plus.AccountApi.getAccountName(googleApiClient);
                 userProfile = new RescueMeUserModel();
                 userProfile.setName(personName);
                 userProfile.setEmail(email);
-                Log.i(RescueMeConstants.LOG_TAG, "Name: " + personName + ", plusProfile: "
-                        + personGooglePlusProfile + ", email: " + email
-                        + ", Image: " + personPhotoUrl);
 
+                RescueMeUtilClass.toastAndLog(context, "Downloaded your Google Profile!!");
 
                 personPhotoUrl = personPhotoUrl.substring(0,
                         personPhotoUrl.length() - 2)
@@ -262,8 +261,7 @@ public class RescueMe extends Activity implements
                 new downloadImageTask().execute(personPhotoUrl);
 
             } else {
-                Toast.makeText(context,
-                        "Person information is null", Toast.LENGTH_LONG).show();
+                RescueMeUtilClass.toastAndLog(context, "Google Profile info is null !!");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -272,8 +270,7 @@ public class RescueMe extends Activity implements
 
     @Override
     public void onConnected(Bundle bundle) {
-        Toast.makeText(context, RescueMeConstants.GOOGLE_CONNECTION_SUCCESS, Toast.LENGTH_SHORT).show();
-        Log.i(RescueMeConstants.LOG_TAG, RescueMeConstants.GOOGLE_CONNECTION_SUCCESS);
+        RescueMeUtilClass.toastAndLog(context, "Connected to Google!!");
         if (prefs.getBoolean(RescueMeConstants.G_PLUS_FIRST_TIME_LOGIN, true)) {
             getUserGooglePlusProfile();
         } else {
@@ -285,22 +282,21 @@ public class RescueMe extends Activity implements
 
     @Override
     public void onConnectionSuspended(int i) {
-        Toast.makeText(context, "Connection to Google is Suspended!!", Toast.LENGTH_SHORT).show();
-        Log.i(RescueMeConstants.LOG_TAG, "Connection to Google is Suspended!!");
+        RescueMeUtilClass.toastAndLog(context, "Google Connection suspended!!");
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         if (result.hasResolution()) {
-            Log.i(RescueMeConstants.LOG_TAG, "Connection has Resolution");
+            RescueMeUtilClass.writeToLog("Google - Issue has a Resolution!!");
             try {
                 result.startResolutionForResult(activity, RescueMeConstants.GOOGLE_PLUS_LOGIN_RESOLUTION);
             } catch (IntentSender.SendIntentException e) {
-                Log.i(RescueMeConstants.LOG_TAG, "Exception caught!! Reconnecting to client");
+                RescueMeUtilClass.writeToLog("Google - Exception caught!! Reconnecting...");
                 googleApiClient.connect();
             }
         } else {
-            Log.i(RescueMeConstants.LOG_TAG, "No resolution!! Showing error Dialog");
+            RescueMeUtilClass.writeToLog("Google - Issue has no resolution!!");
             showErrorDialog(result.getErrorCode());
         }
     }
@@ -323,7 +319,7 @@ public class RescueMe extends Activity implements
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(context, RescueMeConstants.DOWNLOADING_PROFILE_PIC, Toast.LENGTH_SHORT).show();
+            RescueMeUtilClass.toastAndLog(context, "Downloading your Profile Picture...");
         }
 
         @Override
@@ -356,9 +352,9 @@ public class RescueMe extends Activity implements
         @Override
         protected void onPreExecute() {
             if (register) {
-                Toast.makeText(context, RescueMeConstants.REGISTERING_USER, Toast.LENGTH_SHORT).show();
+                RescueMeUtilClass.toastAndLog(context, "Registering you now...");
             } else {
-                Toast.makeText(context, RescueMeConstants.UPDATING_USER_PROFILE, Toast.LENGTH_SHORT).show();
+                RescueMeUtilClass.toastAndLog(context, "Updating your Profile...");
             }
         }
 
@@ -390,9 +386,9 @@ public class RescueMe extends Activity implements
             if (result.equalsIgnoreCase(RescueMeConstants.SUCCESS)) {
                 prefs.edit().putBoolean(RescueMeConstants.LOGIN, true).apply();
                 if (register) {
-                    Toast.makeText(context, RescueMeConstants.REGISTRATION_SUCCESS, Toast.LENGTH_SHORT).show();
+                    RescueMeUtilClass.toastAndLog(context, "Registration Successful!! ");
                 } else {
-                    Toast.makeText(context, RescueMeConstants.UPDATE_PROFILE_SUCCESS, Toast.LENGTH_SHORT).show();
+                    RescueMeUtilClass.toastAndLog(context, "Profile updated!!");
                 }
                 if (whichSocial.equalsIgnoreCase(RescueMeConstants.FACEBOOK)) {
                     prefs.edit().putBoolean(RescueMeConstants.FB_FIRST_TIME_LOGIN, false).apply();
@@ -401,7 +397,7 @@ public class RescueMe extends Activity implements
                 }
                 loadAuthenticatedActivity();
             } else {
-                Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
+                RescueMeUtilClass.toastAndLog(context, result);
                 setButtonsClickable(true);
             }
         }

@@ -26,7 +26,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.ErrorDialogFragment;
@@ -46,7 +45,7 @@ public class RescueMeSettings extends Fragment implements
     private String userID;
     private RescueMeUserModel userData;
     private SharedPreferences prefs;
-    private CheckBox sendSMS, sendEmail, sendPush, receiveSMS, receiveEmail, receivePush, rescuer;
+    private CheckBox sendSMS, sendEmail, sendPush, receiveSMS, receiveEmail, receivePush, rescuer, pushLocationsUpdates;
     private SeekBar rescueMeDistance, rescuerDistance;
     private TextView receiveAlertView;
     private PopupWindow seekBarPopUp;
@@ -122,6 +121,7 @@ public class RescueMeSettings extends Fragment implements
                 startUtilActivity();
             }
         });
+
         customMessageTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,16 +155,17 @@ public class RescueMeSettings extends Fragment implements
         receiveEmail = (CheckBox) view.findViewById(R.id.receiveEmail);
         receivePush = (CheckBox) view.findViewById(R.id.receivePush);
         rescuer = (CheckBox) view.findViewById(R.id.isRescuer);
+        pushLocationsUpdates = (CheckBox) view.findViewById(R.id.getLocation);
 
         sendSMS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (((CheckBox) view).isChecked()) {
                     prefs.edit().putBoolean(RescueMeConstants.SEND_SMS, true).apply();
-                    Log.i(RescueMeConstants.LOG_TAG, "Send SMS - true");
+                    RescueMeUtilClass.writeToLog("Send SMS - true");
                 } else {
                     prefs.edit().putBoolean(RescueMeConstants.SEND_SMS, false).apply();
-                    Log.i(RescueMeConstants.LOG_TAG, "Send SMS - false");
+                    RescueMeUtilClass.writeToLog("Send SMS - false");
                 }
             }
         });
@@ -174,10 +175,10 @@ public class RescueMeSettings extends Fragment implements
             public void onClick(View view) {
                 if (((CheckBox) view).isChecked()) {
                     prefs.edit().putBoolean(RescueMeConstants.SEND_EMAIL, true).apply();
-                    Log.i(RescueMeConstants.LOG_TAG, "Send Email - true");
+                    RescueMeUtilClass.writeToLog("Send Email - true");
                 } else {
                     prefs.edit().putBoolean(RescueMeConstants.SEND_EMAIL, false).apply();
-                    Log.i(RescueMeConstants.LOG_TAG, "Send Email - false");
+                    RescueMeUtilClass.writeToLog("Send Email - false");
                 }
             }
         });
@@ -187,10 +188,31 @@ public class RescueMeSettings extends Fragment implements
             public void onClick(View view) {
                 if (((CheckBox) view).isChecked()) {
                     prefs.edit().putBoolean(RescueMeConstants.SEND_PUSH, true).apply();
-                    Log.i(RescueMeConstants.LOG_TAG, "Send Push - true");
+                    RescueMeUtilClass.writeToLog("Send Push - true");
                 } else {
                     prefs.edit().putBoolean(RescueMeConstants.SEND_PUSH, false).apply();
-                    Log.i(RescueMeConstants.LOG_TAG, "Send Push - false");
+                    RescueMeUtilClass.writeToLog("Send Push - false");
+                }
+            }
+        });
+
+        pushLocationsUpdates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (((CheckBox) view).isChecked()) {
+
+                    RescueMeUtilClass.writeToLog("Push Location Updates - true");
+                    prefs.edit().putBoolean(RescueMeConstants.PUSH_LOCATION_UPDATES, true).apply();
+                    Intent locationServiceIntent = new Intent(context, RescueMeLocationService.class);
+                    context.startService(locationServiceIntent);
+                    RescueMeUtilClass.writeToLog("Starting service...");
+
+                } else {
+                    RescueMeUtilClass.writeToLog("Push location updates - false!!");
+                    prefs.edit().putBoolean(RescueMeConstants.PUSH_LOCATION_UPDATES, false).apply();
+                    Intent locationServiceIntent = new Intent(context, RescueMeLocationService.class);
+                    context.stopService(locationServiceIntent);
+                    RescueMeUtilClass.writeToLog("Stopping service...");
                 }
             }
         });
@@ -200,10 +222,10 @@ public class RescueMeSettings extends Fragment implements
             public void onClick(View view) {
                 if (((CheckBox) view).isChecked()) {
                     prefs.edit().putBoolean(RescueMeConstants.RECEIVE_SMS, true).apply();
-                    Log.i(RescueMeConstants.LOG_TAG, "Receive SMS - true");
+                    RescueMeUtilClass.writeToLog("Receive SMS - true");
                 } else {
                     prefs.edit().putBoolean(RescueMeConstants.RECEIVE_SMS, false).apply();
-                    Log.i(RescueMeConstants.LOG_TAG, "Receive SMS - false");
+                    RescueMeUtilClass.writeToLog("Receive SMS - false");
                 }
             }
         });
@@ -213,10 +235,10 @@ public class RescueMeSettings extends Fragment implements
             public void onClick(View view) {
                 if (((CheckBox) view).isChecked()) {
                     prefs.edit().putBoolean(RescueMeConstants.RECEIVE_EMAIL, true).apply();
-                    Log.i(RescueMeConstants.LOG_TAG, "Receive Email - true");
+                    RescueMeUtilClass.writeToLog("Receive Email - true");
                 } else {
                     prefs.edit().putBoolean(RescueMeConstants.RECEIVE_EMAIL, false).apply();
-                    Log.i(RescueMeConstants.LOG_TAG, "Receive Email - false");
+                    RescueMeUtilClass.writeToLog("Receive Email - false");
                 }
             }
         });
@@ -226,10 +248,10 @@ public class RescueMeSettings extends Fragment implements
             public void onClick(View view) {
                 if (((CheckBox) view).isChecked()) {
                     prefs.edit().putBoolean(RescueMeConstants.RECEIVE_PUSH, true).apply();
-                    Log.i(RescueMeConstants.LOG_TAG, "Receive Push - true");
+                    RescueMeUtilClass.writeToLog("Receive Push - true");
                 } else {
                     prefs.edit().putBoolean(RescueMeConstants.RECEIVE_PUSH, false).apply();
-                    Log.i(RescueMeConstants.LOG_TAG, "Receive Push - false");
+                    RescueMeUtilClass.writeToLog("Receive Push - false");
                 }
             }
         });
@@ -239,11 +261,11 @@ public class RescueMeSettings extends Fragment implements
             public void onClick(View view) {
                 if (((CheckBox) view).isChecked()) {
                     prefs.edit().putBoolean(RescueMeConstants.IS_RESCUER, true).apply();
-                    Log.i(RescueMeConstants.LOG_TAG, "Rescuer - true");
+                    RescueMeUtilClass.writeToLog("Rescuer - true");
                     setRescuerSettings(true);
                 } else {
                     prefs.edit().putBoolean(RescueMeConstants.IS_RESCUER, false).apply();
-                    Log.i(RescueMeConstants.LOG_TAG, "Rescuer - false");
+                    RescueMeUtilClass.writeToLog("Rescuer - false");
                     setRescuerSettings(false);
                 }
             }
@@ -260,20 +282,20 @@ public class RescueMeSettings extends Fragment implements
             @Override
             public void onProgressChanged(SeekBar seekBar, int changedValue, boolean b) {
                 this.changedValue = changedValue;
-                seekBarValue.setText(String.valueOf(this.changedValue) + " metres");
+                seekBarValue.setText(String.valueOf(this.changedValue) + " Metres");
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                seekBarValue.setText(String.valueOf(this.changedValue) + " metres");
-                seekBarPopUp.showAsDropDown(rescueMeLinearLayout, size.x / 2 - 150, -400);
+                seekBarValue.setText(String.valueOf(this.changedValue) + " Metres");
+                seekBarPopUp.showAsDropDown(rescueMeLinearLayout, size.x / 2 - 350, -400);
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (changedValue != 0) {
                     prefs.edit().putInt(RescueMeConstants.RESCUE_DISTANCE, changedValue).apply();
-                    Log.i(RescueMeConstants.LOG_TAG, String.valueOf(changedValue));
+                    RescueMeUtilClass.writeToLog(String.valueOf(changedValue));
                 }
                 seekBarPopUp.dismiss();
             }
@@ -285,20 +307,20 @@ public class RescueMeSettings extends Fragment implements
             @Override
             public void onProgressChanged(SeekBar seekBar, int changedValue, boolean b) {
                 this.changedValue = changedValue;
-                seekBarValue.setText(String.valueOf(this.changedValue) + " metres");
+                seekBarValue.setText(String.valueOf(this.changedValue) + " Metres");
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                seekBarValue.setText(String.valueOf(this.changedValue) + " metres");
-                seekBarPopUp.showAsDropDown(rescuerLinearLayout, size.x / 2 - 150, -400);
+                seekBarValue.setText(String.valueOf(this.changedValue) + " Metres");
+                seekBarPopUp.showAsDropDown(rescuerLinearLayout, size.x / 2 - 350, -400);
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (changedValue != 0) {
                     prefs.edit().putInt(RescueMeConstants.RESCUER_DISTANCE, changedValue).apply();
-                    Log.i(RescueMeConstants.LOG_TAG, String.valueOf(changedValue));
+                    RescueMeUtilClass.writeToLog(String.valueOf(changedValue));
                 }
                 seekBarPopUp.dismiss();
             }
@@ -309,6 +331,7 @@ public class RescueMeSettings extends Fragment implements
         sendSMS.setChecked(prefs.getBoolean(RescueMeConstants.SEND_SMS, true));
         sendEmail.setChecked(prefs.getBoolean(RescueMeConstants.SEND_EMAIL, true));
         sendPush.setChecked(prefs.getBoolean(RescueMeConstants.SEND_PUSH, true));
+        pushLocationsUpdates.setChecked(prefs.getBoolean(RescueMeConstants.PUSH_LOCATION_UPDATES, false));
         rescueMeDistance.setProgress(prefs.getInt(RescueMeConstants.RESCUE_DISTANCE, 400));
 
         boolean isRescuer = prefs.getBoolean(RescueMeConstants.IS_RESCUER, true);
@@ -360,6 +383,7 @@ public class RescueMeSettings extends Fragment implements
             public void onClick(DialogInterface dialogInterface, int i) {
                 prefs.edit().putString(RescueMeConstants.CUSTOM_MESSAGE
                         , customMessage.getText().toString()).apply();
+
             }
         });
 
@@ -371,14 +395,14 @@ public class RescueMeSettings extends Fragment implements
         fbLoginListener = new OnLoginListener() {
             @Override
             public void onLogin() {
-                Toast.makeText(context, RescueMeConstants.FB_LOGIN_SUCCESS, Toast.LENGTH_SHORT).show();
+                RescueMeUtilClass.toastAndLog(context, "Connected to Facebook!!");
                 fbConnectBtn.setEnabled(false);
                 connectToFB.setText(RescueMeConstants.FB_LOGIN_SUCCESS);
             }
 
             @Override
             public void onNotAcceptingPermissions(Permission.Type type) {
-                Toast.makeText(context, RescueMeConstants.FB_NOT_ACCEPT_PERMISSIONS, Toast.LENGTH_SHORT).show();
+                RescueMeUtilClass.toastAndLog(context, "Permissions were not accepted!!");
                 fbConnectBtn.setEnabled(true);
             }
 
@@ -388,13 +412,13 @@ public class RescueMeSettings extends Fragment implements
 
             @Override
             public void onException(Throwable throwable) {
-                Toast.makeText(context, RescueMeConstants.FB_EXCEPTION_LOGIN, Toast.LENGTH_SHORT).show();
+                RescueMeUtilClass.toastAndLog(context, "Connection Exception!!");
                 fbConnectBtn.setEnabled(true);
             }
 
             @Override
-            public void onFail(String s) {
-                Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+            public void onFail(String reason) {
+                RescueMeUtilClass.toastAndLog(context, reason);
                 fbConnectBtn.setEnabled(true);
             }
         };
@@ -415,15 +439,15 @@ public class RescueMeSettings extends Fragment implements
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         if (result.hasResolution() && userConnectGPlus) {
-            Log.i(RescueMeConstants.LOG_TAG, "Connection has Resolution");
+            RescueMeUtilClass.writeToLog("Connection has Resolution");
             try {
                 result.startResolutionForResult(getActivity(), RescueMeConstants.GOOGLE_PLUS_LOGIN_RESOLUTION);
             } catch (IntentSender.SendIntentException e) {
-                Log.i(RescueMeConstants.LOG_TAG, "Exception caught!! Reconnecting to client");
+                RescueMeUtilClass.writeToLog("Exception caught!! Reconnecting to client");
                 googleApiClient.connect();
             }
         } else {
-            Log.i(RescueMeConstants.LOG_TAG, "No resolution!! Showing error Dialog");
+            RescueMeUtilClass.writeToLog("No resolution!! Showing error Dialog");
             showErrorDialog(result.getErrorCode());
         }
     }
@@ -440,7 +464,7 @@ public class RescueMeSettings extends Fragment implements
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RescueMeConstants.GOOGLE_PLUS_LOGIN_RESOLUTION) {
             if (resultCode == Activity.RESULT_OK) {
-                Log.i(RescueMeConstants.LOG_TAG, "Result code success for Google Login");
+                RescueMeUtilClass.writeToLog("Result code success for Google Login");
                 googleApiClient.connect();
             } else {
                 gPlusConnectBtn.setEnabled(true);

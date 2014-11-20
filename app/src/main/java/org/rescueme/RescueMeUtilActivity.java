@@ -15,6 +15,7 @@ public class RescueMeUtilActivity extends Activity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_rescue_me_util);
         fragmentTag = getIntent().getStringExtra(RescueMeConstants.FRAGMENT_TAG);
+        RescueMeUtilClass.writeToLog(fragmentTag);
         loadFragment();
     }
 

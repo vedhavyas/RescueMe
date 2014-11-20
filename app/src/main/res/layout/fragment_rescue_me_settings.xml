@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E5E5E5"
     android:clickable="false">
 
     <LinearLayout
@@ -10,10 +11,7 @@
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="false"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:background="#361f1717"
+        android:background="#FFFFFF"
         android:clickable="false"
         android:orientation="vertical">
 
@@ -113,7 +111,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="10dp"
-                android:background="#361f1717"
+                android:background="@drawable/custom_message_selector"
                 android:baselineAligned="true"
                 android:clickable="true"
                 android:focusable="false"
@@ -138,7 +136,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="10dp"
-                android:background="#361f1717"
+                android:background="#FFFFFF"
                 android:orientation="vertical">
 
                 <CheckBox
@@ -161,7 +159,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="10dp"
-                android:background="#361f1717"
+                android:background="#FFFFFF"
                 android:orientation="vertical">
 
                 <CheckBox
@@ -184,7 +182,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="10dp"
-                android:background="#361f1717"
+                android:background="#FFFFFF"
                 android:orientation="vertical">
 
                 <CheckBox
@@ -202,13 +200,36 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="10dp"
+                android:background="#FFFFFF"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/getLocation"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="right"
+                    android:button="@null"
+                    android:checked="false"
+                    android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+                    android:gravity="center"
+                    android:text="@string/push_loc_updates"
+                    android:textStyle="bold"
+                    android:typeface="serif" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/rescueMeLinearLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="80dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="10dp"
-                android:background="#361f1717"
+                android:background="#FFFFFF"
                 android:orientation="vertical">
 
 
@@ -258,7 +279,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="10dp"
-                android:background="#361f1717"
+                android:background="#FFFFFF"
                 android:orientation="vertical">
 
                 <CheckBox
@@ -281,7 +302,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="10dp"
-                android:background="#361f1717"
+                android:background="#FFFFFF"
                 android:orientation="vertical">
 
                 <CheckBox
@@ -304,7 +325,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="10dp"
-                android:background="#361f1717"
+                android:background="#FFFFFF"
                 android:orientation="vertical">
 
                 <CheckBox
@@ -327,7 +348,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="10dp"
-                android:background="#361f1717"
+                android:background="#FFFFFF"
                 android:orientation="vertical">
 
                 <CheckBox
@@ -351,7 +372,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="10dp"
-                android:background="#361f1717"
+                android:background="#FFFFFF"
                 android:orientation="vertical">
 
 
@@ -401,7 +422,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="10dp"
-                android:background="#361f1717"
+                android:background="#FFFFFF"
                 android:orientation="horizontal">
 
                 <TextView
@@ -427,7 +448,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="10dp"
-                android:background="#361f1717"
+                android:background="#FFFFFF"
                 android:orientation="horizontal">
 
                 <TextView

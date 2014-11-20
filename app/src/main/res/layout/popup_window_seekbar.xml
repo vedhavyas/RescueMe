@@ -7,10 +7,12 @@
         android:id="@+id/seekBarValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/black"
+        android:background="@drawable/rounded_corner_layout"
         android:hint="@string/seekbar_value_hint"
+        android:padding="10dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/white"
+        android:textSize="35sp"
         android:textStyle="bold"
-        android:typeface="serif" />
+        android:typeface="monospace" />
 </LinearLayout>

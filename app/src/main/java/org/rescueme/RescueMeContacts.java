@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -79,8 +77,9 @@ public class RescueMeContacts extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.fbContacts) {
-            Toast.makeText(context, "Coming soon!!", Toast.LENGTH_SHORT).show();
+            RescueMeUtilClass.toastAndLog(context, "Coming soon!!");
         } else if (itemId == R.id.localContacts) {
+            RescueMeUtilClass.writeToLog("Pick from Local Contacts!!");
             Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
             startActivityForResult(intent, RescueMeConstants.PICK_CONTACT_FROM_LOCAL);
         }
@@ -124,7 +123,7 @@ public class RescueMeContacts extends Fragment {
             contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
             name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 
-            Log.i(RescueMeConstants.LOG_TAG, contactId + " - " + name);
+            RescueMeUtilClass.writeToLog(contactId + " -- " + name);
             contact.setName(name);
 
             Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
@@ -148,13 +147,13 @@ public class RescueMeContacts extends Fragment {
 
             String contactPicUri = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
             if (contactPicUri != null) {
-                Log.i(RescueMeConstants.LOG_TAG, Uri.parse(contactPicUri).toString());
+                RescueMeUtilClass.writeToLog(Uri.parse(contactPicUri).toString());
                 try {
                     Bitmap bitmap = MediaStore.Images.Media
                             .getBitmap(context.getContentResolver(),
                                     Uri.parse(contactPicUri));
                     contact.setProfilePic(RescueMeUtilClass.getBlob(bitmap));
-                    Log.i(RescueMeConstants.LOG_TAG, "Got the blob");
+                    RescueMeUtilClass.writeToLog("Got the Blob!!");
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -211,8 +210,10 @@ public class RescueMeContacts extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (title1.equalsIgnoreCase(RescueMeConstants.PICK_NUMBER)) {
+                    RescueMeUtilClass.writeToLog("Chose Number - " + finalList[i]);
                     contact.setNumber(finalList[i]);
                 } else if (title1.equalsIgnoreCase(RescueMeConstants.PICK_EMAIL)) {
+                    RescueMeUtilClass.writeToLog("Chose Email - " + finalList[i]);
                     contact.setEmail(finalList[i]);
                 }
 
@@ -232,15 +233,15 @@ public class RescueMeContacts extends Fragment {
         RescueMeDBFactory dbFactory = RescueMeDBFactory.getInstance(context);
         dbFactory.setTableName(RescueMeConstants.CONTACTS_TABLE);
         if (dbFactory.addEmergencyContact(contact) > 0) {
-            Toast.makeText(context, RescueMeConstants.ADDED_NEW_CONTACT, Toast.LENGTH_SHORT).show();
-            Log.i(RescueMeConstants.LOG_TAG, RescueMeConstants.ADDED_NEW_CONTACT);
+            RescueMeUtilClass.toastAndLog(context, "Contact added to the List!!");
             loadAuthenticatedActivity();
         } else {
-            Toast.makeText(context, RescueMeConstants.FAILED_TO_ADD_CONTACT, Toast.LENGTH_SHORT).show();
+            RescueMeUtilClass.toastAndLog(context, "Failed to add the Contact!!");
         }
     }
 
     private void loadAuthenticatedActivity() {
+        RescueMeUtilClass.writeToLog("Starting Authenticated activity!!");
         Intent intent = new Intent(context, RescueMeTabViewer.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

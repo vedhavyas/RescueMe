@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.telephony.SmsManager;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -48,9 +47,9 @@ public class RescueMeSendSMS extends AsyncTask<Location, Void, String> {
     protected void onPostExecute(String result) {
         activity.setProgressBarIndeterminateVisibility(false);
         if (result.equalsIgnoreCase(RescueMeConstants.SUCCESS)) {
-            Toast.makeText(context, RescueMeConstants.SMS_SENT_SUCCESS, Toast.LENGTH_SHORT).show();
+            RescueMeUtilClass.toastAndLog(context, "SMS Sent!!");
         } else {
-            Toast.makeText(context, RescueMeConstants.SMS_FAILED, Toast.LENGTH_LONG).show();
+            RescueMeUtilClass.toastAndLog(context, "Failed to send SMS!!");
         }
     }
 

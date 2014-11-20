@@ -5,7 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_add_circle_contact">Add Contact</string>
-    <string name="title_activity_rescue_me_main_view">RescueMeMainView</string>
+    <string name="title_activity_rescue_me_main_view">Rescue Me</string>
     <string name="email">Email</string>
     <string name="name_hint">Name</string>
     <string name="password">Password</string>
@@ -19,10 +19,10 @@
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="or">Or Log In With</string>
     <string name="app_id">822228331163024</string>
-    <string name="title_facebook_login">Facebook LogIn</string>
+    <string name="title_facebook_login">Facebook Login</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_rescue_me_utils">RescueMeUtilsActivity</string>
-    <string name="title_activity_rescue_me_util">RescueMeUtilActivity</string>
+    <string name="title_activity_rescue_me_utils">Rescue Me Utils</string>
+    <string name="title_activity_rescue_me_util">Rescue Me Utils</string>
     <string name="update_contact">Update</string>
     <string name="delete_emergency_contact">Delete Contact</string>
     <string name="refresh_profile">Refresh Profile</string>
@@ -35,7 +35,7 @@
     <string name="fb_contacts">Facebook Friends</string>
     <string name="profile_edit">Profile Edit</string>
     <string name="profile_desc">Profile Picture</string>
-    <string name="discard_contact">discard contact</string>
+    <string name="discard_contact">Discard contact</string>
     <string name="rescueme_tag">Rescue Me</string>
     <string name="custom_message">Custom Rescue Me Message</string>
     <string name="send_sms">Send SMS</string>
@@ -58,4 +58,9 @@
     <string name="social_connections">Social Connections</string>
     <string name="connect_to_facebook">Connect To FaceBook</string>
     <string name="connect_to_g_plus">Connect to Google Plus</string>
+    <string name="title_activity_rescue_me_pop_up">Emergency POP-UP</string>
+    <string name="pop_up_message_hint">Message</string>
+    <string name="title_activity_rescue_me_maps">Map</string>
+    <string name="push_loc_updates">Push Location Updates</string>
+
 </resources>
